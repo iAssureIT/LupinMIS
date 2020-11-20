@@ -197,6 +197,9 @@ class ActivityTypeA extends Component{
     this.handleTotalChange = this.handleTotalChange.bind(this);
     this.getTypeAFileDetails = this.getTypeAFileDetails.bind(this);
   }
+
+
+
   remainTotal(event){
     event.preventDefault(); 
     // console.log("event.target.name",event.target.name);
@@ -236,6 +239,9 @@ class ActivityTypeA extends Component{
     */}
     this.setState({"total": subTotal });
   }
+
+
+
   handleChange(event){
     event.preventDefault();
       if(event.currentTarget.name==='typeofactivity'){
@@ -305,6 +311,9 @@ class ActivityTypeA extends Component{
         this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
       });
   }
+
+
+
   handleTotalChange(event){
     event.preventDefault();
     const target = event.target;
@@ -329,28 +338,7 @@ class ActivityTypeA extends Component{
       }
     });
   }
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
+
   uploadedData(data){
     this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
   }
@@ -361,6 +349,9 @@ class ActivityTypeA extends Component{
       // console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
+
+
+
   SubmitActivity(event){
     event.preventDefault();
     // console.log("date = ", this.refs.dateofIntervention.value);
@@ -492,6 +483,9 @@ class ActivityTypeA extends Component{
       $("html,body").scrollTop(0)
     }
   }
+
+
+
   Update(event){
     event.preventDefault();
     var dateObj = new Date();
@@ -616,87 +610,7 @@ class ActivityTypeA extends Component{
       $("html,body").scrollTop(0)
     }
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-    if(this.state.bActivityActive==="inactive"){
-      if (!fields["noOfBeneficiaries"]) {
-        $("html,body").scrollTop(0);
-        formIsValid = false;
-        errors["noOfBeneficiaries"] = "This field is required.";
-      }     
-    }
-    if (!fields["district"]) {
-      $("html,body").scrollTop(0);
-      formIsValid = false;
-      errors["district"] = "This field is required.";
-    }     
-     if (!fields["block"]) {
-      formIsValid = false;
-      errors["block"] = "This field is required.";
-    }     
-    if (!fields["village"]) {
-      formIsValid = false;
-      errors["village"] = "This field is required.";
-    }
-    if (!fields["sector"]) {
-      formIsValid = false;
-      errors["sector"] = "This field is required.";
-    }          
-    if (!fields["typeofactivity"]) {
-      formIsValid = false;
-      errors["typeofactivity"] = "This field is required.";
-    }          
-    if (!fields["activity"]) {
-      formIsValid = false;
-      errors["activity"] = "This field is required.";
-    }          
-    if (!fields["subactivity"]) {
-      formIsValid = false;
-      errors["subactivity"] = "This field is required.";
-    }          
-    if (!fields["unitCost"]) {
-      formIsValid = false;
-      errors["unitCost"] = "This field is required.";
-    }          
-    if (!fields["qtyPerBen"]) {
-      formIsValid = false;
-      errors["qtyPerBen"] = "This field is required.";
-    }          
-    if (!fields["bankLoan"]) {
-      formIsValid = false;
-      errors["bankLoan"] = "This field is required.";
-    }          
-    if (!fields["govtscheme"]) {
-      formIsValid = false;
-      errors["govtscheme"] = "This field is required.";
-    }
-    if (!fields["NABARD"]) {
-      formIsValid = false;
-      errors["NABARD"] = "This field is required.";
-    }          
-    if (!fields["LHWRF"]) {
-      formIsValid = false;
-      errors["LHWRF"] = "This field is required.";
-    }          
-    if (!fields["directCC"]) {
-      formIsValid = false;
-      errors["directCC"] = "This field is required.";
-    }          
-    if (!fields["indirectCC"]) {
-      formIsValid = false;
-      errors["indirectCC"] = "This field is required.";
-    }          
-    if (!fields["other"]) {
-      formIsValid = false;
-      errors["other"] = "This field is required.";
-    }          
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
+
   getAvailableVillages(center_ID, district, block){
     axios({
       method: 'get',
@@ -715,6 +629,9 @@ class ActivityTypeA extends Component{
       console.log("error = ",error);
     });
   }
+  
+
+
   getAvailableBlocks(center_ID, districtB){
     axios({
       method: 'get',
@@ -734,6 +651,10 @@ class ActivityTypeA extends Component{
       console.log("error = ",error);
     });
   }
+  
+
+
+
   edit(id){
     if(id){
       axios({
@@ -828,7 +749,6 @@ class ActivityTypeA extends Component{
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
             this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getAvailableBlocks(this.state.center_ID, this.state.district);
-            this.getAvailableCenter(this.state.center_ID);
             this.getBeneficiaries(this.state.selectedBeneficiaries);
           });
         }
@@ -838,6 +758,10 @@ class ActivityTypeA extends Component{
       });
     }
   }
+
+
+
+
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -938,10 +862,15 @@ class ActivityTypeA extends Component{
       });
     }
   }
+
+
+
+
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
       return value!=='';
     }, "This field is required.");
+
     $("#AtypeActivity").validate({
       rules: {
         dateofIntervention:{
@@ -1010,30 +939,25 @@ class ActivityTypeA extends Component{
       }
     });
     // axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.getAvailableSectors();
     this.year();
+
     const center_ID  = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     var editId       = this.props.match.params ? this.props.match.params.id : '';
+    
     this.setState({
       editId       : editId,
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-      this.getAvailableProjectName();
-      this.getAvailableCenter(this.state.center_ID);
-      if(this.state.editId){      
-        this.getAvailableActivity(this.state.editSectorId);
-        this.edit(this.state.editId);
-      }
-    });
+    });    
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
   }
   componentWillReceiveProps(nextProps){
     if(nextProps){
       var editId = nextProps.match.params.id;
-      this.getAvailableSectors();      
-      this.getAvailableCenter(this.state.center_ID);      
       this.setState({
         "editId" : editId,
       })  
@@ -1396,24 +1320,6 @@ class ActivityTypeA extends Component{
       })
     }  
   }
-  handleToggleP(event){
-    this.getAvailableSectors()
-    this.setState({
-      [event.target.name] : event.target.value,
-      sector              : '-- Select --',
-      availableActivity   : [],
-      availableSubActivity: [],
-      subActivityDetails  : "",
-      subactivity         : "-- Select --",
-      activity            : '-- Select --',
-    },()=>{
-      if (this.state.projectCategoryType === "LHWRF Grant") {
-        this.setState({
-          projectName     :"-- Select --",
-        })
-      }
-    })
-  }
   getTypeAFileDetails(fileName){
     axios
     .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
@@ -1498,6 +1404,10 @@ class ActivityTypeA extends Component{
     this.setState({
      shown: !this.state.shown
     });
+
+    this.getAvailableSectors();
+    this.getAvailableProjectName();
+    this.getAvailableCenter(this.state.center_ID);
   }  
   year() {
     let financeYear;
@@ -1927,7 +1837,7 @@ class ActivityTypeA extends Component{
                                 <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
                                    <hr className=""/>
                                 </div>
-                                <div className="tableContainrer">
+                                <div className="tableContainer">
                                   <ListOfBeneficiaries 
                                     getBeneficiaries={this.getBeneficiaries.bind(this)}
                                     selectedValues={this.state.selectedValues}

@@ -1,8 +1,5 @@
 import React, { Component }   from 'react';
-import 'react-table/react-table.css';
 import "./ListOfBeneficiaries.css";
-// import axios                  from 'axios';
-// import swal                   from 'sweetalert';
 
 import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import NewBeneficiary         from "../addBeneficiary/NewBeneficiary.js";
@@ -13,11 +10,8 @@ class ListOfBeneficiaries extends Component{
     super(props);
    
     this.state = {
-      
       "uID"                       :"",
       "shown"                     : true,
-      fields: {},
-      errors: {},
       "twoLevelHeader"             : {
         apply                      : false,
       },
@@ -45,31 +39,8 @@ class ListOfBeneficiaries extends Component{
   handleChange(event){
     event.preventDefault();
     this.setState({
-     /* "QualificationLevel"   : this.refs.QualificationLevel.value,          
-      "Qualification"        : this.refs.Qualification.value,          
-      "Specialization"       : this.refs.Specialization.value,
-      "Mode"                 : this.refs.Mode.value, 
-      "Grade"                : this.refs.Grade.value,
-      "PassoutYear"          : this.refs.PassoutYear.value,
-      "UniversityName"       : this.refs.UniversityName.value,
-      "City"                 : this.refs.City.value,
-      "CollegeName"          : this.refs.CollegeName.value,
-      "State"                : this.refs.State.value,
-      "Country"              : this.refs.Country.value,*/
-    });
-    let fields = this.state.fields;
-    fields[event.target.name] = event.target.value;
-    this.setState({
       [event.target.name] : event.target.value,
-      fields
     });
-  /*  if (this.validateForm()) {
-      let errors = {};
-      errors[event.target.name] = "";
-      this.setState({
-        errors: errors
-      });
-    }*/
   }
   componentWillReceiveProps(nextProps){
     if(nextProps){
@@ -86,45 +57,6 @@ class ListOfBeneficiaries extends Component{
         // }
       })
     }
-  }
-
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  isTextKey(evt) {
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
- 
-  }
-
-  getData(startRange, limitRange){
-    // axios({
-    //   method: 'get',
-    //   url: '/api/centers/list',
-    // }).then((response)=> {
-    //   var tableData = response.data.map((a, index)=>{return});
-
-    //   this.setState({
-    //     tableData : tableData.slice(startRange, limitRange),
-    //   });
-    // }).catch(function (error) {
-    //   console.log('error', error);
-    // });
   }
   listofBeneficiaries(selectedBeneficiaries){
     // console.log(selectedBeneficiaries)
@@ -150,6 +82,8 @@ class ListOfBeneficiaries extends Component{
       // console.log("tableData",this.state.tableData)
     })
     this.props.getBeneficiaries(selectedBeneficiaries);
+  }
+  getData(){
   }
   render() {
     return (

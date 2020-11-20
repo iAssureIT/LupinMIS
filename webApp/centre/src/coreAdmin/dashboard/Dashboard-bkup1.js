@@ -148,10 +148,6 @@ export default class Dashboard extends Component{
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
   }
-
-
-
-
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.year();
@@ -260,6 +256,22 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   } 
+  getRandomColor(){
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  getRandomColor_sector(){
+    var letters = '01234ABCDEF56789';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
   closeModal(){
     $('#dataShow').css({"display": "none"});
     $('#dataShow').removeClass('in');  
@@ -612,47 +624,56 @@ export default class Dashboard extends Component{
       $('#locationShow').addClass('in');  
     })
   }
-
-
-
-
   year() {
     let financeYear;
     let today = moment();
+    // console.log('today',today);
     if(today.month() >= 3){
       financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }else{
+    }
+    else{
       financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
     }
-    var firstYear     = financeYear.split('-')[0];
-    var secondYear    = financeYear.split('-')[1];
-    var financialYear = "FY "+firstYear+" - "+secondYear;
-    var startDate     = financialYear.substring(3, 7)+"-04-01";
-    var endDate       = financialYear.substring(10, 15)+"-03-31";
     this.setState({
-      startDate  : startDate,
-      endDate    : endDate,
-      year       : financialYear
+        financeYear :financeYear
     },()=>{
-      // this.cumulative_Plan_Data(this.state.year);
-      // this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-      // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-      var upcomingFirstYear  = parseInt(firstYear)+3
-      var upcomingSecondYear = parseInt(secondYear)+3
-      var years = [];
-      for (var i = 2017; i < upcomingFirstYear; i++) {
-        for (var j = 2018; j < upcomingSecondYear; j++) {
-          if (j-i===1){
-            var financeYear = "FY "+i+" - "+j;
-            years.push(financeYear);
-            this.setState({
-              years  :years,
-            })              
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear     = this.state.financeYear.split('-')[0];
+      var secondYear    = this.state.financeYear.split('-')[1];
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      var startDate     = financialYear.substring(3, 7)+"-04-01";
+      var endDate       = financialYear.substring(10, 15)+"-03-31";
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        startDate  :startDate,
+        endDate    :endDate,
+        year       :financialYear
+      },()=>{
+        // this.cumulative_Plan_Data(this.state.year);
+        // this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+        // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
           }
         }
-      }
+      })
     })
   }
   render(){

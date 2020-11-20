@@ -14,23 +14,13 @@ class NewBeneficiary extends Component{
     super(props);
 
     this.state = {
-      "district"            : "all",
-      "block"               : "all",
-      "village"             : "all",
+      "shown"               : true,      
+      // "district"            : "all",
+      // "block"               : "all",
+      // "village"             : "all",
       "uID"                 : "",
-      "shown"               : true,
       "twoLevelHeader"      : {
         apply               : false,
-        firstHeaderData       : [
-                                {
-                                    heading : '',
-                                    mergedColoums : 10
-                                },
-                                {
-                                    heading : 'Source of Fund',
-                                    mergedColoums : 7
-                                },
-                              ]
       },
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
@@ -42,22 +32,14 @@ class NewBeneficiary extends Component{
         village             : "Village",
         // actions             : 'Action',
       },
-      shown                 : true,
-      fields: {},
-      errors: {},
       "tableObjects"       : {
         apiLink             : '/api/activityReport/',
         paginationApply     : false,
         // searchApply         : true,
         editUrl             : '/a-type-activity-form'
       },
-     
-      // selectedBeneficiaries : [],
       "startRange"          : 0,
       "limitRange"          : 10000,
-      // "editId"             : this.props.match.params ? this.props.match.params.id : '',
-      fields: {},
-      errors: {},
       prevtableData: []    
     }
   }
@@ -67,19 +49,15 @@ class NewBeneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getAvailableFamilyId(this.state.center_ID);
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    this.getAvailableFamilyId(this.state.center_ID)
-    this.getAvailableCenter(this.state.center_ID);
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
-    // console.log("center_ID =",this.state.center_ID);
+      this.getAvailableCenter(this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.district, this.state.block, this.state.village);
+      // console.log("center_ID =",this.state.center_ID);
     });
   }
 
@@ -95,15 +73,9 @@ class NewBeneficiary extends Component{
     }
   }
   getData(startRange, limitRange, center_ID, district, block, village){
-    // console.log(startRange, limitRange, center_ID, district, block, village);
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
     if(center_ID && district && block && village){
-      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
+    // console.log(center_ID, district, block, village)
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
-      // axios.get('/api/beneficiaries/list/'+centerID)
       .then((response)=>{
         // console.log('bbbbbbbbbbbbbbbbbbbresponse', response.data.length);
         var tableData = response.data.map((a, i)=>{
@@ -137,11 +109,6 @@ class NewBeneficiary extends Component{
     }      
   }
 
-  toglehidden(){
-   this.setState({
-     shown: !this.state.shown
-    });
-  }
   addBeneficiary(selectedBeneficiaries){
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
@@ -159,19 +126,6 @@ class NewBeneficiary extends Component{
     }
   }
 
-  getAvailableFamilyId(center_ID){
-    axios({
-      method: 'get',
-      url: '/api/families/list/'+center_ID,
-    }).then((response)=> {
-        
-        this.setState({
-          availableFamilies : response.data
-        })
-    }).catch(function (error) {
-      console.log("error = ",error);
-    });
-  }
   getAvailableCenter(center_ID){
     // console.log("CID"  ,center_ID);
     if(center_ID){
@@ -200,7 +154,6 @@ class NewBeneficiary extends Component{
       });
     }
   }
-
 
   distChange(event){    
     event.preventDefault();
@@ -324,14 +277,18 @@ class NewBeneficiary extends Component{
     }
   }
 
+  toglehidden(){
+   this.setState({
+     shown: !this.state.shown
+    });
+  }
 
   render() {
-     var shown = {
-      display: this.state.shown ? "block" : "none"
-    };
-    
     var hidden = {
       display: this.state.shown ? "none" : "block"
+    }
+    var displayBlock = {
+      display: this.state.shown ? "block" : "none"
     }
     return (
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
@@ -340,9 +297,6 @@ class NewBeneficiary extends Component{
             <div className="col-lg-2 col-lg-offset-4 col-md-4 col-sm-6 col-xs-6 text-center addform" data-toggle="modal" data-target="#myModal">
               Add Beneficiary
             </div>
-           {/* <div className="addContainerAct col-lg-6 pull-right mr30" data-toggle="modal" data-target="#myModal">
-               <i className="fa fa-plus" aria-hidden="true"></i>
-            </div>*/}
             <div className="modal fade in " id="myModal" role="dialog">
               <div className="modal-dialog modal-lg " >
                 <div className="modal-content ">
@@ -361,15 +315,23 @@ class NewBeneficiary extends Component{
                             </div>
                           </div>
                         </div>
+
+                        {
+                          !this.state.shown 
+                          ?
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
+                              <CreateBeneficiary 
+                                getBeneficiaryData={this.getData.bind(this)}
+                                getdistrict = {this.state.district}
+                                getblock = {this.state.block}
+                                getvillage = {this.state.village}
+                              />
+                            </div>
+                          :
+                            null
+                        }
                        
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style={hidden}>
-                          <CreateBeneficiary 
-                            getBeneficiaryData={this.getData.bind(this)}
-                            getdistrict = {this.state.district}
-                            getblock = {this.state.block}
-                            getvillage = {this.state.village}
-                          />
-                        </div><br/>
+                        <br/>
                         <div className=" col-lg-12 col-sm-12 col-xs-12  ">
                           <div className="borderBoxHeight border_Box"> 
                             <div className="row"> 
@@ -378,7 +340,7 @@ class NewBeneficiary extends Component{
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                     <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
                                       <option  selected={true}>-- Select --</option>
-                                      <option value="all">All</option>
+                                   {   /*<option value="all">All</option>*/}
                                       {
                                         this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                         this.state.listofDistrict.map((data, index)=>{
@@ -392,7 +354,6 @@ class NewBeneficiary extends Component{
                                       }
                                     </select>
                                   </div>
-                                  <div className="errorMsg">{this.state.errors.district}</div>
                               </div>
                               <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
                                 <label className="formLable">Block<span className="asterix">*</span></label>
@@ -412,7 +373,6 @@ class NewBeneficiary extends Component{
                                     }  
                                   </select>
                                 </div>
-                                <div className="errorMsg">{this.state.errors.block}</div>
                               </div>
                               <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                 <label className="formLable">Village<span className="asterix">*</span></label>
@@ -432,24 +392,8 @@ class NewBeneficiary extends Component{
                                     } 
                                   </select>
                                 </div>
-                                <div className="errorMsg">{this.state.errors.village}</div>
                               </div>
                             </div>
-                            {/*<div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight row">
-                              <div className=" col-lg-6 col-sm-12 col-xs-12 col-lg-offset-3 formLable boxHeightother ">
-                                <label className="formLable">Search</label>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="UniversityName" >
-                                  <input type="text"  className="form-control inputBox" name="UniversityName" placeholder=""ref="UniversityName"   onChange={this.handleChange.bind(this)}/>
-                                </div>
-                              </div>
-                               <div className=" col-lg-2 col-md-1 col-sm-1 col-xs-1  boxHeightother">
-                                <div className="col-lg-12 col-sm-12 col-xs-12 mt23" >
-                                  <div className="text-center addform" id="" >
-                                    Search 
-                                  </div>
-                                </div>
-                              </div>
-                            </div> */}
                           </div> 
                         </div>
                          

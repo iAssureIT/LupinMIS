@@ -32,8 +32,6 @@ class Beneficiary extends Component{
       "getblock"                      : props && props.getblock    ? props.getblock    : {},        
       "getvillage"                    : props && props.getvillage  ? props.getvillage  : {},        
       // "genderOfbeneficiary"           :"-- Select --",
-      "fields"              : {},
-      "errors"              : {},
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
@@ -55,8 +53,6 @@ class Beneficiary extends Component{
       "limitRange"          : 10000,
       "editId"              : props.editId ? props.editId : '',
     }
-    this.uploadedData = this.uploadedData.bind(this);
-    this.getFileDetails = this.getFileDetails.bind(this);
   }
 
   handleChange(event){
@@ -137,15 +133,6 @@ class Beneficiary extends Component{
       "birthYearOfbeneficiary"    : this.state.birthYearOfbeneficiary,
       "genderOfbeneficiary"       : this.refs.genderOfbeneficiary.value,
     };
-    // let fields                          = {};
-    // fields["familyID"]                  = "";
-    // fields["beneficiaryID"]             = "";
-    // fields["uidNumber"]                 = "";
-    // fields["relation"]                  = "";
-    // fields["surnameOfBeneficiary"]      = "";
-    // fields["firstNameOfBeneficiary"]    = "";
-    // fields["middleNameOfBeneficiary"]   = "";
-
     this.setState({
       "familyID"                 :"",
       "beneficiaryID"            :"",
@@ -158,7 +145,6 @@ class Beneficiary extends Component{
       // "genderOfbeneficiary"      :"-- Select --",
       "date"                     :"",   
       "birthYearOfbeneficiary"   :"",   
-      // fields:fields
     });
     axios.post('/api/beneficiaries',beneficiaryValue)
       .then((response)=>{
@@ -173,9 +159,6 @@ class Beneficiary extends Component{
         console.log("error = ",error);
       });
     }
-  }
-  uploadedData(data){
-    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
   }
   Update(event){
     event.preventDefault();
@@ -253,24 +236,15 @@ class Beneficiary extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-
-    this.getLength();
-    // this.getData();
-    this.getData(this.state.startRange, this.state.limitRange);
-    this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
-    // const token = localStorage.getItem("token");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    // console.log("center_ID =",this.state.center_ID);
-     this.getLength(this.state.center_ID);
-    // this.getData();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
-    this.getAvailableFamilyId(this.state.center_ID);
+      this.getAvailableFamilyId();
+      this.getLength(this.state.center_ID);
+      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID);
     });    
  
     $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
@@ -338,38 +312,31 @@ class Beneficiary extends Component{
   edit(id){
     if(id && id !== undefined){
       axios({
-      method: 'get',
-      url: '/api/beneficiaries/'+id,
-    })
-    .then((response)=> {
-      var editData = response.data[0];
-      // console.log('editData',response);
-      if(editData){
-        this.setState({
-          "beneficiaryID"            : editData.beneficiaryID,
-          "familyID"                 : editData.familyID+"|"+editData.family_ID,          
-          "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
-          "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
-          "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
-          "uidNumber"                : editData.uidNumber,          
-          "relation"                 : editData.relation,          
-          "date"                     : editData.birthYearOfbeneficiary,          
-          "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
-        },()=>{
-          // console.log('edit===',this.state.birthYearOfbeneficiary);
-        });      
-      }
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
+        method: 'get',
+        url: '/api/beneficiaries/'+id,
+      })
+      .then((response)=> {
+        var editData = response.data[0];
+        // console.log('editData',response);
+        if(editData){
+          this.setState({
+            "beneficiaryID"            : editData.beneficiaryID,
+            "familyID"                 : editData.familyID+"|"+editData.family_ID,          
+            "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
+            "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
+            "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
+            "uidNumber"                : editData.uidNumber,          
+            "relation"                 : editData.relation,          
+            "date"                     : editData.birthYearOfbeneficiary,          
+            "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
+          },()=>{
+            // console.log('edit===',this.state.birthYearOfbeneficiary);
+          });      
+        }
+      })
+      .catch(function (error) {
+        console.log("error = ",error);
       });
-      return formIsValid;
-    })
-    .catch(function (error) {
-      console.log("error = ",error);
-    });
     }else{
       this.setState({
         "beneficiaryID"            : "",
@@ -403,19 +370,14 @@ class Beneficiary extends Component{
     });*/
   }
 
-  getData(startRange, limitRange, center_ID){
+  getData(startRange, limitRange, center_ID){/*
     var data = {
       limitRange : limitRange,
       startRange : startRange,
     }
-    // console.log(center_ID);
-    // var centerID = this.state.center_ID;
     if (center_ID){
       axios.post('/api/beneficiaries/list/'+center_ID,data)
-        // console.log('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all",this.state.center_ID);
-      // axios.get('/api/beneficiaries/get/beneficiary/list/'+centerID+"/all/all/all")
       .then((response)=>{
-        // console.log('response', response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
@@ -438,14 +400,15 @@ class Beneficiary extends Component{
         console.log("error = ",error);
       });
     }
-  }
-  getAvailableFamilyId(event){
+  */}
+  getAvailableFamilyId(){
     if(this.state.center_ID){
+    // console.log("========",this.state.center_ID)
       axios({
         method: 'get',
         url: '/api/families/list/'+this.state.center_ID,
       }).then((response)=> {
-      // console.log("availableFamiliesresponse", response);
+      console.log("availableFamiliesresponse", response);
           this.setState({
             availableFamilies : response.data
           })
@@ -454,114 +417,7 @@ class Beneficiary extends Component{
       });
     }
   }
-  getFileDetails(fileName){
-      axios
-      .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
-      .then((response)=> {
-      $('.fullpageloader').hide();  
-      if (response) {
-        this.setState({
-            fileDetails:response.data,
-            failedRecordsCount : response.data.failedRecords.length,
-            goodDataCount : response.data.goodrecords.length
-        });
 
-          var tableData = response.data.goodrecords.map((a, i)=>{
-           
-          return{
-              "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
-              "familyID"       : a.familyID        ? a.familyID    : '-',
-              "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-              "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
-              "relation"       : a.relation     ? a.relation : '-',
-          }
-        })
-
-        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
-        return{
-            "beneficiaryID"  : a.beneficiaryID        ? a.beneficiaryID    : '-',
-            "familyID"       : a.familyID        ? a.familyID    : '-',
-            "uidNumber"      : a.uidNumber     ? a.uidNumber : '-',
-            "nameofbeneficiaries" : a.firstNameOfBeneficiary + " " + a.middleNameOfBeneficiary + " " + a.surnameOfBeneficiary ,
-            "relation"       : a.relation     ? a.relation : '-',
-            "failedRemark"   : a.failedRemark     ? a.failedRemark : '-'
-            
-        }
-        })
-        this.setState({
-            goodRecordsTable : tableData,
-            failedRecordsTable : failedRecordsTable
-        })
-      }
-      })
-      .catch((error)=> { 
-            
-      }) 
-  } 
-  getSearchText(searchText){
-    var searchText = searchText;
-    // console.log('searchText',searchText)
-    var formValues ={
-      searchText : searchText,
-    }
-    if(searchText) {
-      axios
-      .post('/api/beneficiaries/searchValue/'+this.state.center_ID, formValues)
-      .then(
-        (res)=>{
-          // console.log('res', res);
-          if(res.data.data&&res.data.data.length>0){
-            var tableData = res.data.data.map((a, i)=>{
-              return {
-                _id                       : a._id,
-                beneficiaryID             : a.beneficiaryID,
-                familyID                  : a.familyID,
-                nameofbeneficiaries       : a.surnameOfBeneficiary+" "+a.firstNameOfBeneficiary+" " +a.middleNameOfBeneficiary,
-                uidNumber                 : a.uidNumber,
-                relation                  : a.relation,
-                genderOfbeneficiary       : a.genderOfbeneficiary,   
-                birthYearOfbeneficiary    : a.birthYearOfbeneficiary,
-              }
-            })
-          }
-        this.setState({
-          tableData     : tableData,          
-        })
-      }).catch((error)=>{ 
-        console.log('error',error)
-        // swal("No results found","","error");
-        this.setState({
-          tableData     : [],          
-        })
-      });
-    }
-  }
-  getUID(event)
-  {
-  /*  if(this.state.firstNameOfBeneficiary === this.state.firstNameOfBeneficiaryCheck )
-    {
-       
-      var uidNumber = this.state.uidNumberCheck;
-      var middleNameOfBeneficiaryCheck = this.state.middleNameOfBeneficiaryCheck;
-      this.setState({
-          uidNumber : uidNumber,
-          relation  : "Self",
-          middleNameOfBeneficiary : middleNameOfBeneficiaryCheck,
-          Check     : false,
-      })
-          
-    }
-
-    else if(this.refs.firstNameOfBeneficiary.value === ""){
-      this.setState({
-          uidNumber : "",
-          relation  : "-- Select --",
-          middleNameOfBeneficiary : "",
-          Check     : false,
-      })
-
-    }*/
-  }
   handleYear(date){
     // console.log(' date.year()',moment(date).format('YYYY'));
     this.setState({
@@ -616,7 +472,7 @@ class Beneficiary extends Component{
           <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
             <label className="formLable">First Name  </label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="firstNameOfBeneficiaryErr" >
-              <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary} onBlur={this.getUID.bind(this)}  onChange={this.handleChange.bind(this)} />
+              <input type="text" className="form-control inputBox" ref="firstNameOfBeneficiary" name="firstNameOfBeneficiary" value={this.state.firstNameOfBeneficiary}  onChange={this.handleChange.bind(this)} />
             </div>
           </div>
           <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12 valid_box ">
@@ -678,20 +534,6 @@ class Beneficiary extends Component{
               />
             </div>
           </div>
-
-          {/*<div className=" col-lg-3 col-md-6 col-sm-6 col-xs-12  valid_box">
-            <label className="formLable">Birth Year</label>
-            <div className="inputBox-main">
-            {console.log('birthYearOfbeneficiary',this.state.birthYearOfbeneficiary)}
-            <YearPicker 
-              name="birthYearOfbeneficiary" 
-              id="birthYearOfbeneficiaryErr"
-              defaultValue={this.state.birthYearOfbeneficiary}
-              onChange={this.handleYear.bind(this)} 
-              className=""
-             />
-          </div>
-          </div>*/}
         </div> 
         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">
           {

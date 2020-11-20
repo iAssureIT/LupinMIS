@@ -37,8 +37,6 @@ class Beneficiary extends Component{
       "surnameOfBeneficiary"          :"",
       "nameofbeneficiaries"           :"",
       "shown"               : true,
-      "fields"              : {},
-      "errors"              : {},
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
         familyID            : "Family ID",
@@ -393,13 +391,6 @@ class Beneficiary extends Component{
           // console.log('edit===',this.state.birthYearOfbeneficiary);
         });      
       }
-      let fields = this.state.fields;
-      let errors = {};
-      let formIsValid = true;
-      this.setState({
-        errors: errors
-      });
-      return formIsValid;
     })
     .catch(function (error) {
       console.log("error = ",error);

@@ -1846,29 +1846,12 @@ class ActivityTypeB extends Component{
                                       }
                                     </div>
                                 
-                                {/*<label className="formLable">&nbsp;{this.state.total ?  this.state.total : " 0"}</label>     */}    
                               </div>
                               <div className="errorMsg">{this.state.errors.total}</div>
                             </div>
                           </div> 
                         </div><br/>
-                        
-                        {
-                          this.state.bActivityActive==="active" ? 
-                          <div className="">
-                            <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                               <hr className=""/>
-                            </div>
-                            <div className="tableContainrer">
-                              <ListOfBeneficiaries 
-                                getBeneficiaries={this.getBeneficiaries.bind(this)}
-                                selectedValues={this.state.selectedValues}
-                                sendBeneficiary={this.state.selectedBeneficiaries}
-                              />
-                            </div>
-                          </div>
-                          : null
-                        }
+                      
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                           <br/>
                           {
