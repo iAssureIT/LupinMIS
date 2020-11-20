@@ -162,10 +162,10 @@ export default class Dashboard extends Component{
     this.getAvailableCenters();
     this.getcenter();
     this.getCountOfSubactivities();
-    // this.cumulative_Plan_Data(this.state.year);
-    // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    // this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+    this.cumulative_Plan_Data(this.state.year);
+    this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
     this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
   }
 
@@ -634,10 +634,10 @@ export default class Dashboard extends Component{
       endDate    : endDate,
       year       : financialYear
     },()=>{
-      // this.cumulative_Plan_Data(this.state.year);
-      // this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-      // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      this.cumulative_Plan_Data(this.state.year);
+      this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+      this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
       var upcomingFirstYear  = parseInt(firstYear)+3
       var upcomingSecondYear = parseInt(secondYear)+3
