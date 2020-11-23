@@ -39,7 +39,7 @@ class FilewiseBeneficiaryList extends Component{
       }
       axios.post('/api/beneficiaries/get/files', data)
       .then((response)=>{
-        // console.log(response.data);
+        console.log(response);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName    : a.fileName !== null ? a.fileName : "Manual", 

@@ -108,7 +108,7 @@ class CategorywiseReport extends Component{
       if(this.state.district==="all"){
         var selectedDistrict = this.state.district;
       }else{
-        var selectedDistrict = this.state.district.split('|')[0];
+        selectedDistrict = this.state.district.split('|')[0];
       }
       this.setState({
         selectedDistrict :selectedDistrict,
@@ -202,11 +202,11 @@ class CategorywiseReport extends Component{
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
-          var lastThree = x.substring(x.length-3);
-          var otherNumbers = x.substring(0,x.length-3);
+          lastThree = x.substring(x.length-3);
+          otherNumbers = x.substring(0,x.length-3);
           if(otherNumbers !== '')
               lastThree = ',' + lastThree;
-          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+          res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);
         }
       }
@@ -248,10 +248,9 @@ class CategorywiseReport extends Component{
     const target = event.target;
     const name = target.name;
     var startDate = document.getElementById("startDate").value;
-    var endDate = document.getElementById("endDate").value;
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
-    var startDate = moment(dateUpdate).format('YYYY-MM-DD');
+    startDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
        [name] : event.target.value,
        startDate:startDate
@@ -263,11 +262,10 @@ class CategorywiseReport extends Component{
     event.preventDefault();
     const target = event.target;
     const name = target.name;
-    var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
     var dateVal = event.target.value;
     var dateUpdate = new Date(dateVal);
-    var endDate = moment(dateUpdate).format('YYYY-MM-DD');
+    endDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
      [name] : event.target.value,
      endDate : endDate
@@ -277,29 +275,27 @@ class CategorywiseReport extends Component{
   }
   currentFromDate(){
     if(this.state.startDate){
-          var today = this.state.startDate;
+      var today = this.state.startDate;
     }else {
-        var today = (new Date());
+      today = (new Date());
       var nextDate = today.getDate() - 30;
       today.setDate(nextDate);
       // var newDate = today.toLocaleString();
-      var today =  moment(today).format('YYYY-MM-DD');
+      today =  moment(today).format('YYYY-MM-DD');
     }
     this.setState({
-       startDate :today
-    },()=>{
+      startDate :today
     });
     return today;
   }
   currentToDate(){
     if(this.state.endDate){
-        var today = this.state.endDate;
+      var today = this.state.endDate;
     }else {
-        var today =  moment(new Date()).format('YYYY-MM-DD');
+      today =  moment(new Date()).format('YYYY-MM-DD');
     }
     this.setState({
-       endDate :today
-    },()=>{
+      endDate :today
     });
     return today;
   }

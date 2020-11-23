@@ -36,6 +36,8 @@ class Beneficiary extends Component{
       "middleNameOfBeneficiary"       :"",
       "surnameOfBeneficiary"          :"",
       "nameofbeneficiaries"           :"",
+      "tableData"                     : [],
+      "downloadData"                  : [],
       "shown"               : true,
       "tableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
@@ -71,12 +73,13 @@ class Beneficiary extends Component{
       "tableObjects"        : {
         apiLink             : '/api/beneficiaries/',
         editUrl             : '/beneficiary',        
+        paginationapply     : true,
         paginationApply     : false,
         downloadApply       : true,
         searchApply         : true,
       },
       "startRange"          : 0,
-      "limitRange"          : 10000,
+      "limitRange"          : 10,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
       fileDetailUrl         : "/api/beneficiaries/get/filedetails/",
       goodRecordsTable      : [],
@@ -177,6 +180,8 @@ class Beneficiary extends Component{
           "blocks"          : this.state.blockFilter,
           "village"         : this.state.villageFilter, 
           "searchText"      : this.state.searchText, 
+          "startRange"      :  this.state.startRange,
+          "limitRange"      :  this.state.limitRange
         }
         this.getData(inputGetData);   
         swal({
@@ -196,14 +201,15 @@ class Beneficiary extends Component{
       "blocks"          : this.state.blockFilter,
       "village"         : this.state.villageFilter, 
       "searchText"      : this.state.searchText, 
+      "startRange"      :  this.state.startRange,
+      "limitRange"      :  this.state.limitRange
     }
     this.getData(inputGetData);
   }
   Update(event){
     event.preventDefault();
     if($('#createBeneficiary').valid()){
-      var beneficiaryValue= 
-      {
+      var beneficiaryValue = {
         "center_ID"             : this.state.center_ID,
         "center"                : this.state.centerName,
         "beneficiary_ID"        : this.state.editId,          
@@ -227,6 +233,8 @@ class Beneficiary extends Component{
             "blocks"          : this.state.blockFilter,
             "village"         : this.state.villageFilter, 
             "searchText"      : this.state.searchText, 
+            "startRange"      :  this.state.startRange,
+            "limitRange"      :  this.state.limitRange
           }
           this.getData(inputGetData);
           swal({
@@ -263,46 +271,35 @@ class Beneficiary extends Component{
         editId : editId
       })
       this.edit(editId);
-    }    
-    var inputGetData = {
-      "center_ID"       : this.state.center_ID,
-      "district"        : this.state.districtFilter,
-      "blocks"          : this.state.blockFilter,
-      "village"         : this.state.villageFilter, 
-      "searchText"      : this.state.searchText, 
     }
-    this.getData(inputGetData);
-    if(nextProps){
-      this.getLength();
-    }  
   }
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getLength();
     this.getAvailableFamilyId();
     const center_ID = localStorage.getItem("center_ID");
-    // const token = localStorage.getItem("token");
     const centerName = localStorage.getItem("centerName");
     // console.log("localStorage =",localStorage.getItem('centerName'));
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    // console.log("center_ID =",this.state.center_ID);
-    this.getLength(this.state.center_ID);
-    this.getAvailableCenter(this.state.center_ID);
-    var inputGetData = {
-      "center_ID"       : this.state.center_ID,
-      "district"        : this.state.districtFilter,
-      "blocks"          : this.state.blockFilter,
-      "village"         : this.state.villageFilter, 
-      "searchText"      : this.state.searchText, 
-    }
-    this.getData(inputGetData);
-    this.getAvailableFamilyId(this.state.center_ID);
+      // console.log("center_ID =",this.state.center_ID);
+      this.getLength(this.state.center_ID);
+      this.getAvailableCenter(this.state.center_ID);
+      var inputGetData = {
+        "center_ID"       : this.state.center_ID,
+        "district"        : this.state.districtFilter,
+        "blocks"          : this.state.blockFilter,
+        "village"         : this.state.villageFilter, 
+        "searchText"      : this.state.searchText, 
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange
+      }
+      this.getData(inputGetData);
+      this.getAvailableFamilyId(this.state.center_ID);
     });    
  
     $.validator.addMethod("regxUIDNumber", function(value, element, regexpr) {         
@@ -369,32 +366,32 @@ class Beneficiary extends Component{
   edit(id){
     if(id && id !== undefined){
       axios({
-      method: 'get',
-      url: '/api/beneficiaries/'+id,
-    })
-    .then((response)=> {
-      var editData = response.data[0];
-      // console.log('editData',response);
-      if(editData){
-        this.setState({
-          "shown"                    : false,
-          "beneficiaryID"            : editData.beneficiaryID,
-          "familyID"                 : editData.familyID+"|"+editData.family_ID,          
-          "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
-          "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
-          "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
-          "uidNumber"                : editData.uidNumber,          
-          "relation"                 : editData.relation,          
-          "date"                     : editData.birthYearOfbeneficiary,          
-          "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
-        },()=>{
-          // console.log('edit===',this.state.birthYearOfbeneficiary);
-        });      
-      }
-    })
-    .catch(function (error) {
-      console.log("error = ",error);
-    });
+        method: 'get',
+        url: '/api/beneficiaries/'+id,
+      })
+      .then((response)=> {
+        var editData = response.data[0];
+        // console.log('editData',response);
+        if(editData){
+          this.setState({
+            "shown"                    : false,
+            "beneficiaryID"            : editData.beneficiaryID,
+            "familyID"                 : editData.familyID+"|"+editData.family_ID,          
+            "surnameOfBeneficiary"     : editData.surnameOfBeneficiary,
+            "firstNameOfBeneficiary"   : editData.firstNameOfBeneficiary,
+            "middleNameOfBeneficiary"  : editData.middleNameOfBeneficiary,
+            "uidNumber"                : editData.uidNumber,          
+            "relation"                 : editData.relation,          
+            "date"                     : editData.birthYearOfbeneficiary,          
+            "genderOfbeneficiary"      : editData.genderOfbeneficiary,          
+          },()=>{
+            // console.log('edit===',this.state.birthYearOfbeneficiary);
+          });      
+        }
+      })
+      .catch(function (error) {
+        console.log("error = ",error);
+      });
     }else{
       this.setState({
         "beneficiaryID"            : "",
@@ -412,24 +409,24 @@ class Beneficiary extends Component{
     }    
   }
   getLength(center_ID){
-    /*  axios.get('/api/beneficiaries/count/'+center_ID)
+      axios.get('/api/beneficiaries/count/'+center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
+      // console.log('response================', response);
       this.setState({
-        dataCount : response.data.dataLength
+        dataCount : response.data.dataCount
       },()=>{
         // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
       
-    });*/
+    });
   }
   getData(inputGetData){
     this.setState({
       propsdata : inputGetData
     },()=>{
-    // console.log("propsdata",this.state.propsdata)
+      // console.log("propsdata",this.state.propsdata)
     })
     if(inputGetData){
       $(".fullpageloader").show();
@@ -437,11 +434,11 @@ class Beneficiary extends Component{
       .then((response)=>{
         // console.log('response', response);
         $('.fullpageloader').hide();  
-        var tableData = response.data.map((a, i)=>{
+        var newTableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,
-            beneficiaryID             : a.beneficiaryID,
-            familyID                  : a.familyID,
+            beneficiaryID             : "<div class= 'noWrapText'>" + a.beneficiaryID + "</div>",
+            familyID                  : "<div class= 'noWrapText'>" + a.familyID + "</div>",
             // nameofbeneficiaries       : a.nameofbeneficiaries,
             surnameOfBeneficiary      : a.surnameOfBeneficiary,
             firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
@@ -455,10 +452,17 @@ class Beneficiary extends Component{
             village                   : a.village,
           }
         })
-        this.setState({
-          tableData : tableData,
-          downloadData : tableData
-        })
+        if(inputGetData.appendArray){
+          this.setState({
+            tableData    : this.state.tableData.concat(newTableData),
+            downloadData : this.state.downloadData.concat(newTableData)
+          })              
+        }else{
+          this.setState({
+            tableData    : newTableData,
+            downloadData : newTableData
+          })                            
+        }
       })
       .catch(function(error){
         console.log("error = ",error);
@@ -543,6 +547,8 @@ class Beneficiary extends Component{
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
         "searchText"      : this.state.searchText, 
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
     })
@@ -631,6 +637,8 @@ class Beneficiary extends Component{
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
         "searchText"      : this.state.searchText, 
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
     });
@@ -692,6 +700,8 @@ class Beneficiary extends Component{
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
         "searchText"      : this.state.searchText, 
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
       var selectedDistrict = this.state.district;
@@ -751,6 +761,8 @@ class Beneficiary extends Component{
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
         "searchText"      : this.state.searchText, 
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
       axios({
@@ -798,7 +810,9 @@ class Beneficiary extends Component{
         "district"        : this.state.districtFilter,
         "blocks"          : this.state.blockFilter,
         "village"         : this.state.villageFilter, 
-        "searchText"      : this.state.searchText, 
+        "searchText"      : this.state.searchText,
+        "startRange"      :  this.state.startRange,
+        "limitRange"      :  this.state.limitRange 
       }
       this.getData(inputGetData);
     });  
@@ -1024,19 +1038,19 @@ class Beneficiary extends Component{
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
-                          tableName = "Beneficiary"
-                          id = "Beneficiary"
-                          tableHeading={this.state.tableHeading}
-                          downloadtableHeading={this.state.downloadtableHeading}
-                          tableData={this.state.tableData}
-                          downloadData={this.state.downloadData}
-                          twoLevelHeader={this.state.twoLevelHeader} 
-                          dataCount={this.state.dataCount}
-                          data={this.state.propsdata}
-                          getData={this.getData.bind(this)}
-                          tableObjects={this.state.tableObjects}
-                          getSearchText={this.getSearchText.bind(this)}
-                        />
+                          tableName            = "Beneficiary"
+                          id                   = "Beneficiary"
+                          downloadtableHeading ={this.state.downloadtableHeading}
+                          downloadData         ={this.state.downloadData}
+                          tableHeading         ={this.state.tableHeading}
+                          twoLevelHeader       ={this.state.twoLevelHeader} 
+                          dataCount            ={this.state.dataCount}
+                          tableData            ={this.state.tableData}
+                          getData              ={this.getData.bind(this)}
+                          tableObjects         ={this.state.tableObjects} 
+                          filterData           ={this.state.propsdata}
+                          getSearchText        ={this.getSearchText.bind(this)}
+                        /> 
                       </div>
                     </div>
                     <div  id="bulkbenificiary" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12 mt">

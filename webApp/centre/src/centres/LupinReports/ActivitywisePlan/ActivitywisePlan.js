@@ -173,7 +173,7 @@ class ActivitywisePlan extends Component{
     if(event.target.value==="all"){
       var sector_id = event.target.value;
     }else{
-      var sector_id = event.target.value.split('|')[1];
+      sector_id = event.target.value.split('|')[1];
     }
     this.setState({
       sector_ID : sector_id, 
@@ -225,7 +225,7 @@ class ActivitywisePlan extends Component{
     if(event.target.value==="all"){
       var activity_ID = event.target.value;
     }else{
-      var activity_ID = event.target.value.split('|')[1];
+      activity_ID = event.target.value.split('|')[1];
     }
     this.setState({
       activity_ID : activity_ID,
@@ -272,7 +272,7 @@ class ActivitywisePlan extends Component{
     if(event.target.value==="all"){
       var subActivity_ID = event.target.value;
     }else{
-      var subActivity_ID = event.target.value.split('|')[1];
+      subActivity_ID = event.target.value.split('|')[1];
     }
     this.setState({
       subActivity_ID : subActivity_ID,
@@ -362,11 +362,11 @@ class ActivitywisePlan extends Component{
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
-          var lastThree = x.substring(x.length-3);
-          var otherNumbers = x.substring(0,x.length-3);
+          lastThree = x.substring(x.length-3);
+          otherNumbers = x.substring(0,x.length-3);
           if(otherNumbers !== '')
-              lastThree = ',' + lastThree;
-          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            lastThree = ',' + lastThree;
+          res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);
         }
       }
@@ -375,14 +375,15 @@ class ActivitywisePlan extends Component{
   getData(year, center_ID, sector_ID, projectCategoryType, projectName, beneficiaryType, activity_ID, subActivity_ID, month){   
     if(year ){
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
-        var startDate = year.substring(3, 7)+"-04-01";
-        var endDate = year.substring(10, 15)+"-03-31";   
+        // var startDate = year.substring(3, 7)+"-04-01";
+        // var endDate = year.substring(10, 15)+"-03-31";   
+        var url;
         // console.log(month); 
         if (month==="All"){            
           if(sector_ID==="all"){
-            var url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID
+            url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID
           }else{
-            var url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID
+            url = '/api/reports/activity_annual_plans/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID
           }
           $(".fullpageloader").show();
           axios.get(url)
@@ -423,9 +424,9 @@ class ActivitywisePlan extends Component{
           });
         }else{
           if(sector_ID==="all"){
-            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
+            url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all/'+activity_ID+'/'+subActivity_ID)
           }else{
-            var url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID)
+            url = ('/api/reports/activity_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+sector_ID+'/'+activity_ID+'/'+subActivity_ID)
           }
           axios.get(url)
             .then((response)=>{

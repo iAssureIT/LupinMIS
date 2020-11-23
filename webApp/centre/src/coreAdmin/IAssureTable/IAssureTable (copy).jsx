@@ -18,9 +18,8 @@ class IAssureTable extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			"totalDataCount" 	    	: props && props.dataCount ? props.dataCount : 0,
+			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
-		    "filterData" 				: props && props.filterData ? props.filterData : "",
 		    "downloadData" 				: props && props.downloadData ? props.downloadData : [],
 		    "tableName" 				: props && props.tableName ? props.tableName : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
@@ -35,11 +34,10 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10,
+		    "limitRange" 				: 100,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
-		    "prevData"      			: [],
 		}
 		
 		this.delete = this.delete.bind(this);
@@ -78,42 +76,49 @@ class IAssureTable extends Component {
 
 	}
 
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
  
 	componentDidMount() {
 	    axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-
+	    // console.log("localStorage =",localStorage.getItem('centerName'));
+	    // console.log("localStorage =",localStorage);
 	    this.setState({
-		    center_ID    	: center_ID,
-		    centerName   	: centerName,
-		    tableHeading    : this.props.tableHeading,
-	      	tableData 	    : this.props.tableData,
-	      	filterData 	    : this.props.filterData,
-	      	downloadData    : this.props.downloadData,
-	      	tableName 	    : this.props.tableName,
-	      	id 			    : this.props.id,
-	      	totalDataCount  : this.props.filterDataCount,
+	      center_ID    : center_ID,
+	      centerName   : centerName,
 	    },()=>{
-		    // this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
-
 	    this.getDwldData();
+      // this.palindrome('Moam');
+      this.setState({
+      	tableHeading	: this.props.tableHeading,
+      	tableData 		: this.props.tableData,
+      	downloadData    : this.props.downloadData,
+      	tableName 		: this.props.tableName,
+      	dataCount 		: this.props.dataCount,
+      	id 				: this.props.id,
+      });
 
+
+      // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
-      	// var remainingDataLength  = this.state.totalDataCount - this.state.tableData.length;
 		if(nextProps){
 	        this.setState({
 	            id	            : nextProps.id,
 	            tableData	    : nextProps.tableData,
       			downloadData    : nextProps.downloadData,
 	            tableName	    : nextProps.tableName,
-	            totalDataCount  : nextProps.dataCount,
-	            filterData 	    : nextProps.filterData,
+	            dataCount 		: nextProps.dataCount,
+	            data 	     	: nextProps.data,
 	        },()=>{
-        		// console.log("remainingDataLength",remainingDataLength,"this.state.tableData.length",this.state.tableData.length)
+	        	this.paginationFunction();
 	        })
 		}
     }
@@ -131,11 +136,13 @@ class IAssureTable extends Component {
 	  	var tableObjects =  this.props.tableObjects;
 	  	var deleteMethod =  this.props.deleteMethod;
 		let id = e.target.id;
+    	console.log("id ",e.target.id )
 		axios({
 	        method: deleteMethod ? deleteMethod : 'delete',
 	        url: tableObjects.apiLink+id
 	    }).then((response)=> {
-	    	this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    	console.log("response ",response )
+	    	this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	        this.props.history.push(tableObjects.editUrl);
 	        swal({
 	        	text : response.data.message,
@@ -146,7 +153,7 @@ class IAssureTable extends Component {
 	    });
     } 
     sortNumber(key, tableData){
-    	// console.log('tableData.......',key,tableData);
+    console.log('tableData.......',key,tableData);
     	var nameA = '';
     	var nameB = '';
     	var reA = /[^a-zA-Z]/g;
@@ -353,41 +360,12 @@ class IAssureTable extends Component {
 			return paginationArray;
 		});
 	}
-
-
-
-
-	getPagination(event){
-		var totalDataCount 		= this.state.totalDataCount;
-
-		const id = event.currentTarget.id;
-		this.state.filterData.startRange 	= this.state.tableData.length;
-		this.state.filterData.appendArray 	= true;
-
-		switch(id){
-			case "get100" : 
-				this.state.filterData.limitRange 	= 100; 		break;
-			case "get1000" : 
-				this.state.filterData.limitRange 	= 1000; 	break;
-			case "getAll" : 
-				this.state.filterData.limitRange 	= totalDataCount;		break;
-		}
-
-		this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);					
-
-	}
-
-
-
-
-
-
 	getStartEndNum(event){	
 		// console.log('getStartEndNum');	
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);
-		// this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+		// this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 		this.props.getData(startRange, limitRange);
 		this.setState({
 			startRange:startRange,
@@ -407,7 +385,7 @@ class IAssureTable extends Component {
 		},()=>{
 			this.paginationFunction();
 			if(this.state.normalData === true){
-				this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+				this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 				// this.props.getData(this.state.startRange, this.state.limitRange);
 			}	
 			if(this.state.searchData === true){
@@ -415,163 +393,6 @@ class IAssureTable extends Component {
 			}
 		});	
 	}
-
-
-  //   showNextPaginationButtons(){
-  //   	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
-		// if(beforeDataLength !== this.state.dataCount){
-		// 	this.setState({
-		// 		dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
-		// 	},()=>{
-		// 		$('li').removeClass('activeCircle');
-		// 		$(".queDataCircle:first").addClass('activeCircle');
-		// 		const maxRowsPerPage = this.state.limitRange;
-		// 		var dataLength = this.state.dataLength;
-		// 		var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-		// 		var pageCount = Math.ceil(paginationNum);
-
-		// 		var paginationArray = [];
-
-		// 		for (var i=beforeDataLength+1; i<=pageCount;i++){
-		// 			var countNum = maxRowsPerPage * i;
-		// 			var startRange = countNum - maxRowsPerPage;
-		// 			if(i === beforeDataLength+1){
-		// 				var activeClass = 'activeCircle';
-		// 			}else{
-		// 				activeClass = '';
-		// 			}
-		// 			paginationArray.push(
-		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
-		// 			);
-		// 		}
-		// 		if(pageCount>=1){				
-		// 			this.setState({
-		// 				paginationArray : paginationArray,
-		// 			});
-		// 		}
-		// 		return paginationArray;
-		// 	});
-		// }		
-  //   }
-  //   showPreviousPaginationButtons(){
-  //   	var beforeDataLength = this.state.dataLength;
-		
-		// this.setState({
-		// 	dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
-		// },()=>{
-		// 	$('li').removeClass('activeCircle');
-		// 	$(".queDataCircle:first").addClass('activeCircle');
-		// 	const maxRowsPerPage = this.state.limitRange;
-		// 	var dataLength = this.state.dataLength;
-		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-		// 	if(dataLength !== 0 && paginationNum!== 0){
-		// 		var pageCount = Math.ceil(paginationNum);
-		// 		var paginationArray = [];
-		// 		var forLoop = (beforeDataLength-this.state.paginationArray.length) < 0 ?  1: beforeDataLength-this.state.paginationArray.length;
-		// 		for (var i=forLoop-19; i<=pageCount;i++){
-		// 			var countNum = maxRowsPerPage * i;
-		// 			var startRange = countNum - maxRowsPerPage;
-		// 			if(i === beforeDataLength-39 || i === 1){
-		// 				var activeClass = 'activeCircle';
-		// 			}else{
-		// 				activeClass = '';
-		// 			}
-		// 			paginationArray.push(
-		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
-		// 			);
-		// 		}
-		// 		if(pageCount>=1){				
-		// 			this.setState({
-		// 				paginationArray : paginationArray,
-		// 			});
-		// 		}
-		// 		return paginationArray;
-		// 	}			
-		// });
-  //   }
-  //   showFirstTweentyButtons(){
-  //   	var beforeDataLength = this.state.dataCount;
-		
-		// this.setState({
-		// 	dataLength : 20,
-		// },()=>{
-		// 	$('li').removeClass('activeCircle');
-		// 	$(".queDataCircle:first").addClass('activeCircle');
-		// 	const maxRowsPerPage = this.state.limitRange;
-		// 	var dataLength = this.state.dataLength;
-		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-		// 	if(dataLength !== 0 && paginationNum!== 0){
-		// 		var pageCount = Math.ceil(paginationNum);
-		// 		var paginationArray = [];
-
-		// 		for (var i=1; i<=pageCount;i++){
-		// 			var countNum = maxRowsPerPage * i;
-		// 			var startRange = countNum - maxRowsPerPage;
-		// 			if(i === 1){
-		// 				var activeClass = 'activeCircle';
-		// 			}else{
-		// 				activeClass = '';
-		// 			}
-		// 			paginationArray.push(
-		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
-		// 			);
-		// 		}
-		// 		if(pageCount>=1){				
-		// 			this.setState({
-		// 				paginationArray : paginationArray,
-		// 			});
-		// 		}
-		// 		return paginationArray;
-		// 	}			
-		// });
-  //   }
-  //   showLastTweentyButtons(){
-  //   	var beforeDataLength = this.state.dataLength;
-		
-		// this.setState({
-		// 	dataLength : this.state.dataCount,
-		// },()=>{
-		// 	$('li').removeClass('activeCircle');
-		// 	$(".queDataCircle:first").addClass('activeCircle');
-		// 	const maxRowsPerPage = this.state.limitRange;
-		// 	var dataLength = this.state.dataLength;
-		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
-		// 	if(dataLength !== 0 && paginationNum!== 0){
-		// 		var pageCount = Math.ceil(paginationNum);
-		// 		var paginationArray = [];
-
-		// 		for (var i=(this.state.dataCount - 20)+1; i<=pageCount;i++){
-		// 			var countNum = maxRowsPerPage * i;
-		// 			var startRange = countNum - maxRowsPerPage;
-		// 			if(i === 1 || i === (this.state.dataCount - 20)+1){
-		// 				var activeClass = 'activeCircle';
-		// 			}else{
-		// 				activeClass = '';
-		// 			}
-		// 			paginationArray.push(
-		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
-		// 			);
-		// 		}
-		// 		if(pageCount>=1){				
-		// 			this.setState({
-		// 				paginationArray : paginationArray,
-		// 			});
-		// 		}
-		// 		return paginationArray;
-		// 	}			
-		// });
-  //   }    
-
-
-    printTableCenter(event){
-    	event.preventDefault();
-		var printContents = document.getElementById('section-to-screen').innerHTML;    
-   		var originalContents = document.body.innerHTML;      
-		document.body.innerHTML = printContents;     
-  		window.print();     
-  		document.body.innerHTML = originalContents;
-    }
-
 	tableSearch(){
 		// console.log('this.props',this.props)
     	var searchText = this.refs.tableSearch.value.trim();
@@ -583,9 +404,172 @@ class IAssureTable extends Component {
 				this.props.getSearchText(searchText);
 			});	    	
 	    }else{
-			this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+			this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }    	 
     }
+    showNextPaginationButtons(){
+    	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
+		if(beforeDataLength !== this.state.dataCount){
+			this.setState({
+				dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
+			},()=>{
+				$('li').removeClass('activeCircle');
+				$(".queDataCircle:first").addClass('activeCircle');
+				const maxRowsPerPage = this.state.limitRange;
+				var dataLength = this.state.dataLength;
+				var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+				var pageCount = Math.ceil(paginationNum);
+
+				var paginationArray = [];
+
+				for (var i=beforeDataLength+1; i<=pageCount;i++){
+					var countNum = maxRowsPerPage * i;
+					var startRange = countNum - maxRowsPerPage;
+					if(i === beforeDataLength+1){
+						var activeClass = 'activeCircle';
+					}else{
+						activeClass = '';
+					}
+					paginationArray.push(
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+					);
+				}
+				if(pageCount>=1){				
+					this.setState({
+						paginationArray : paginationArray,
+					});
+				}
+				return paginationArray;
+			});
+		}		
+    }
+    showPreviousPaginationButtons(){
+    	var beforeDataLength = this.state.dataLength;
+		
+		this.setState({
+			dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
+		},()=>{
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
+			const maxRowsPerPage = this.state.limitRange;
+			var dataLength = this.state.dataLength;
+			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+			if(dataLength !== 0 && paginationNum!== 0){
+				var pageCount = Math.ceil(paginationNum);
+				var paginationArray = [];
+				var forLoop = (beforeDataLength-this.state.paginationArray.length) < 0 ?  1: beforeDataLength-this.state.paginationArray.length;
+				for (var i=forLoop-19; i<=pageCount;i++){
+					var countNum = maxRowsPerPage * i;
+					var startRange = countNum - maxRowsPerPage;
+					if(i === beforeDataLength-39 || i === 1){
+						var activeClass = 'activeCircle';
+					}else{
+						activeClass = '';
+					}
+					paginationArray.push(
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+					);
+				}
+				if(pageCount>=1){				
+					this.setState({
+						paginationArray : paginationArray,
+					});
+				}
+				return paginationArray;
+			}			
+		});
+    }
+    showFirstTweentyButtons(){
+    	var beforeDataLength = this.state.dataCount;
+		
+		this.setState({
+			dataLength : 20,
+		},()=>{
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
+			const maxRowsPerPage = this.state.limitRange;
+			var dataLength = this.state.dataLength;
+			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+			if(dataLength !== 0 && paginationNum!== 0){
+				var pageCount = Math.ceil(paginationNum);
+				var paginationArray = [];
+
+				for (var i=1; i<=pageCount;i++){
+					var countNum = maxRowsPerPage * i;
+					var startRange = countNum - maxRowsPerPage;
+					if(i === 1){
+						var activeClass = 'activeCircle';
+					}else{
+						activeClass = '';
+					}
+					paginationArray.push(
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+					);
+				}
+				if(pageCount>=1){				
+					this.setState({
+						paginationArray : paginationArray,
+					});
+				}
+				return paginationArray;
+			}			
+		});
+    }
+    showLastTweentyButtons(){
+    	var beforeDataLength = this.state.dataLength;
+		
+		this.setState({
+			dataLength : this.state.dataCount,
+		},()=>{
+			$('li').removeClass('activeCircle');
+			$(".queDataCircle:first").addClass('activeCircle');
+			const maxRowsPerPage = this.state.limitRange;
+			var dataLength = this.state.dataLength;
+			var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+			if(dataLength !== 0 && paginationNum!== 0){
+				var pageCount = Math.ceil(paginationNum);
+				var paginationArray = [];
+
+				for (var i=(this.state.dataCount - 20)+1; i<=pageCount;i++){
+					var countNum = maxRowsPerPage * i;
+					var startRange = countNum - maxRowsPerPage;
+					if(i === 1 || i === (this.state.dataCount - 20)+1){
+						var activeClass = 'activeCircle';
+					}else{
+						activeClass = '';
+					}
+					paginationArray.push(
+						<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+					);
+				}
+				if(pageCount>=1){				
+					this.setState({
+						paginationArray : paginationArray,
+					});
+				}
+				return paginationArray;
+			}			
+		});
+    }    
+    printTableCenter(event){
+    	event.preventDefault();
+        // var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+   
+		// mywindow.document.write(document.getElementById('section-to-print').innerHTML);
+		// mywindow.document.close(); // necessary for IE >= 10
+		// mywindow.focus(); // necessary for IE >= 10*/
+
+		// mywindow.print();
+		// mywindow.close();
+		// window.print();
+		var printContents = document.getElementById('section-to-screen').innerHTML;    
+   		var originalContents = document.body.innerHTML;      
+		document.body.innerHTML = printContents;     
+  		window.print();     
+  		document.body.innerHTML = originalContents;
+    }
+
     printTable(event){
     	// event.preventDefault();
        
@@ -599,7 +583,7 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
     getDwldData(){
-	    this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
     }
 	render() {
         return (
@@ -904,73 +888,27 @@ class IAssureTable extends Component {
 
 	                    	</tbody>
 	                    </table>
-	                    {/*console.log("this.state.tableObjects.paginationapply",this.state.tableObjects.paginationapply, this.state.totalDataCount)*/}
-	                    {
-	                    	this.state.tableObjects.paginationapply === true ?
-		                    	this.state.tableData && this.state.tableData.length > 0 ?
-		                    		<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 noPadding mb15">
-				                    	{ 
-				                    		this.state.tableData.length <=  this.state.totalDataCount && this.state.tableData.length !== this.state.totalDataCount
-				                    		?		                    		
-			                    				<div className="col-lg-2 col-md-3 col-sm-4 col-xs-6 showText noPadding"><b>{(this.state.totalDataCount-this.state.tableData.length)+ " More records"}</b></div>
-					                    	:
-			                    				null
-				                    	}
-				                    	{ 
-				                    		this.state.tableData.length ===  this.state.totalDataCount
-				                    		?		                    		
-			                    				<div className="btn col-lg-2 col-md-3 col-sm-4 col-xs-6 showText noPadding"><b>{"Shown all " + (this.state.totalDataCount) + " records"}</b></div>
-					                    	: 
-					                    		null
-				                    	}
-			                    		{ 
-				                    		( (this.state.totalDataCount - this.state.tableData.length) > 0)
-				                    		?		                    		
-			                    				<button id="get100" className="btn btn-default col-lg-2 col-lg-offset-1  col-md-3 col-sm-4 col-xs-6" onClick={this.getPagination.bind(this)} ><small> { (this.state.totalDataCount - this.state.tableData.length) < 100 ?  "Show "+(this.state.totalDataCount-this.state.tableData.length) : "Show 100 more >>"}<br/> <small>(~ 1-3 Sec)</small> </small> </button>
-					                    	:
-					                    		null
-				                    	}
-			                    		{ 
-				                    		( (this.state.totalDataCount - this.state.tableData.length) > 1000)
-				                    		?		                    		
-			                    				<button id="get1000" className="btn btn-default col-lg-2  col-lg-offset-1 col-md-3 col-sm-4 col-xs-6" onClick={this.getPagination.bind(this)} > <small> Show 1000 more >> <br/> <small>(~ 10-20 Sec)</small> </small>  </button>
-					                    	:
-					                    		null
-				                    	}
-			                    		{/* 
-				                    		( (this.state.totalDataCount - this.state.tableData.length) > 0)
-				                    		?		                    		
-			                    				<button id="getAll" className="btn btn-default col-lg-2 col-lg-offset-1 col-md-3 col-sm-4 col-xs-6" onClick={this.getPagination.bind(this)} ><small> Show All records >> <br/> <small>(Depend on volume of data)</small> </small></button>
-					                    	:
-					                    		null
-				                    	*/}
-			                    	</div>
-		                    	: null
-	                    	: null
-	                    }
-
-
-
 	                    {
 	                    	this.state.tableObjects.paginationApply === true ?
 		                    	this.state.tableData && this.state.tableData.length > 0 ?
 		                    	<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 paginationAdminWrap">
 			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+			                    	{
+										console.log("this.state.dataLength",this.state.dataLength)}
+									{	console.log("this.state.paginationArray.length",this.state.paginationArray.length)}
 				                    	{ 
-					                    		this.state.limitRange >=  this.state.dataLength
-					                    		?
-						                    		null
+					                    		this.state.limitRange >=  this.state.dataLength?		                    		
+						                    	null
 						                    	:
-				                    				<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
+				                    			<div className="btn btn-primary" onClick={this.showFirstTweentyButtons.bind(this)} title="Fast Backward"><i className="fa fa-fast-backward"></i></div>
 				                    	}
 			                    	</div>
 			                    	<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 				                    	{ 
-				                    		this.state.limitRange >=  this.state.dataLength
-				                    		?
-					                    		null
+				                    		this.state.limitRange >=  this.state.dataLength?                  		
+					                    	null
 					                    	:
-					                    		<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
+					                    	<div className="btn btn-primary" onClick={this.showPreviousPaginationButtons.bind(this)} title="Previous"><i className="fa fa-caret-left"></i></div>
 					                    }
 				                    </div>
 									<ol className="questionNumDiv paginationAdminOES col-lg-8 col-md-8 col-sm-8 col-xs-8 mainExamMinDeviceNoPad">										 
@@ -978,20 +916,18 @@ class IAssureTable extends Component {
 									</ol>
 									<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 										{
-											this.state.paginationArray.length < 20 
-											?
-												null
+											this.state.paginationArray.length < 20 ?
+											null
 											:
-												<div className="btn btn-primary" onClick={this.showNextPaginationButtons.bind(this)} title="Next"><i className="fa fa-caret-right"></i></div>
+											<div className="btn btn-primary" onClick={this.showNextPaginationButtons.bind(this)} title="Next"><i className="fa fa-caret-right"></i></div>
 										}
 									</div>
 									<div className="col-lg-1 col-md-1 col-sm-1 col-xs-1">
 										{
-											this.state.paginationArray.length < 20 
-											?
-												null
+											this.state.paginationArray.length < 20 ?
+											null
 											:
-												<div className="btn btn-primary" onClick={this.showLastTweentyButtons.bind(this)} title="Fast Forward"><i className="fa fa-fast-forward"></i></div>
+											<div className="btn btn-primary" onClick={this.showLastTweentyButtons.bind(this)} title="Fast Forward"><i className="fa fa-fast-forward"></i></div>
 										}
 									</div>							
 								</div>

@@ -41,11 +41,14 @@ class Family extends Component{
       "listofDistrict"       :[],
       "listofBlocks"         :[],
       "listofVillages"       :[],
+      "tableData"            : [],
+      "downloadData"         : [],
       fields: {},
       errors: {},
       "tableObjects"         : {
         apiLink               : '/api/families/',
         editUrl               : '/family',      
+        paginationapply       : true,
         paginationApply       : false,
         searchApply           : true,
         downloadApply         : true,
@@ -86,8 +89,8 @@ class Family extends Component{
         block                 : "Block",
         village               : "Village",
       },            
-      // "startRange"            : 0,
-      // "limitRange"            : 10000,
+      "startRange"            : 0,
+      "limitRange"            : 10,
       "editId"                : this.props.match.params ? this.props.match.params.id : '',    
       fileDetailUrl           : "/api/families/get/filedetails/",
       goodRecordsTable        : [],
@@ -138,9 +141,7 @@ class Family extends Component{
       },()=>{
         this.edit(this.state.editId);
       })
-      if(nextProps){
-        this.getLength();
-      }    
+     
       var inputGetData = {
         "center_ID"       : this.state.center_ID,
         "caste"           : this.state.casteFilter,
@@ -151,6 +152,8 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }  
       this.getData(inputGetData);
     }
@@ -160,7 +163,6 @@ class Family extends Component{
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
-    this.getLength();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     this.setState({
@@ -180,6 +182,8 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       // console.log("Did", inputGetData);
       this.getData(inputGetData);
@@ -271,7 +275,8 @@ class Family extends Component{
         }
       }
     });
-  } 
+  }
+
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -290,77 +295,63 @@ class Family extends Component{
       "contact"              :this.refs.contact.value,
     });
   }
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    } 
-  }
+
   SubmitFamily(event){    
     event.preventDefault();
     if($('#createFamily').valid()){
       var familyValues={
-      "family_ID"            :this.state.editId, 
-      "center_ID"            :this.state.center_ID,
-      "center"               :this.state.centerName,
-      "familyID"             :this.state.familyID,
-      "surnameOfFH"          :this.refs.surnameOfFH.value, 
-      "firstNameOfFH"        :this.refs.firstNameOfFH.value, 
-      "middleNameOfFH"       :this.refs.middleNameOfFH.value ? this.refs.middleNameOfFH.value : "-", 
-      "contactNumber"        :this.refs.contact.value ? this.refs.contact.value : "-", 
-      "uidNumber"            :this.refs.uID.value ? this.refs.uID.value : "-", 
-      "caste"                :this.refs.caste.value ? this.refs.caste.value : "-", 
-      "landCategory"         :this.refs.landCategory.value ? this.refs.landCategory.value : "-", 
-      "incomeCategory"       :this.refs.incomeCategory.value ? this.refs.incomeCategory.value : "-", 
-      "specialCategory"      :this.refs.specialCategory.value ? this.refs.specialCategory.value : "-", 
-      "dist"                 :this.refs.district.value, 
-      "block"                :this.refs.block.value, 
-      "village"              :this.refs.village.value, 
-      "FHYearOfBirth"        :this.state.FHYearOfBirth ? (this.state.FHYearOfBirth).year(): "-",
-      "FHGender"             :this.refs.FHGender.value ? this.refs.FHGender.value : "-",
+        "family_ID"            :this.state.editId, 
+        "center_ID"            :this.state.center_ID,
+        "center"               :this.state.centerName,
+        "familyID"             :this.state.familyID,
+        "surnameOfFH"          :this.refs.surnameOfFH.value, 
+        "firstNameOfFH"        :this.refs.firstNameOfFH.value, 
+        "middleNameOfFH"       :this.refs.middleNameOfFH.value ? this.refs.middleNameOfFH.value : "-", 
+        "contactNumber"        :this.refs.contact.value ? this.refs.contact.value : "-", 
+        "uidNumber"            :this.refs.uID.value ? this.refs.uID.value : "-", 
+        "caste"                :this.refs.caste.value ? this.refs.caste.value : "-", 
+        "landCategory"         :this.refs.landCategory.value ? this.refs.landCategory.value : "-", 
+        "incomeCategory"       :this.refs.incomeCategory.value ? this.refs.incomeCategory.value : "-", 
+        "specialCategory"      :this.refs.specialCategory.value ? this.refs.specialCategory.value : "-", 
+        "dist"                 :this.refs.district.value, 
+        "block"                :this.refs.block.value, 
+        "village"              :this.refs.village.value, 
+        "FHYearOfBirth"        :this.state.FHYearOfBirth ? (this.state.FHYearOfBirth).year(): "-",
+        "FHGender"             :this.refs.FHGender.value ? this.refs.FHGender.value : "-",
       };
       axios.post('/api/families',familyValues)
       .then((response)=>{
-          // console.log('response', response);
+        this.setState({
+          "shown"               : true,
+          "familyID"             :"",
+          "dist"                 :"",
+          "district"             :"-- Select --",
+          "block"                :"-- Select --",
+          "village"              :"-- Select --",
+          "listofVillages"       :[],
+          "listofBlocks"         :[],
+          "uID"                  :"",
+          "LHWRFCentre"          :"",
+          "state"                :"",
+          "contact"              :"",        
+          "surnameOfFH"          :"",
+          "firstNameOfFH"        :"",
+          "middleNameOfFH"       :"",
+          "caste"                :"-- Select --",
+          "incomeCategory"       :"-- Select --",
+          "landCategory"         :"-- Select --",
+          "specialCategory"      :"-- Select --",
+          "FHGender"             :"",
+          "date"                 :"",
+          "FHYearOfBirth"        :"",
+          // "FHGender"             :"-- Select --",
+        });
         if(response.data.message==="UID Already Exists"){
           swal({
             title : response.data.message,
             text  : response.data.message
-          });  
-          this.setState({
-            "uID"                  :"",
-          });
+          }); 
         }else{
-          this.setState({
-            "shown"               : true,
-            "familyID"             :"",
-            "dist"                 :"",
-            "district"             :"-- Select --",
-            "block"                :"-- Select --",
-            "village"              :"-- Select --",
-            "listofVillages"       :[],
-            "listofBlocks"         :[],
-            "uID"                  :"",
-            "LHWRFCentre"          :"",
-            "state"                :"",
-            "contact"              :"",        
-            "surnameOfFH"          :"",
-            "firstNameOfFH"        :"",
-            "middleNameOfFH"       :"",
-            "caste"                :"-- Select --",
-            "incomeCategory"       :"-- Select --",
-            "landCategory"         :"-- Select --",
-            "specialCategory"      :"-- Select --",
-            "FHGender"             :"",
-            "date"                 :"",
-            "FHYearOfBirth"        :"",
-            // "FHGender"             :"-- Select --",
-          });
           swal({
             title : response.data.message,
             text  : response.data.message
@@ -376,6 +367,8 @@ class Family extends Component{
           "landCategory"    : this.state.landCategoryFilter,
           "incomeCategory"  : this.state.incomeCategoryFilter,
           "searchText"      : this.state.searchText,
+          "startRange"      : this.state.startRange,
+          "limitRange"      : this.state.limitRange
         }
         this.getData(inputGetData);
       })
@@ -409,44 +402,41 @@ class Family extends Component{
       };
       axios.patch('/api/families/update', familyValues)
         .then((response)=>{
+          this.setState({
+            "shown"               : true,
+            "familyID"             :"",
+            "uID"                  :"",
+            "dist"                 :"",
+            "caste"                :"-- Select --",
+            "district"             :"-- Select --",
+            "block"                :"-- Select --",
+            "village"              :"-- Select --",
+            "incomeCategory"       :"-- Select --",
+            "landCategory"         :"-- Select --",
+            "specialCategory"      :"-- Select --",
+            "listofVillages"       :[],
+            "listofBlocks"         :[],
+            "LHWRFCentre"          :"",
+            "state"                :"",
+            "contact"              :"",        
+            "surnameOfFH"          :"",
+            "firstNameOfFH"        :"",
+            "middleNameOfFH"       :"",
+            "FHGender"             :"",
+            "FHYearOfBirth"        :"",
+            "date"                 :"",
+            "editId"               : "",
+            // "FHGender"             :"-- Select --",
+          });
           if(response.data.message==="UID Already Exists"){
             swal({
               title : response.data.message,
               text  : response.data.message
-            });  
-            this.setState({
-              "uID"                  :"",
             });
           }else{
             swal({
               title : response.data.message,
               text  : response.data.message
-            });
-            this.setState({
-              "shown"               : true,
-              "familyID"             :"",
-              "uID"                  :"",
-              "dist"                 :"",
-              "caste"                :"-- Select --",
-              "district"             :"-- Select --",
-              "block"                :"-- Select --",
-              "village"              :"-- Select --",
-              "incomeCategory"       :"-- Select --",
-              "landCategory"         :"-- Select --",
-              "specialCategory"      :"-- Select --",
-              "listofVillages"       :[],
-              "listofBlocks"         :[],
-              "LHWRFCentre"          :"",
-              "state"                :"",
-              "contact"              :"",        
-              "surnameOfFH"          :"",
-              "firstNameOfFH"        :"",
-              "middleNameOfFH"       :"",
-              "FHGender"             :"",
-              "FHYearOfBirth"        :"",
-              "date"                 :"",
-              "editId"               : "",
-              // "FHGender"             :"-- Select --",
             });
             this.props.history.push('/family');
           }          
@@ -460,6 +450,8 @@ class Family extends Component{
             "landCategory"    : this.state.landCategoryFilter,
             "incomeCategory"  : this.state.incomeCategoryFilter,
             "searchText"      : this.state.searchText,
+            "startRange"      : this.state.startRange,
+            "limitRange"      : this.state.limitRange
           }
           this.getData(inputGetData);
         })
@@ -472,7 +464,7 @@ class Family extends Component{
     axios({
       method: 'get',
       url: '/api/centers/'+this.state.center_ID,
-      })
+    })
     .then((response)=> {
       function removeDuplicates(data, param, district, block){
         return data.filter(function(item, pos, array){
@@ -506,34 +498,34 @@ class Family extends Component{
     axios({
       method: 'get',
       url: '/api/centers/'+this.state.center_ID,
-      }).then((response)=> {
-        function removeDuplicates(data, param, district){
-          return data.filter(function(item, pos, array){
-            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
-          })
-        }
-        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
-        function dynamicSort(property) {
-          var sortOrder = 1;
-          if(property[0] === "-") {
-              sortOrder = -1;
-              property = property.substr(1);
-          }
-          return function (a,b) {
-            if(sortOrder === -1){
-                return b[property].localeCompare(a[property]);
-            }else{
-                return a[property].localeCompare(b[property]);
-            }        
-          }
-        }
-        availableblockInCenter.sort(dynamicSort("block"));
-        this.setState({
-          listofBlocks     : availableblockInCenter,
+    }).then((response)=> {
+      function removeDuplicates(data, param, district){
+        return data.filter(function(item, pos, array){
+          return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
         })
-      }).catch(function (error) {
-        console.log("error = ",error);
-      });
+      }
+      var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.district);
+      function dynamicSort(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+          if(sortOrder === -1){
+              return b[property].localeCompare(a[property]);
+          }else{
+              return a[property].localeCompare(b[property]);
+          }        
+        }
+      }
+      availableblockInCenter.sort(dynamicSort("block"));
+      this.setState({
+        listofBlocks     : availableblockInCenter,
+      })
+    }).catch(function (error) {
+      console.log("error = ",error);
+    });
   }
   edit(id){
     if(id && id !== undefined){
@@ -570,13 +562,6 @@ class Family extends Component{
             this.getAvailableCenter(this.state.center_ID);
             // console.log('editdata',this.state);
           });
-          let fields = this.state.fields;
-          let errors = {};
-          let formIsValid = true;
-          this.setState({
-            errors: errors
-          });
-          return formIsValid;
         }else{
           this.setState({
             "shown"               : true,
@@ -623,14 +608,17 @@ class Family extends Component{
       "landCategory"    : this.state.landCategoryFilter,
       "incomeCategory"  : this.state.incomeCategoryFilter,
       "searchText"      : this.state.searchText,
+      "startRange"      : this.state.startRange,
+      "limitRange"      : this.state.limitRange
     }
     this.getData(inputGetData);
   }
   getLength(center_ID){
     axios.get('/api/families/count/'+center_ID)
     .then((response)=>{
+      // console.log('response=================',response)
       this.setState({
-        dataCount : response.data.dataLength
+        dataCount : response.data.dataCount
       },()=>{
       })
     })
@@ -651,10 +639,10 @@ class Family extends Component{
       .then((response)=>{
         $(".fullpageloader").hide();
         // console.log('response', response);
-        var tableData = response.data.map((a, i)=>{
+        var newTableData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
-            familyID              : a.familyID,
+            familyID              : "<div class= 'noWrapText'>" + a.familyID + "</div>",
             surnameOfFH           : a.surnameOfFH,
             firstNameOfFH         : a.firstNameOfFH,
             middleNameOfFH        : a.middleNameOfFH,
@@ -671,13 +659,17 @@ class Family extends Component{
             village               : a.village,
           }
         })
-        this.setState({
-          tableData : tableData,
-          downloadData : tableData,
-        },()=>{
-          // console.log("tableData",this.state.tableData)
-          // console.log("downloadData",this.state.downloadData)
-        })
+        if(inputGetData.appendArray){
+          this.setState({
+            tableData    : this.state.tableData.concat(newTableData),
+            downloadData : this.state.downloadData.concat(newTableData)
+          })              
+        }else{
+          this.setState({
+            tableData    : newTableData,
+            downloadData : newTableData
+          })                            
+        }
       })    
       .catch(function(error){      
         console.log("error"+error);
@@ -830,10 +822,15 @@ class Family extends Component{
   districtFilterChange(event){    
     event.preventDefault();
     var district = event.target.value;
+    var selectedDistrict = this.state.district;
     this.setState({
-      districtFilter : district,
-      blockFilter    : "all",
-      villageFilter  : "all",
+      districtFilter   : district,
+      blockFilter      : "all",
+      villageFilter    : "all",
+      selectedDistrict :selectedDistrict,
+      village          : '-- Select --',
+      block            : '-- Select --',
+      listofVillages   :[]
     },()=>{
       var inputGetData = {
         "center_ID"       : this.state.center_ID,
@@ -845,51 +842,46 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       this.getData(inputGetData);
-      var selectedDistrict = this.state.district;
-      this.setState({
-        selectedDistrict :selectedDistrict,
-        village : '-- Select --',
-        block : '-- Select --',
-        listofVillages :[]
-      },()=>{
-        axios({
-          method: 'get',
-          url: '/api/centers/'+this.state.center_ID,
-          }).then((response)=> {
-          function removeDuplicates(data, param, district){
-            return data.filter(function(item, pos, array){
-              return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
-            })
-          }
-          var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
-          function dynamicSort(property) {
-            var sortOrder = 1;
-            if(property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
-            }
-            return function (a,b) {
-              if(sortOrder === -1){
-                  return b[property].localeCompare(a[property]);
-              }else{
-                  return a[property].localeCompare(b[property]);
-              }        
-            }
-          }
-          availableblockInCenter.sort(dynamicSort("block"));
-          console.log("availableblockInCenter",availableblockInCenter);
-          this.setState({
-            listofBlocks     : availableblockInCenter,
-            block : '-- Select --',
-          },()=>{
-            console.log("this.state.listofBlocks",this.state.listofBlocks);
+      axios({
+        method: 'get',
+        url: '/api/centers/'+this.state.center_ID,
+        }).then((response)=> {
+        function removeDuplicates(data, param, district){
+          return data.filter(function(item, pos, array){
+            return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
           })
-        }).catch(function (error) {
-          console.log("error = ",error);
-        });
+        }
+        var availableblockInCenter = removeDuplicates(response.data[0].villagesCovered, "block", this.state.districtFilter);
+        function dynamicSort(property) {
+          var sortOrder = 1;
+          if(property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+          }
+          return function (a,b) {
+            if(sortOrder === -1){
+                return b[property].localeCompare(a[property]);
+            }else{
+                return a[property].localeCompare(b[property]);
+            }        
+          }
+        }
+        availableblockInCenter.sort(dynamicSort("block"));
+        console.log("availableblockInCenter",availableblockInCenter);
+        this.setState({
+          listofBlocks     : availableblockInCenter,
+          block : '-- Select --',
+        },()=>{
+          console.log("this.state.listofBlocks",this.state.listofBlocks);
+        })
       })
+      .catch(function (error) {
+        console.log("error = ",error);
+      });
     });
   }
   selectFilterBlock(event){
@@ -909,6 +901,8 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       this.getData(inputGetData);
       axios({
@@ -964,71 +958,71 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       this.getData(inputGetData);
     });  
   } 
   getFileDetails(fileName){
-      $('.fullpageloader').show();  
-      axios
-      .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
-      .then((response)=> {
-        // console.log("response============",response)
-        $('.fullpageloader').hide();  
-        if (response) {
-          this.setState({
-              fileDetails:response.data,
-              failedRecordsCount : response.data.failedRecords.length,
-              goodDataCount : response.data.goodrecords.length
-          });
-
-            var tableData = response.data.goodrecords.map((a, i)=>{
-             
-            return{
-                "familyID"        : a.familyID        ? a.familyID    : '-',
-                "surnameOfFH"     : a.surnameOfFH,
-                "firstNameOfFH"   : a.firstNameOfFH,
-                "middleNameOfFH"  : a.middleNameOfFH,
-                // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
-                "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
-                "contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
-                "caste"           : a.caste     ? a.caste : '-',
-                "landCategory"    : a.landCategory     ? a.landCategory : '-',
-                "incomeCategory"  : a.incomeCategory     ? a.incomeCategory : '-',
-                "specialCategory" : a.specialCategory     ? a.specialCategory : '-',
-                "dist"            : a.dist ? a.dist : '-',
-                "block"           : a.block ? a.block : '-', 
-                "village"         : a.village     ? a.village : '-'
-            }
-          })
-          var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+    $('.fullpageloader').show();  
+    axios
+    .get(this.state.fileDetailUrl+this.state.center_ID+"/"+fileName)
+    .then((response)=> {
+      // console.log("response============",response)
+      $('.fullpageloader').hide();  
+      if (response) {
+        this.setState({
+            fileDetails:response.data,
+            failedRecordsCount : response.data.failedRecords.length,
+            goodDataCount : response.data.goodrecords.length
+        });
+        var tableData = response.data.goodrecords.map((a, i)=>{
           return{
-              "familyID"          : a.familyID        ? a.familyID    : '-',
-              "surnameOfFH"       : a.surnameOfFH,
-              "firstNameOfFH"     : a.firstNameOfFH,
-              "middleNameOfFH"    : a.middleNameOfFH,
+              "familyID"        : a.familyID        ? a.familyID    : '-',
+              "surnameOfFH"     : a.surnameOfFH,
+              "firstNameOfFH"   : a.firstNameOfFH,
+              "middleNameOfFH"  : a.middleNameOfFH,
               // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
-              "uidNumber"         : a.uidNumber     ? a.uidNumber : '-',
-              "contactNumber"     : a.contactNumber     ? a.contactNumber : '-',
-              "caste"             : a.caste     ? a.caste : '-',
-              "landCategory"      : a.landCategory     ? a.landCategory : '-',
-              "incomeCategory"    : a.incomeCategory     ? a.incomeCategory : '-',
-              "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
-              "dist"              : a.dist ? a.dist : '-',
-              "block"             : a.block ? a.block : '-', 
-              "village"           : a.village     ? a.village : '-',
-              "failedRemark"      : a.failedRemark     ? a.failedRemark : '-'
+              "uidNumber"       : a.uidNumber     ? a.uidNumber : '-',
+              "contactNumber"   : a.contactNumber     ? a.contactNumber : '-',
+              "caste"           : a.caste     ? a.caste : '-',
+              "landCategory"    : a.landCategory     ? a.landCategory : '-',
+              "incomeCategory"  : a.incomeCategory     ? a.incomeCategory : '-',
+              "specialCategory" : a.specialCategory     ? a.specialCategory : '-',
+              "dist"            : a.dist ? a.dist : '-',
+              "block"           : a.block ? a.block : '-', 
+              "village"         : a.village     ? a.village : '-'
           }
-          })
-          this.setState({
-              goodRecordsTable : tableData,
-              failedRecordsTable : failedRecordsTable
-          })
-        }
-      })
-      .catch((error)=> { 
-        console.log('error', error);
-      }) 
+        })
+        var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
+          return{
+            "familyID"          : a.familyID        ? a.familyID    : '-',
+            "surnameOfFH"       : a.surnameOfFH,
+            "firstNameOfFH"     : a.firstNameOfFH,
+            "middleNameOfFH"    : a.middleNameOfFH,
+            // "nameOfFH"        : a.middleNameOfFH  ? a.surnameOfFH+' '+a.firstNameOfFH+' '+a.middleNameOfFH : a.surnameOfFH+' '+a.firstNameOfFH,
+            "uidNumber"         : a.uidNumber     ? a.uidNumber : '-',
+            "contactNumber"     : a.contactNumber     ? a.contactNumber : '-',
+            "caste"             : a.caste     ? a.caste : '-',
+            "landCategory"      : a.landCategory     ? a.landCategory : '-',
+            "incomeCategory"    : a.incomeCategory     ? a.incomeCategory : '-',
+            "specialCategory"   : a.specialCategory     ? a.specialCategory : '-',
+            "dist"              : a.dist ? a.dist : '-',
+            "block"             : a.block ? a.block : '-', 
+            "village"           : a.village     ? a.village : '-',
+            "failedRemark"      : a.failedRemark     ? a.failedRemark : '-'
+          }
+        })
+        this.setState({
+            goodRecordsTable : tableData,
+            failedRecordsTable : failedRecordsTable
+        })
+      }
+    })
+    .catch((error)=> { 
+      console.log('error', error);
+    }) 
   } 
   getSearchText(searchText){
     var searchText = searchText;
@@ -1037,7 +1031,7 @@ class Family extends Component{
       searchText : searchText,
     }
     this.setState({
-        searchText    : searchText        
+      searchText    : searchText        
     },()=>{
       var inputGetData = {
         "center_ID"       : this.state.center_ID,
@@ -1049,6 +1043,8 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       this.getData(inputGetData);
     })
@@ -1123,6 +1119,8 @@ class Family extends Component{
         "landCategory"    : this.state.landCategoryFilter,
         "incomeCategory"  : this.state.incomeCategoryFilter,
         "searchText"      : this.state.searchText,
+        "startRange"      : this.state.startRange,
+        "limitRange"      : this.state.limitRange
       }
       this.getData(inputGetData);
     });
@@ -1472,19 +1470,19 @@ class Family extends Component{
                       </div>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <IAssureTable 
-                          tableName = "Family"
-                          id = "Family"
-                          downloadtableHeading={this.state.downloadtableHeading}
-                          downloadData={this.state.downloadData}
-                          tableHeading={this.state.tableHeading}
-                          twoLevelHeader={this.state.twoLevelHeader} 
-                          dataCount={this.state.dataCount}
-                          tableData={this.state.tableData}
-                          data={this.state.propsdata}
-                          getData={this.getData.bind(this)}
-                          tableObjects={this.state.tableObjects}                          
-                          getSearchText={this.getSearchText}
-                        />
+                          tableName            = "Family"
+                          id                   = "Family"
+                          downloadtableHeading ={this.state.downloadtableHeading}
+                          downloadData         ={this.state.downloadData}
+                          tableHeading         ={this.state.tableHeading}
+                          twoLevelHeader       ={this.state.twoLevelHeader} 
+                          dataCount            ={this.state.dataCount}
+                          tableData            ={this.state.tableData}
+                          getData              ={this.getData.bind(this)}
+                          tableObjects         ={this.state.tableObjects} 
+                          filterData           ={this.state.propsdata}
+                          getSearchText        ={this.getSearchText.bind(this)}
+                        /> 
                       </div>
                     </div>
                     <div id="bulk" className="tab-pane fade in col-lg-12 col-md-12 col-sm-12 col-xs-12">

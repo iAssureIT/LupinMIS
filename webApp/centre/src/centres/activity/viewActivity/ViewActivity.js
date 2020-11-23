@@ -37,6 +37,8 @@ class ViewActivity extends Component{
       shown               : true,
       fields              : {},
       errors              : {},
+      tableData           : [],
+      downloadData        : [],
        "twoLevelHeader"   : {
         apply             : true,
         firstHeaderData   : [
@@ -113,12 +115,13 @@ class ViewActivity extends Component{
         apiLink                    : '/api/activityReport/',
         downloadApply              : true,
         paginationApply            : false,
+        paginationapply            : true,
         searchApply                : false,
         // editUrl                    : '/activity/'
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
-      "limitRange"                 : 1000000000,
+      "limitRange"                 : 10,
       "editId"                     : this.props.match.params ? this.props.match.params.id : ''
     }
   }
@@ -139,11 +142,11 @@ class ViewActivity extends Component{
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
-          var lastThree = x.substring(x.length-3);
-          var otherNumbers = x.substring(0,x.length-3);
+          lastThree = x.substring(x.length-3);
+          otherNumbers = x.substring(0,x.length-3);
           if(otherNumbers !== '')
-              lastThree = ',' + lastThree;
-          var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            lastThree = ',' + lastThree;
+            res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);
         }
       }
@@ -151,24 +154,19 @@ class ViewActivity extends Component{
       return(0);
     }
   }
+  getData(inputGetData){ 
+    this.setState({
+      propsdata : inputGetData
+    })
 
-  getData(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity){ 
-    // console.log(startRange, limitRange, center_ID, year, sector_ID, activity_ID, subactivity_ID, typeofactivity);
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
-    // $(".fullpageloader").show();subactivity
-    if(year){
-      var startDate = this.state.year.substring(3, 7)+"-04-01";
-      var endDate = this.state.year.substring(10, 15)+"-03-31";    
-      axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
-      // axios.post('/api/activityReport/list/'+center_ID, data)
+    if(inputGetData){
+      // console.log("getData inputGetData = ",inputGetData);
+      $(".fullpageloader").show();
+      // axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
+      axios.post('/api/activityReport/filterlist',inputGetData)
       .then((response)=>{
-        // console.log(startDate,endDate);
-      // $(".fullpageloader").hide();
-        // console.log("response",response);
-        var tableData = response.data.map((a, i)=>{
+        $(".fullpageloader").hide();
+        var newTableData = response.data.data.map((a, i)=>{
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -194,7 +192,7 @@ class ViewActivity extends Component{
             remark                     : a.remark,
           }
         })
-        var downloadData = response.data.map((a, i)=>{
+        var newDownloadData = response.data.data.map((a, i)=>{
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -220,37 +218,58 @@ class ViewActivity extends Component{
             remark                     : a.remark,
           }
         })
-        this.setState({
-          tableData : tableData,
-          downloadData : downloadData
-        })
+
+        if(inputGetData.appendArray){
+          this.setState({
+            tableData    : this.state.tableData.concat(newTableData),
+            downloadData : this.state.downloadData.concat(newDownloadData)
+          })              
+        }else{
+          this.setState({
+            tableData    : newTableData,
+            downloadData : newDownloadData
+          })                            
+        }
       })
       .catch(function(error){      
         console.log("error = ",error); 
       });
+
+      axios.get('/api/activityReport/count/'+inputGetData.center_ID+'/'+inputGetData.year+'/'+inputGetData.typeofactivity)
+          .then((res)=>{
+            this.setState({
+              dataCount    : res.data.dataCount,
+            },()=>{
+              // console.log("this.state.dataCount",this.state.dataCount)
+            })
+          })
+          .catch(function(error){      
+            console.log("error = ",error); 
+          });
     }
   }
+
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    var dateObj = new Date();
-    var momentObj = moment(dateObj);
-    var momentString = momentObj.format('YYYY-MM-DD');
-
-    this.setState({
-      dateofIntervention :momentString,
-    })
-    this.year();
-    this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     this.getAvailableSectors();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    // console.log("localStorage =",localStorage.getItem('centerName'));
-    // console.log("localStorage =",localStorage);
+    this.year();
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+      var inputGetData = {
+        "sector_ID"      :  this.state.sector_ID,
+        "activity_ID"    :  this.state.activity_ID,
+        "subactivity_ID" :  this.state.subactivity_ID,
+        "typeofactivity" :  this.state.typeofactivity,
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
     });
   }
 
@@ -307,9 +326,19 @@ class ViewActivity extends Component{
       activity       : "all",
       subactivity    : "all",
     },()=>{
+      var inputGetData = {
+        "sector_ID"      :  this.state.sector_ID,
+        "activity_ID"    :  this.state.activity_ID,
+        "subactivity_ID" :  this.state.subactivity_ID,
+        "typeofactivity" :  this.state.typeofactivity,
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
       this.getAvailableActivity(this.state.sector_ID);
       this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     })
   } 
   getAvailableActivity(sector_ID){
@@ -350,14 +379,24 @@ class ViewActivity extends Component{
     if(event.target.value==="all"){
       var activity_ID = event.target.value;
     }else{
-      var activity_ID = event.target.value.split('|')[1];
+      activity_ID = event.target.value.split('|')[1];
     }
     this.setState({
       activity_ID : activity_ID,
       subactivity_ID : "all",
     },()=>{
+      var inputGetData = {
+        "sector_ID"      :  this.state.sector_ID,
+        "activity_ID"    :  this.state.activity_ID,
+        "subactivity_ID" :  this.state.subactivity_ID,
+        "typeofactivity" :  this.state.typeofactivity,
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
       this.getAvailableSubActivity(this.state.sector_ID, this.state.activity_ID);
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
     })
   }
   getAvailableSubActivity(sector_ID, activity_ID){
@@ -396,12 +435,22 @@ class ViewActivity extends Component{
     if(event.target.value==="all"){
       var subactivity_ID = event.target.value;
     }else{
-      var subactivity_ID = event.target.value.split('|')[1];
+      subactivity_ID = event.target.value.split('|')[1];
     }
     this.setState({
       subactivity_ID : subactivity_ID,
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+      var inputGetData = {
+        "sector_ID"      :  this.state.sector_ID,
+        "activity_ID"    :  this.state.activity_ID,
+        "subactivity_ID" :  this.state.subactivity_ID,
+        "typeofactivity" :  this.state.typeofactivity,
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
     })
   }
   year() {
@@ -428,7 +477,17 @@ class ViewActivity extends Component{
         secondYear :secondYear,
         year       :financialYear
       },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
+        var inputGetData = {
+          "sector_ID"      :  this.state.sector_ID,
+          "activity_ID"    :  this.state.activity_ID,
+          "subactivity_ID" :  this.state.subactivity_ID,
+          "typeofactivity" :  this.state.typeofactivity,
+          "startRange"     :  this.state.startRange,
+          "limitRange"     :  this.state.limitRange,
+          "center_ID"      :  this.state.center_ID,
+          "year"           :  this.state.year,
+        }
+        this.getData(inputGetData);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -454,8 +513,17 @@ class ViewActivity extends Component{
     this.setState({
       [event.target.name] : event.target.value
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year, this.state.sector_ID, this.state.activity_ID, this.state.subactivity_ID, this.state.typeofactivity);
-      // console.log('name', this.state.year)
+      var inputGetData = {
+        "sector_ID"      :  this.state.sector_ID,
+        "activity_ID"    :  this.state.activity_ID,
+        "subactivity_ID" :  this.state.subactivity_ID,
+        "typeofactivity" :  this.state.typeofactivity,
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
     });
   }
   render() {
@@ -520,7 +588,7 @@ class ViewActivity extends Component{
                             this.state.availableActivity.map((data, index)=>{
                               if(data.activityName ){
                                   return(
-                                      <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                    <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
                                   );
                               }
                             })
@@ -567,20 +635,22 @@ class ViewActivity extends Component{
                   </div> 
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <IAssureTable 
-                      tableName = "Activity Report"
-                      id = "activityReport"
-                      tableClass = "activityReport"
-                      downloadtableHeading={this.state.downloadtableHeading}
-                      downloadData={this.state.downloadData}
-                      tableHeading={this.state.tableHeading}
-                      twoLevelHeader={this.state.twoLevelHeader} 
-                      dataCount={this.state.dataCount}
-                      tableData={this.state.tableData}
-                      getData={this.getData.bind(this)}
-                      tableObjects={this.state.tableObjects}
-                      viewTable = {true}
-                      viewLink = "activityReportView"
-                    />
+                      tableName            = "Activity Report"
+                      id                   = "activityReport"
+                      tableClass           = "activityReport"
+                      downloadtableHeading ={this.state.downloadtableHeading}
+                      downloadData         ={this.state.downloadData}
+                      tableHeading         ={this.state.tableHeading}
+                      twoLevelHeader       ={this.state.twoLevelHeader} 
+                      dataCount            ={this.state.dataCount}
+                      tableData            ={this.state.tableData}
+                      getData              ={this.getData.bind(this)}
+                      tableObjects         ={this.state.tableObjects} 
+                      filterData           ={this.state.propsdata}
+                      viewTable            = {true}
+                      viewLink             = "activityReportView"
+                    /> 
+                  
                   </div> 
                 </div>
               </div>

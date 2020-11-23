@@ -48,9 +48,11 @@ class ActivityTypeA extends Component{
       "shown"               : true,      
       "bActivityActive"     : "active",      
       "typeofactivity"      : "Family Level Activity",
-      "listofDistrict"      :[],
-      "listofBlocks"        :[],
-      "listofVillages"      :[],
+      "listofDistrict"      : [],
+      "listofBlocks"        : [],
+      "listofVillages"      : [],
+      tableData             : [],
+      downloadData          : [],
       fields                : {},
       errors                : {},
       "twoLevelHeader"      : {
@@ -133,13 +135,14 @@ class ActivityTypeA extends Component{
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
         paginationApply            : false,
+        paginationapply            : true,
         downloadApply              : true,
         searchApply                : false,
         editUrl                    : '/a-type-activity-form'
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
-      "limitRange"                 : 10000,
+      "limitRange"                 : 10,
       "editId"                     : this.props.match.params ? this.props.match.params.id : '',
       fileDetailUrl                : "/api/activityReport/get/filedetails/",
       goodRecordsTable             : [],
@@ -240,10 +243,23 @@ class ActivityTypeA extends Component{
     this.setState({"total": subTotal });
   }
 
-
-
   handleChange(event){
     event.preventDefault();
+      this.setState({      
+        [event.target.name]: event.target.value
+      },()=>{        
+        var inputGetData = {
+          "sector_ID"      :  "all",
+          "activity_ID"    :  "all",
+          "subactivity_ID" :  "all",
+          "typeofactivity" : "Family Level Activity",
+          "startRange"     :  this.state.startRange,
+          "limitRange"     :  this.state.limitRange,
+          "center_ID"      :  this.state.center_ID,
+          "year"           :  this.state.year,
+        }
+        this.getData(inputGetData);
+      });
       if(event.currentTarget.name==='typeofactivity'){
         let dataID = $(event.currentTarget).find('option:selected').attr('data-id')
         if(dataID==="BtypeActivity"){
@@ -305,11 +321,6 @@ class ActivityTypeA extends Component{
           console.log("error = ",error);
         });
       }
-      this.setState({      
-        [event.target.name]: event.target.value
-      },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-      });
   }
 
 
@@ -340,17 +351,24 @@ class ActivityTypeA extends Component{
   }
 
   uploadedData(data){
-    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+    var inputGetData = {
+      "sector_ID"      :  "all",
+      "activity_ID"    :  "all",
+      "subactivity_ID" :  "all",
+      "typeofactivity" : "Family Level Activity",
+      "startRange"     :  this.state.startRange,
+      "limitRange"     :  this.state.limitRange,
+      "center_ID"      :  this.state.center_ID,
+      "year"           :  this.state.year,
+    }
+    this.getData(inputGetData);
   }
+
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
-    },()=>{
-      // console.log('selectedBeneficiaries----',this.state.selectedBeneficiaries);
     })
   }
-
-
 
   SubmitActivity(event){
     event.preventDefault();
@@ -422,10 +440,20 @@ class ActivityTypeA extends Component{
         if(beneficiariesData.length>0)  {
           axios.post('/api/activityReport',activityValues)
           .then((response)=>{
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+            var inputGetData = {
+              "sector_ID"      :  "all",
+              "activity_ID"    :  "all",
+              "subactivity_ID" :  "all",
+              "typeofactivity" : "Family Level Activity",
+              "startRange"     :  this.state.startRange,
+              "limitRange"     :  this.state.limitRange,
+              "center_ID"      :  this.state.center_ID,
+              "year"           :  this.state.year,
+            }
+            this.getData(inputGetData);
             this.setState({
-              "shown"          : true,
-              "selectedValues" : beneficiariesData,
+              "shown"                  : true,
+              "selectedValues"         : beneficiariesData,
               "projectName"            : "-- Select --",
               "projectCategoryType"    : "LHWRF Grant",
               "type"                   : true,
@@ -465,13 +493,7 @@ class ActivityTypeA extends Component{
             });   
           })
           .catch(function(error){       
-            // console.log('error',error);
-            if(error.message === "Request failed with status code 401"){
-              swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-              });
-            }
+            console.log('error',error);
           });
         }else{
           swal("abc",'Please select atleast single Beneficiary.');
@@ -554,7 +576,17 @@ class ActivityTypeA extends Component{
         if(beneficiariesData.length>0)  {
           axios.patch('/api/activityReport',activityValues)
           .then((response)=>{
-            this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);      
+            var inputGetData = {
+              "sector_ID"      :  "all",
+              "activity_ID"    :  "all",
+              "subactivity_ID" :  "all",
+              "typeofactivity" : "Family Level Activity",
+              "startRange"     :  this.state.startRange,
+              "limitRange"     :  this.state.limitRange,
+              "center_ID"      :  this.state.center_ID,
+              "year"           :  this.state.year,
+            }
+            this.getData(inputGetData);
             swal({
               title : response.data.message,
               text  : response.data.message,
@@ -760,8 +792,6 @@ class ActivityTypeA extends Component{
   }
 
 
-
-
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -787,84 +817,99 @@ class ActivityTypeA extends Component{
     }
   }
   
-  getData(startRange, limitRange, center_ID, year){ 
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
-    // $(".fullpageloader").show();
-    if(year){
-      var startDate = this.state.year.substring(3, 7)+"-04-01";
-      var endDate = this.state.year.substring(10, 15)+"-03-31";    
-      axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Family Level Activity")
-      .then((response)=>{
-        // $(".fullpageloader").hide();
-        // console.log("response",response);
-        var tableData = response.data.map((a, i)=>{
-          return {
-            _id                        : a._id,
-            projectCategoryType        : a.projectCategoryType,
-            projectName                : a.projectName==='all'?'-':a.projectName,
-            date                       : moment(a.date).format('DD-MM-YYYY'),
-            // date                       : a.date,
-            place                      : a.place,
-            sectorName                 : a.sectorName,
-            activity                   : a.activity,
-            subactivityName            : a.subactivityName,
-            unit                       : a.unit,
-            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-            remark                     : a.remark,
-          }
-        })
-        var downloadData = response.data.map((a, i)=>{
-          return {
-            _id                        : a._id,
-            projectCategoryType        : a.projectCategoryType,
-            projectName                : a.projectName==='all'?'-':a.projectName,
-            date                       : moment(a.date).format('DD-MM-YYYY'),
-            // date                       : a.date,
-            place                      : a.place,
-            sectorName                 : a.sectorName,
-            activity                   : a.activity,
-            subactivityName            : a.subactivityName,
-            unit                       : a.unit,
-            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-            remark                     : a.remark,
-          }
-        })
-        this.setState({
-          tableData    : tableData,
-          downloadData : downloadData
-        })
-      })
-      .catch(function(error){      
-        console.log("error = ",error); 
-      });
+  getData(inputGetData){ 
+    this.setState({
+      propsdata : inputGetData
+    })
+
+    if(inputGetData){
+      // console.log("getData inputGetData = ",inputGetData);
+      $(".fullpageloader").show();
+      axios.post('/api/activityReport/filterlist',inputGetData)
+          .then((response)=>{
+            $(".fullpageloader").hide();
+            var newTableData = response.data.data.map((a, i)=>{
+              return {
+                _id                        : a._id,
+                projectCategoryType        : a.projectCategoryType,
+                projectName                : a.projectName==='all'?'-':a.projectName,
+                date                       : moment(a.date).format('DD-MM-YYYY'),
+                // date                       : a.date,
+                place                      : a.place,
+                sectorName                 : a.sectorName,
+                activity                   : a.activity,
+                subactivityName            : a.subactivityName,
+                unit                       : a.unit,
+                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+                remark                     : a.remark,
+              }
+            })
+            var newDownloadData = response.data.data.map((a, i)=>{
+              return {
+                _id                        : a._id,
+                projectCategoryType        : a.projectCategoryType,
+                projectName                : a.projectName==='all'?'-':a.projectName,
+                date                       : moment(a.date).format('DD-MM-YYYY'),
+                // date                       : a.date,
+                place                      : a.place,
+                sectorName                 : a.sectorName,
+                activity                   : a.activity,
+                subactivityName            : a.subactivityName,
+                unit                       : a.unit,
+                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+                remark                     : a.remark,
+              }
+            })
+
+            if(inputGetData.appendArray){
+              this.setState({
+                tableData    : this.state.tableData.concat(newTableData),
+                downloadData : this.state.downloadData.concat(newDownloadData)
+              })              
+            }else{
+              this.setState({
+                tableData    : newTableData,
+                downloadData : newDownloadData
+              })                            
+            }
+          })
+          .catch(function(error){      
+            console.log("error = ",error); 
+          });
+
+      axios.get('/api/activityReport/count/'+inputGetData.center_ID+'/'+inputGetData.year+'/Family Level Activity')
+          .then((res)=>{
+            this.setState({
+              dataCount    : res.data.dataCount,
+            },()=>{
+              // console.log("this.state.dataCount",this.state.dataCount)
+            })
+          })
+          .catch(function(error){      
+            console.log("error = ",error); 
+          });
     }
   }
-
-
-
 
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
@@ -1430,9 +1475,19 @@ class ActivityTypeA extends Component{
       this.setState({
         firstYear  :firstYear,
         secondYear :secondYear,
-        // year       :financialYear
+        year       :financialYear
       },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+        var inputGetData = {
+          "sector_ID"      :  "all",
+          "activity_ID"    :  "all",
+          "subactivity_ID" :  "all",
+          "typeofactivity" : "Family Level Activity",
+          "startRange"     :  this.state.startRange,
+          "limitRange"     :  this.state.limitRange,
+          "center_ID"      :  this.state.center_ID,
+          "year"           :  this.state.year,
+        }
+        this.getData(inputGetData);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1888,19 +1943,20 @@ class ActivityTypeA extends Component{
                         </div>
                         <div className="mt">
                           <IAssureTable 
-                            tableName = "Activity Report"
-                            id = "activityReport"
-                            downloadtableHeading={this.state.downloadtableHeading}
-                            downloadData={this.state.downloadData}
-                            tableHeading={this.state.tableHeading}
-                            twoLevelHeader={this.state.twoLevelHeader} 
-                            dataCount={this.state.dataCount}
-                            tableData={this.state.tableData}
-                            getData={this.getData.bind(this)}
-                            tableObjects={this.state.tableObjects} 
-                            isDeleted={this.deleted.bind(this)}
-                            viewTable = {true}
-                            viewLink = "activityReportView"
+                            tableName            = "Family Level Activity Report"
+                            id                   = "familyLevelActivityReport"
+                            downloadtableHeading ={this.state.downloadtableHeading}
+                            downloadData         ={this.state.downloadData}
+                            tableHeading         ={this.state.tableHeading}
+                            twoLevelHeader       ={this.state.twoLevelHeader} 
+                            dataCount            ={this.state.dataCount}
+                            tableData            ={this.state.tableData}
+                            getData              ={this.getData.bind(this)}
+                            tableObjects         ={this.state.tableObjects} 
+                            filterData           ={this.state.propsdata}
+                            isDeleted            ={this.deleted.bind(this)}
+                            viewTable            = {true}
+                            viewLink             = "activityReportView"
                           /> 
                         </div> 
                       </div>
@@ -1909,21 +1965,21 @@ class ActivityTypeA extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
                           <BulkUpload 
-                            url="/api/activityReport/bulk_upload_activities" 
-                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
-                            uploadedData={this.uploadedData} 
-                            bulkTableID = "activityTypeA"
-                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-A-Activity-Submission.xlsx"
-                            fileDetailUrl={this.state.fileDetailUrl}
-                            getFileDetails={this.getTypeAFileDetails.bind(this)}
-                            getData={this.getData.bind(this)}
-                            fileDetails={this.state.fileDetailsTypeA}
+                            url                ="/api/activityReport/bulk_upload_activities" 
+                            data               ={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Family Level Activity"}} 
+                            uploadedData       ={this.uploadedData} 
+                            bulkTableID        = "activityTypeA"
+                            fileurl            ="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-A-Activity-Submission.xlsx"
+                            fileDetailUrl      ={this.state.fileDetailUrl}
+                            getFileDetails     ={this.getTypeAFileDetails.bind(this)}
+                            getData            ={this.getData.bind(this)}
+                            fileDetails        ={this.state.fileDetailsTypeA}
                             goodRecordsHeading ={this.state.goodRecordsHeading}
-                            failedtableHeading={this.state.failedtableHeading}
+                            failedtableHeading ={this.state.failedtableHeading}
                             failedRecordsTable ={this.state.failedRecordsTableTypeA}
-                            failedRecordsCount={this.state.failedRecordsCountTypeA}
-                            goodRecordsTable={this.state.goodRecordsTableTypeA}
-                            goodDataCount={this.state.goodDataCountTypeA}
+                            failedRecordsCount ={this.state.failedRecordsCountTypeA}
+                            goodRecordsTable   ={this.state.goodRecordsTableTypeA}
+                            goodDataCount      ={this.state.goodDataCountTypeA}
                           />
                         </div>
                       </div>

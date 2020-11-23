@@ -116,7 +116,6 @@ class Beneficiary extends Component{
 
   SubmitBeneficiary(event){
     event.preventDefault();
-    var id2 = this.state.uidNumber;
     if($('#createBeneficiary').valid()){
     // if (this.validateFormReq() && this.validateForm()){
     var beneficiaryValue= 

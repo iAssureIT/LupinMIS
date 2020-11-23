@@ -51,6 +51,8 @@ class ActivityTypeB extends Component{
       "listofDistrict"      : [],
       "listofBlocks"        : [],
       "listofVillages"      : [],
+      "tableData"           : [],
+      "downloadData"        : [],
       fields                : {},
       errors                : {},
       "twoLevelHeader"      : {
@@ -132,6 +134,7 @@ class ActivityTypeB extends Component{
       "tableObjects"               : {
         deleteMethod               : 'delete',
         apiLink                    : '/api/activityReport/',
+        paginationapply            : true,
         paginationApply            : false,
         downloadApply              : true,
         searchApply                : false,
@@ -139,12 +142,11 @@ class ActivityTypeB extends Component{
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
-      "limitRange"                 : 10000,
+      "limitRange"                 : 10,
       "editId"                     : this.props.match.params ? this.props.match.params.id : '',
       fileDetailUrl                : "/api/activityReport/get/filedetails/",
       goodRecordsTable             : [],
       failedRecordsTable           : [],
-    
       bTypeActivitygoodRecordsHeading           :{
         projectCategoryType        : "Program Type",
         projectName                : "Project Name",
@@ -237,6 +239,21 @@ class ActivityTypeB extends Component{
 
   handleChange(event){
     event.preventDefault();
+    this.setState({      
+      [event.target.name]: event.target.value
+    },()=>{        
+      var inputGetData = {
+        "sector_ID"      : "all",
+        "activity_ID"    : "all",
+        "subactivity_ID" : "all",
+        "typeofactivity" : "Type B Activity",
+        "startRange"     : this.state.startRange,
+        "limitRange"     : this.state.limitRange,
+        "center_ID"      : this.state.center_ID,
+        "year"           : this.state.year,
+      }
+      this.getData(inputGetData);
+    });
     if(event.currentTarget.name==='typeofactivity'){
       let dataID = $(event.currentTarget).find('option:selected').attr('data-id')
       if(dataID==="BtypeActivity"){
@@ -297,12 +314,8 @@ class ActivityTypeB extends Component{
         console.log("error = ",error);
       });
     }
-    this.setState({      
-      [event.target.name]: event.target.value
-    },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-    });
   }
+
   handleTotalChange(event){
     event.preventDefault();
     const target = event.target;
@@ -326,30 +339,19 @@ class ActivityTypeB extends Component{
       }
     });
   }
-  isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : evt.keyCode
-    if (charCode > 31 && (charCode < 48 || charCode > 57)  && (charCode < 96 || charCode > 105))
-    {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
-  isTextKey(evt){
-   var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
-   {
-    evt.preventDefault();
-      return false;
-    }
-    else{
-      return true;
-    }
-  }
+
   uploadedData(data){
-    this.getData(this.state.startRange,this.state.limitRange,this.state.center_ID)
+    var inputGetData = {
+      "sector_ID"      :  "all",
+      "activity_ID"    :  "all",
+      "subactivity_ID" :  "all",
+      "typeofactivity" :  "Type B Activity",
+      "startRange"     :  this.state.startRange,
+      "limitRange"     :  this.state.limitRange,
+      "center_ID"      :  this.state.center_ID,
+      "year"           :  this.state.year,
+    }
+    this.getData(inputGetData);
   }
   getBeneficiaries(selectedBeneficiaries){
     this.setState({
@@ -404,56 +406,60 @@ class ActivityTypeB extends Component{
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCost)) {
         axios.post('/api/activityReport',activityValues)
         .then((response)=>{
-          // console.log("response", response);
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-            this.setState({
-              "shown"                   : true,
-              "selectedValues"          : this.state.selectedBeneficiaries,
-              "projectName"             : "-- Select --",
-              "projectCategoryType"     : "LHWRF Grant",
-              "type"                    : true,
-              "district"                : "-- Select --",
-              "block"                   : "-- Select --",
-              "village"                 : "-- Select --",
-              "dateofIntervention"      : momentString,
-              "sector"                  : "-- Select --",
-              "typeofactivity"          : "-- Select --",
-              "nameofactivity"          : "",
-              "activity"                : "-- Select --",
-              "subactivity"             : "-- Select --",
-              "location"                : "",
-              "unit"                    : "",
-              "unitCost"                : "0",
-              "quantity"                : "0",
-              "noOfBeneficiaries"       : "0",
-              "totalCost"               : "0",
-              "LHWRF"                   : "0",
-              "NABARD"                  : "0",
-              "bankLoan"                : "0",
-              "govtscheme"              : "0",
-              "directCC"                : "0",
-              "indirectCC"              : "0",
-              "other"                   : "0",
-              "total"                   : "0",
-              "remark"                  : "",
-              "selectedBeneficiaries"   :[],
-              "selectedValues"          : [],    
-              "listofBeneficiaries"     : [],      
-              "subActivityDetails"      : '',
-              "sendBeneficiary"         : [],
-            })    
-            swal({
-              title : response.data.message,
-              text  : response.data.message,
-            });   
-          })
-        .catch(function(error){       
-          if(error.message === "Request failed with status code 401"){
-            swal({
-                title : "abc",
-                text  : "Session is Expired. Kindly Sign In again."
-            });
+          var inputGetData = {
+            "sector_ID"      :  "all",
+            "activity_ID"    :  "all",
+            "subactivity_ID" :  "all",
+            "typeofactivity" :  "Type B Activity",
+            "startRange"     :  this.state.startRange,
+            "limitRange"     :  this.state.limitRange,
+            "center_ID"      :  this.state.center_ID,
+            "year"           :  this.state.year,
           }
+          this.getData(inputGetData);
+          this.setState({
+            "shown"                   : true,
+            "selectedValues"          : this.state.selectedBeneficiaries,
+            "projectName"             : "-- Select --",
+            "projectCategoryType"     : "LHWRF Grant",
+            "type"                    : true,
+            "district"                : "-- Select --",
+            "block"                   : "-- Select --",
+            "village"                 : "-- Select --",
+            "dateofIntervention"      : momentString,
+            "sector"                  : "-- Select --",
+            "typeofactivity"          : "-- Select --",
+            "nameofactivity"          : "",
+            "activity"                : "-- Select --",
+            "subactivity"             : "-- Select --",
+            "location"                : "",
+            "unit"                    : "",
+            "unitCost"                : "0",
+            "quantity"                : "0",
+            "noOfBeneficiaries"       : "0",
+            "totalCost"               : "0",
+            "LHWRF"                   : "0",
+            "NABARD"                  : "0",
+            "bankLoan"                : "0",
+            "govtscheme"              : "0",
+            "directCC"                : "0",
+            "indirectCC"              : "0",
+            "other"                   : "0",
+            "total"                   : "0",
+            "remark"                  : "",
+            "selectedBeneficiaries"   :[],
+            "selectedValues"          : [],    
+            "listofBeneficiaries"     : [],      
+            "subActivityDetails"      : '',
+            "sendBeneficiary"         : [],
+          })    
+          swal({
+            title : response.data.message,
+            text  : response.data.message,
+          });   
+        })
+        .catch(function(error){
+          console.log('error',error);
         });
       }else{
         swal("abc",'Total Costs are not equal! Please check.');
@@ -509,8 +515,17 @@ class ActivityTypeB extends Component{
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCost)) {
         axios.patch('/api/activityReport',activityValues)
         .then((response)=>{
-          // console.log("update",response);
-          this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);      
+          var inputGetData = {
+            "sector_ID"      :  "all",
+            "activity_ID"    :  "all",
+            "subactivity_ID" :  "all",
+            "typeofactivity" :  "Type B Activity",
+            "startRange"     :  this.state.startRange,
+            "limitRange"     :  this.state.limitRange,
+            "center_ID"      :  this.state.center_ID,
+            "year"           :  this.state.year,
+          }
+          this.getData(inputGetData);
           swal({
             title : response.data.message,
             text  : response.data.message,
@@ -563,93 +578,15 @@ class ActivityTypeB extends Component{
       $("html,body").scrollTop(0)
     }
   }
-  validateFormReq() {
-    let fields = this.state.fields;
-    let errors = {};
-    let formIsValid = true;
-       
-    if(this.state.bActivityActive==="inactive"){
-      if (!fields["noOfBeneficiaries"]) {
-        $("html,body").scrollTop(0);
-        formIsValid = false;
-        errors["noOfBeneficiaries"] = "This field is required.";
-      }     
-    }
-    if (!fields["district"]) {
-      $("html,body").scrollTop(0);
-      formIsValid = false;
-      errors["district"] = "This field is required.";
-    }     
-     if (!fields["block"]) {
-      formIsValid = false;
-      errors["block"] = "This field is required.";
-    }     
-    if (!fields["village"]) {
-      formIsValid = false;
-      errors["village"] = "This field is required.";
-    }
-    if (!fields["sector"]) {
-      formIsValid = false;
-      errors["sector"] = "This field is required.";
-    }          
-    if (!fields["typeofactivity"]) {
-      formIsValid = false;
-      errors["typeofactivity"] = "This field is required.";
-    }          
-    if (!fields["activity"]) {
-      formIsValid = false;
-      errors["activity"] = "This field is required.";
-    }          
-    if (!fields["subactivity"]) {
-      formIsValid = false;
-      errors["subactivity"] = "This field is required.";
-    }          
-    if (!fields["unitCost"]) {
-      formIsValid = false;
-      errors["unitCost"] = "This field is required.";
-    }          
-    if (!fields["quantity"]) {
-      formIsValid = false;
-      errors["quantity"] = "This field is required.";
-    }          
-    if (!fields["bankLoan"]) {
-      formIsValid = false;
-      errors["bankLoan"] = "This field is required.";
-    }          
-    if (!fields["govtscheme"]) {
-      formIsValid = false;
-      errors["govtscheme"] = "This field is required.";
-    }
-    if (!fields["NABARD"]) {
-      formIsValid = false;
-      errors["NABARD"] = "This field is required.";
-    }          
-    if (!fields["LHWRF"]) {
-      formIsValid = false;
-      errors["LHWRF"] = "This field is required.";
-    }          
-    if (!fields["directCC"]) {
-      formIsValid = false;
-      errors["directCC"] = "This field is required.";
-    }          
-    if (!fields["indirectCC"]) {
-      formIsValid = false;
-      errors["indirectCC"] = "This field is required.";
-    }          
-    if (!fields["other"]) {
-      formIsValid = false;
-      errors["other"] = "This field is required.";
-    }          
-    this.setState({
-      errors: errors
-    });
-    return formIsValid;
-  }
 
   toglehidden(){
-   this.setState({
-     shown: !this.state.shown
+    this.setState({
+      shown: !this.state.shown
     });
+
+    this.getAvailableSectors();
+    this.getAvailableProjectName();
+    this.getAvailableCenter(this.state.center_ID);
   }
   getAvailableVillages(center_ID, district, block){
     axios({
@@ -671,6 +608,7 @@ class ActivityTypeB extends Component{
       console.log("error = ",error);
     });
   }
+
   getAvailableBlocks(center_ID, districtB){
     axios({
       method: 'get',
@@ -693,6 +631,7 @@ class ActivityTypeB extends Component{
       console.log("error = ",error);
     });
   }
+
   edit(id){
     // console.log('this.state.center_ID',this.state.center_ID)
     if(id){
@@ -790,6 +729,8 @@ class ActivityTypeB extends Component{
       });
     }
   }
+
+
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -814,21 +755,20 @@ class ActivityTypeB extends Component{
       }
     }
   }
+ 
+  getData(inputGetData){ 
+    this.setState({
+      propsdata : inputGetData
+    })
 
-  getData(startRange, limitRange, center_ID, year){ 
-    // console.log(startRange, limitRange, center_ID, year);
-    var data = {
-      limitRange : limitRange,
-      startRange : startRange,
-    }
-    // $(".fullpageloader").show();
-    if(year){
-      var startDate = this.state.year.substring(3, 7)+"-04-01";
-      var endDate = this.state.year.substring(10, 15)+"-03-31";    
-      axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Type B Activity")
+    if(inputGetData){
+      // console.log("getData inputGetData = ",inputGetData);
+      $(".fullpageloader").show();
+      axios.post('/api/activityReport/filterlist',inputGetData)
+      // axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Type B Activity")
       .then((response)=>{
-      // $(".fullpageloader").hide();
-        var tableData = response.data.map((a, i)=>{
+        $(".fullpageloader").hide();
+        var newTableData = response.data.data.map((a, i)=>{
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -855,7 +795,7 @@ class ActivityTypeB extends Component{
             remark                     : a.remark,
           }
         })
-        var downloadData = response.data.map((a, i)=>{
+        var newDownloadData = response.data.data.map((a, i)=>{
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
@@ -887,14 +827,34 @@ class ActivityTypeB extends Component{
             remark                     : a.remark,
           }
         })
-        this.setState({
-          tableData : tableData,
-          downloadData : downloadData
-        })
+
+        if(inputGetData.appendArray){
+          this.setState({
+            tableData    : this.state.tableData.concat(newTableData),
+            downloadData : this.state.downloadData.concat(newDownloadData)
+          })              
+        }else{
+          this.setState({
+            tableData    : newTableData,
+            downloadData : newDownloadData
+          })                            
+        }
       })
       .catch(function(error){      
         console.log("error = ",error); 
       });
+
+      axios.get('/api/activityReport/count/'+inputGetData.center_ID+'/'+inputGetData.year+'/Type B Activity')
+          .then((res)=>{
+            this.setState({
+              dataCount    : res.data.dataCount,
+            },()=>{
+              // console.log("this.state.dataCount",this.state.dataCount)
+            })
+          })
+          .catch(function(error){      
+            console.log("error = ",error); 
+          });
     }
   }
   componentDidMount() {
@@ -968,31 +928,24 @@ class ActivityTypeB extends Component{
         }
       }
     });
-    // axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
-    this.getAvailableSectors();
+    
     var editId       = this.props.match.params ? this.props.match.params.id : '';
     const center_ID  = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
     this.year();
-    this.getAvailableProjectName();
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
       editId       : editId
     },()=>{
-      this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
-      this.getAvailableCenter(this.state.center_ID);
-      if(this.state.editId){      
-        this.getAvailableActivity(this.state.editSectorId);
-        this.edit(this.state.editId);
-      }
     })
+    if(this.state.editId){      
+      this.edit(this.state.editId);
+    }
   }
   componentWillReceiveProps(nextProps){
     if(nextProps){
       var editId = nextProps.match.params.id;
-      this.getAvailableSectors();      
-      this.getAvailableCenter(this.state.center_ID);      
       this.setState({
         "editId" : editId,
       })  
@@ -1331,7 +1284,7 @@ class ActivityTypeB extends Component{
     event.preventDefault();
     if (this.state.type===true){
       this.setState({
-        type: false,
+        type                 : false,
         projectCategoryType  :"Project Fund",
         sector               : '-- Select --',
         subactivity          : "-- Select --",
@@ -1342,7 +1295,7 @@ class ActivityTypeB extends Component{
       })
     }else{
       this.setState({
-        type: true,
+        type                 : true,
         projectCategoryType  :"LHWRF Grant",
         projectName          :"-- Select --",
         sectorName           : '-- Select --',
@@ -1358,12 +1311,12 @@ class ActivityTypeB extends Component{
     this.getAvailableSectors()
     this.setState({
       [event.target.name] : event.target.value,
-      sector : '-- Select --',
-      availableActivity: [],
+      sector              : '-- Select --',
+      availableActivity   : [],
       availableSubActivity: [],
-      subActivityDetails : "",
-      subactivity : "-- Select --",
-      activity    : '-- Select --',
+      subActivityDetails  : "",
+      subactivity         : "-- Select --",
+      activity            : '-- Select --',
     },()=>{
       if (this.state.projectCategoryType === "LHWRF Grant") {
         this.setState({
@@ -1466,9 +1419,19 @@ class ActivityTypeB extends Component{
       this.setState({
         firstYear  :firstYear,
         secondYear :secondYear,
-        // year       :financialYear
+        year       :financialYear
       },()=>{
-        this.getData(this.state.startRange, this.state.limitRange, this.state.center_ID, this.state.year);
+        var inputGetData = {
+          "sector_ID"      :  "all",
+          "activity_ID"    :  "all",
+          "subactivity_ID" :  "all",
+          "typeofactivity" :  "Type B Activity",
+          "startRange"     :  this.state.startRange,
+          "limitRange"     :  this.state.limitRange,
+          "center_ID"      :  this.state.center_ID,
+          "year"           :  this.state.year,
+        }
+        this.getData(inputGetData);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1525,344 +1488,351 @@ class ActivityTypeB extends Component{
                         </div> 
                       </div>
                       <form className="col-lg-12 col-md-12 col-sm-12 col-xs-12 formLable mt" id="BtypeActivity" style={hidden}>
-                        <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                          <label className="formLable">Date of Intervention</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
-                            <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
-                        </div>
-
-                        <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
-                          <div className="" id="projectCategoryType" >
-                            <label className=" formLable">Program Type<span className="asterix">*</span></label>
-                            {this.state.type===true ?
-
-                             <div className=" switch" onClick={this.handleToggle.bind(this)} >
-                                <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
-                                <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                                <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
-                                <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                                <span className="switch-selection"></span>
-                              </div>
-                              :
-                               <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
-                                <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
-                                <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                                <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
-                                <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
-                                <span className="switch-selection" ></span>
-                              </div>
-                            }
-                          </div>
-                        </div>
-                        {
-                          this.state.projectCategoryType ==="Project Fund" ? 
-
-                          <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
-                            <label className="formLable">Project Name</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
-                                <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.handleChange.bind(this)} >
-                                  <option className="hidden" >-- Select --</option>
-                                  {
-                                    this.state.availableProjects && this.state.availableProjects.length > 0  ? 
-                                    this.state.availableProjects.map((data, index)=>{
-                                      return(
-                                        <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }  
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.block}</div>
-                          </div>
-                          : ""
-                        } 
-                        <br/>
-                        
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                                <label className="formLable">District<span className="asterix">*</span></label>
-                                <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
-                                  <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                    <option disabled="disabled" selected={true}>-- Select --</option>
-                                    {
-                                      this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
-                                      this.state.listofDistrict.map((data, index)=>{
-                                        // console.log('dta', data);
-                                        return(
-                                          <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
-                                        );
-                                      })
-                                      :
-                                      null
-                                    }
-                                  </select>
-                                </div>
-                                <div className="errorMsg">{this.state.errors.district}</div>
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter">
+                            <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 contactdeilsmg pageSubHeader">
+                              Create Activity Report
                             </div>
                             <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Block<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
-                                <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
-                                    this.state.listofBlocks.map((data, index)=>{
-                                      return(
-                                        <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }  
-                                </select>
+                              <label className="formLable">Date of Intervention</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="dateofIntervention" >
+                                <input type="date" className="form-control inputBox toUpper" name="dateofIntervention" ref="dateofIntervention" value={this.state.dateofIntervention} onChange={this.handleChange.bind(this)} required/>
                               </div>
-                              <div className="errorMsg">{this.state.errors.block}</div>
+                              <div className="errorMsg">{this.state.errors.dateofIntervention}</div>
                             </div>
-                            <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Village<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
-                                <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.listofVillages && this.state.listofVillages.length > 0  ? 
-                                    this.state.listofVillages.map((data, index)=>{
-                                      return(
-                                        <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  } 
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.village}</div>
-                            </div>
-                            <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Location<span className="asterix"></span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="location" >
-                                <input type="text"   className="form-control inputBox" name="location" placeholder="" ref="location" value={this.state.location} onChange={this.handleChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.location}</div>
-                            </div>
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Sector<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.availableSectors && this.state.availableSectors.length >0 ?
-                                    this.state.availableSectors.map((data, index)=>{
-                                      return(
-                                        <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
-                                      );
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.sector}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Activity<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
-                                <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                  {
-                                    this.state.availableActivity && this.state.availableActivity.length >0 ?
-                                    this.state.availableActivity.map((data, index)=>{
-                                      if(data.activityName ){
-                                        return(
-                                          <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
-                                        );
-                                      }
-                                    })
-                                    :
-                                    null
-                                  }
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.activity}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
-                              <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
-                                <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
-                                    {
-                                      this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
-                                      this.state.availableSubActivity.map((data, index)=>{
-                                        if(data.subActivityName ){
-                                          return(
-                                            <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
-                                          );
-                                        }
-                                      })
-                                      :
-                                      null
-                                    }
-                                    
-                                </select>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.subactivity}</div>
-                            </div> 
 
-                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                              <label className="formLable">Unit of Measurement</label>
-                              <div className=""  >
-                                  <div className="form-control inputBox inputBox-main unitDiasbleBox">
-                                    {this.state.subActivityDetails ? 
-                                        <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
-                                      :
-                                        null
-                                    }
+                            <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box " >
+                              <div className="" id="projectCategoryType" >
+                                <label className=" formLable">Program Type<span className="asterix">*</span></label>
+                                {this.state.type===true ?
+
+                                 <div className=" switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection"></span>
                                   </div>
+                                  :
+                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
+                                    <span className="switch-selection" ></span>
+                                  </div>
+                                }
                               </div>
-                            </div>
-                          </div> 
-                        </div><br/>
-                        <div className="row ">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Unit Cost</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
-                                <input type="number"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleTotalChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.unitCost}</div>
-                            </div>
-                            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                              <label className="formLable">Quantity</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
-                                <input type="number" className="form-control inputBox" name="quantity" placeholder="" ref="quantity"  value={this.state.quantity}  onChange={this.handleTotalChange.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.quantity}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <div className=" " id="PassoutYear" >
-                                <label className="formLable">Total Cost of Activity :</label>                            
-                                <input type="number" className="form-control inputBox inputBox-main" name="totalCost" placeholder="" ref="totalCost"  value={(this.state.totalCost)} disabled />
-                              </div>
-                              <div className="errorMsg">{this.state.errors.totalCost}</div>
                             </div>
                             {
-                              this.state.bActivityActive==="inactive" ?
-                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                  <label className="formLable">No.of Beneficiaries</label>
-                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
-                                    <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
-                                  </div>
-                                  <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
-                                </div>
-                              :null
-                            } 
-                          </div> 
-                        </div>
-                        <div className="col-lg-12 boxHeightother">
-                          <label className="formLable">Remark</label>
-                          <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
-                            <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
-                          </div>
-                          <div className="errorMsg">{this.state.errors.remark}</div>
-                        </div>
-                        <div className="col-lg-12 ">
-                           <hr className=""/>
-                        </div>
-                        <div className="col-lg-12 ">
-                           <div className="pageSubHeader">Sources of Fund</div>
-                        </div>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">LHWRF</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
-                                <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.LHWRF}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">NABARD</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >                              
-                                <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.NABARD}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Bank Loan</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
-                                <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.bankLoan}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Govt. Schemes</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
-                                <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.govtscheme}</div>
-                            </div>
-                          </div> 
-                        </div><br/>
-                        <div className="row">
-                          <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Direct Community Contribution</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
-                                <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.directCC}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Indirect Community Contribution</label>
-                              <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
-                                <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.indirectCC}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <label className="formLable">Other</label>
-                              <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
-                                <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
-                              </div>
-                              <div className="errorMsg">{this.state.errors.other}</div>
-                            </div>
-                            <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
-                              <div className="" id="total" >
-                                <label className="formLable">Total :</label>                            
-                                 
-                                    <div className="form-control inputBox inputBox-main unitDiasbleBox">
-                                      {this.state.total ? 
-                                          <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
+                              this.state.projectCategoryType ==="Project Fund" ? 
+
+                              <div className=" col-lg-3 col-md-3 col-sm-6 col-xs-12 valid_box">
+                                <label className="formLable">Project Name</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="projectName" >
+                                    <select className="custom-select form-control inputBox" ref="projectName" name="projectName" value={this.state.projectName} onChange={this.handleChange.bind(this)} >
+                                      <option className="hidden" >-- Select --</option>
+                                      {
+                                        this.state.availableProjects && this.state.availableProjects.length > 0  ? 
+                                        this.state.availableProjects.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={(data.projectName)} data-id={data._id}>{(data.projectName)}</option>
+                                          );
+                                        })
                                         :
-                                        0
-                                      }
-                                    </div>
-                                
+                                        null
+                                      }  
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.block}</div>
                               </div>
-                              <div className="errorMsg">{this.state.errors.total}</div>
+                              : ""
+                            } 
+                            <br/>
+                            
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12 formLable boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                    <label className="formLable">District<span className="asterix">*</span></label>
+                                    <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
+                                      <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
+                                        <option disabled="disabled" selected={true}>-- Select --</option>
+                                        {
+                                          this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
+                                          this.state.listofDistrict.map((data, index)=>{
+                                            // console.log('dta', data);
+                                            return(
+                                              <option key={index} value={data.district.split('|')[0]}>{this.camelCase(data.district.split('|')[0])}</option>
+                                            );
+                                          })
+                                          :
+                                          null
+                                        }
+                                      </select>
+                                    </div>
+                                    <div className="errorMsg">{this.state.errors.district}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Block<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
+                                    <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
+                                        this.state.listofBlocks.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={data.block}>{this.camelCase(data.block)}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }  
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.block}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Village<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
+                                    <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.listofVillages && this.state.listofVillages.length > 0  ? 
+                                        this.state.listofVillages.map((data, index)=>{
+                                          return(
+                                            <option key={index} value={data.village}>{this.camelCase(data.village)}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      } 
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.village}</div>
+                                </div>
+                                <div className="  col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Location<span className="asterix"></span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="location" >
+                                    <input type="text"   className="form-control inputBox" name="location" placeholder="" ref="location" value={this.state.location} onChange={this.handleChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.location}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Sector<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
+                                    <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.availableSectors && this.state.availableSectors.length >0 ?
+                                        this.state.availableSectors.map((data, index)=>{
+                                          return(
+                                            <option key={data._id} value={data.sector+'|'+data._id}>{data.sector}</option>
+                                          );
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.sector}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Activity<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
+                                    <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                      {
+                                        this.state.availableActivity && this.state.availableActivity.length >0 ?
+                                        this.state.availableActivity.map((data, index)=>{
+                                          if(data.activityName ){
+                                            return(
+                                              <option key={data._id} value={data.activityName+'|'+data._id}>{data.activityName}</option>
+                                            );
+                                          }
+                                        })
+                                        :
+                                        null
+                                      }
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.activity}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12  ">
+                                  <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
+                                    <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
+                                      <option disabled="disabled" selected={true}>-- Select --</option>
+                                        {
+                                          this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
+                                          this.state.availableSubActivity.map((data, index)=>{
+                                            if(data.subActivityName ){
+                                              return(
+                                                <option className="" key={data._id} data-upgrade={data.familyUpgradation} value={data.subActivityName+'|'+data._id} >{data.subActivityName} </option>
+                                              );
+                                            }
+                                          })
+                                          :
+                                          null
+                                        }
+                                        
+                                    </select>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.subactivity}</div>
+                                </div> 
+
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                  <label className="formLable">Unit of Measurement</label>
+                                  <div className=""  >
+                                      <div className="form-control inputBox inputBox-main unitDiasbleBox">
+                                        {this.state.subActivityDetails ? 
+                                            <label className="formLable" id="unit">{this.state.subActivityDetails}</label>
+                                          :
+                                            null
+                                        }
+                                      </div>
+                                  </div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            <div className="row ">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Unit Cost</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="unitCost" >
+                                    <input type="number"   className="form-control inputBox" name="unitCost" placeholder="" ref="unitCost" value={this.state.unitCost}   onChange={this.handleTotalChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.unitCost}</div>
+                                </div>
+                                <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                  <label className="formLable">Quantity</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="quantity" >
+                                    <input type="number" className="form-control inputBox" name="quantity" placeholder="" ref="quantity"  value={this.state.quantity}  onChange={this.handleTotalChange.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.quantity}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <div className=" " id="PassoutYear" >
+                                    <label className="formLable">Total Cost of Activity :</label>                            
+                                    <input type="number" className="form-control inputBox inputBox-main" name="totalCost" placeholder="" ref="totalCost"  value={(this.state.totalCost)} disabled />
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.totalCost}</div>
+                                </div>
+                                {
+                                  this.state.bActivityActive==="inactive" ?
+                                    <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                      <label className="formLable">No.of Beneficiaries</label>
+                                      <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="noOfBeneficiaries" >
+                                        <input type="number" className="form-control inputBox" name="noOfBeneficiaries" placeholder="" ref="noOfBeneficiaries"  value={this.state.noOfBeneficiaries}  onChange={this.handleChange.bind(this)}/>
+                                      </div>
+                                      <div className="errorMsg">{this.state.errors.noOfBeneficiaries}</div>
+                                    </div>
+                                  :null
+                                } 
+                              </div> 
                             </div>
-                          </div> 
-                        </div><br/>
-                      
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-                          <br/>
-                          {
-                            this.state.editId ? 
-                            <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
-                            :
-                            <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
-                          }
-                        </div> 
-                        <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
-                          <hr className=""/>
+                            <div className="col-lg-12 boxHeightother">
+                              <label className="formLable">Remark</label>
+                              <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="remark" >
+                                <input type="text"   className="form-control inputBox" name="remark" placeholder="" ref="remark" value={this.state.remark}   onChange={this.handleChange.bind(this)}/>
+                              </div>
+                              <div className="errorMsg">{this.state.errors.remark}</div>
+                            </div>
+                            <div className="col-lg-12 ">
+                               <hr className=""/>
+                            </div>
+                            <div className="col-lg-12 ">
+                               <div className="pageSubHeader">Sources of Fund</div>
+                            </div>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">LHWRF</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="LHWRF" >
+                                    <input type="number" min="0"  className="form-control inputBox "  name="LHWRF" placeholder="" ref="LHWRF" value={this.state.LHWRF}    onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.LHWRF}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">NABARD</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="NABARD" >                              
+                                    <input type="number" min="0" className="form-control inputBox " name="NABARD" placeholder=""ref="NABARD" value={this.state.NABARD}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.NABARD}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Bank Loan</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="bankLoan" >
+                                    <input type="number" min="0" className="form-control inputBox " name="bankLoan" placeholder=""ref="bankLoan" value={this.state.bankLoan}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.bankLoan}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Govt. Schemes</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12  input-group inputBox-main" id="govtscheme" >
+                                    <input type="number" min="0"   className="form-control inputBox " name="govtscheme" placeholder="" ref="govtscheme"  value={this.state.govtscheme}  onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.govtscheme}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                            <div className="row">
+                              <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Direct Community Contribution</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="directCC" >
+                                    <input type="number" min="0" className="form-control inputBox" name="directCC" placeholder=""ref="directCC"  value={this.state.directCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.directCC}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Indirect Community Contribution</label>
+                                  <div className=" col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="indirectCC" >
+                                    <input type="number" min="0" className="form-control inputBox " name="indirectCC" placeholder=""ref="indirectCC"  value={this.state.indirectCC} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.indirectCC}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <label className="formLable">Other</label>
+                                  <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="other" >
+                                    <input type="number" min="0"   className="form-control inputBox" name="other" placeholder="" ref="other"  value={this.state.other} onChange={this.handleChange.bind(this)} onBlur={this.remainTotal.bind(this)}/>
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.other}</div>
+                                </div>
+                                <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                                  <div className="" id="total" >
+                                    <label className="formLable">Total :</label>                            
+                                     
+                                        <div className="form-control inputBox inputBox-main unitDiasbleBox">
+                                          {this.state.total ? 
+                                              <label className="formLable" id="total">{(parseFloat(this.state.total)).toFixed(2)}</label>
+                                            :
+                                            0
+                                          }
+                                        </div>
+                                    
+                                  </div>
+                                  <div className="errorMsg">{this.state.errors.total}</div>
+                                </div>
+                              </div> 
+                            </div><br/>
+                          
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                              <br/>
+                              {
+                                this.state.editId ? 
+                                <button className=" col-lg-2 btn submit mt pull-right" onClick={this.Update.bind(this)}> Update </button>
+                                :
+                                <button className=" col-lg-2 btn submit mt pull-right" onClick={this.SubmitActivity.bind(this)}> Submit </button>
+                              }
+                            </div> 
+                            <div className="col-lg-12  col-md-12 col-sm-12 col-xs-12 ">
+                              <hr className=""/>
+                            </div>
+                          </div>
                         </div>
                       </form>
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt" style={displayBlock}>
@@ -1891,19 +1861,20 @@ class ActivityTypeB extends Component{
                         </div>
                         <div className="mt">
                           <IAssureTable 
-                            tableName = "Activity Report"
-                            id = "activityReport"
-                            downloadtableHeading={this.state.downloadtableHeading}
-                            downloadData={this.state.downloadData}
-                            tableHeading={this.state.tableHeading}
-                            twoLevelHeader={this.state.twoLevelHeader} 
-                            dataCount={this.state.dataCount}
-                            tableData={this.state.tableData}
-                            getData={this.getData.bind(this)}
-                            tableObjects={this.state.tableObjects} 
-                            isDeleted={this.deleted.bind(this)}
-                            viewTable = {true}
-                            viewLink = "activityReportView"
+                            tableName            = "B Type Activity Report"
+                            id                   = "bTypeActivityReport"
+                            downloadtableHeading ={this.state.downloadtableHeading}
+                            downloadData         ={this.state.downloadData}
+                            tableHeading         ={this.state.tableHeading}
+                            twoLevelHeader       ={this.state.twoLevelHeader} 
+                            dataCount            ={this.state.dataCount}
+                            tableData            ={this.state.tableData}
+                            getData              ={this.getData.bind(this)}
+                            tableObjects         ={this.state.tableObjects} 
+                            filterData           ={this.state.propsdata}
+                            isDeleted            ={this.deleted.bind(this)}
+                            viewTable            = {true}
+                            viewLink             = "activityReportView"
                           /> 
                         </div>
                       </div>
@@ -1913,21 +1884,21 @@ class ActivityTypeB extends Component{
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 outerForm">
                           <BulkUpload 
-                            url="/api/activityReport/bulk_upload_type_B_activities" 
-                            data={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
-                            uploadedData={this.uploadedData} 
-                            bulkTableID = "activityTypeB"
-                            fileurl="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
-                            fileDetailUrl={this.state.fileDetailUrl}
-                            getFileDetails={this.getTypeBFileDetails.bind(this)}
-                            getData={this.getData.bind(this)}
-                            fileDetails={this.state.fileDetailsTypeB}
+                            url                ="/api/activityReport/bulk_upload_type_B_activities" 
+                            data               ={{"centerName" : this.state.centerName, "center_ID" : this.state.center_ID, "typeofactivity" : "Type B Activity"}} 
+                            uploadedData       ={this.uploadedData} 
+                            bulkTableID        = "activityTypeB"
+                            fileurl            ="https://lupiniassureit.s3.ap-south-1.amazonaws.com/master/templates/Type-B-Activity-Submission.xlsx"
+                            fileDetailUrl      ={this.state.fileDetailUrl}
+                            getFileDetails     ={this.getTypeBFileDetails.bind(this)}
+                            getData            ={this.getData.bind(this)}
+                            fileDetails        ={this.state.fileDetailsTypeB}
                             goodRecordsHeading ={this.state.bTypeActivitygoodRecordsHeading}
-                            failedtableHeading={this.state.bTypeActivityfailedtableHeading}
+                            failedtableHeading ={this.state.bTypeActivityfailedtableHeading}
                             failedRecordsTable ={this.state.failedRecordsTableTypeB}
-                            failedRecordsCount={this.state.failedRecordsCountTypeB}
-                            goodRecordsTable={this.state.goodRecordsTableTypeB}
-                            goodDataCount={this.state.goodDataCountTypeB}
+                            failedRecordsCount ={this.state.failedRecordsCountTypeB}
+                            goodRecordsTable   ={this.state.goodRecordsTableTypeB}
+                            goodDataCount      ={this.state.goodDataCountTypeB}
                           />
                         </div>
                       </div>
