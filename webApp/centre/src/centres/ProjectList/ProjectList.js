@@ -37,7 +37,7 @@ class ProjectMapping extends Component{
         editUrl            : '/project-definition/'
       },
       "startRange"         : 0,
-      "limitRange"         : 10000,
+      "limitRange"         : 1000000,
       "sectorData"         : [],
       "editId"             : this.props.match.params ? this.props.match.params.projectMappingId : '',
       "role"                : localStorage.getItem("role")
@@ -111,6 +111,8 @@ class ProjectMapping extends Component{
                       id = "ProjectList" 
                       tableHeading={this.state.tableHeading}
                       twoLevelHeader={this.state.twoLevelHeader} 
+                      startRange={this.state.startRange} 
+                      limitRange={this.state.limitRange} 
                       dataCount={this.state.dataCount}
                       tableData={this.state.tableData}
                       getData={this.getData.bind(this)}

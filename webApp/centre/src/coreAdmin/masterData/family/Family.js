@@ -5,7 +5,7 @@ import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import Datetime               from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureITTable.jsx";
 import Loader                 from "../../../common/Loader.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import 'react-table/react-table.css';
@@ -675,6 +675,52 @@ class Family extends Component{
         console.log("error"+error);
       }); 
     }
+  }
+  getDownloadData(){ 
+    var inputGetAllData = {
+      "center_ID"       : this.state.center_ID,
+      "caste"           : "all",
+      "district"        : "all",
+      "blocks"          : "all",
+      "village"         : "all", 
+      "specialCategory" : "all",
+      "landCategory"    : "all",
+      "incomeCategory"  : "all",
+      "searchText"      : "all",
+      "startRange"      : "all",
+      "limitRange"      : "all"
+    }
+    axios.post('/api/families/get/family/list',inputGetAllData)
+      .then((response)=>{
+        console.log('response',response)
+        var downloadData = response.data.map((a, i)=>{
+          return {
+            _id                   : a._id,
+            familyID              : "<div class= 'noWrapText'>" + a.familyID + "</div>",
+            surnameOfFH           : a.surnameOfFH,
+            firstNameOfFH         : a.firstNameOfFH,
+            middleNameOfFH        : a.middleNameOfFH,
+            FHGender              : a.FHGender,
+            FHYearOfBirth         : a.FHYearOfBirth,
+            uidNumber             : a.uidNumber,
+            contactNumber         : a.contactNumber,
+            caste                 : a.caste,
+            landCategory          : a.landCategory,
+            incomeCategory        : a.incomeCategory,
+            specialCategory       : a.specialCategory,
+            dist                  : a.dist,
+            block                 : a.block,
+            village               : a.village,
+          }
+        })
+        this.setState({
+          downloadData : downloadData
+        })                            
+      
+      })    
+      .catch(function(error){      
+        console.log("error"+error);
+      }); 
   }
   camelCase(str){
     return str
@@ -1481,6 +1527,7 @@ class Family extends Component{
                           getData              ={this.getData.bind(this)}
                           tableObjects         ={this.state.tableObjects} 
                           filterData           ={this.state.propsdata}
+                          getDownloadData      ={this.getDownloadData.bind(this)}
                           getSearchText        ={this.getSearchText.bind(this)}
                         /> 
                       </div>

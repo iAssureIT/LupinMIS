@@ -19,7 +19,7 @@ class FamilyCoverageReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "limitRange"        : 10000,
+        "limitRange"        : 10000000,
         "sector"            : "all",
         "sector_ID"         : "all",
         "activity_ID"       : "all",

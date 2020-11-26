@@ -17,7 +17,7 @@ class ActivitywisePlan extends Component{
             'reportData'        : {},
             'tableData'         : [],
             "startRange"        : 0,
-            "limitRange"        : 10000,
+            "limitRange"        : 1000000,
             "month"             : "All",
             "months"            :["All", "Q1 (April to June)","Q2 (July to September)","Q3 (October to December)","Q4 (January to March)"],
             "startDate"         : "",
@@ -415,6 +415,7 @@ class ActivitywisePlan extends Component{
                         remark                         : (a.remark),
                     }
               })
+              console.log("tableData",tableData.length)
               this.setState({
                 tableData : tableData
               })
@@ -470,11 +471,11 @@ class ActivitywisePlan extends Component{
       }
     }
   }
-  getSearchText(searchText, startRange, limitRange){
-    this.setState({
-      tableData : []
-    });
-  }
+  // getSearchText(searchText, startRange, limitRange){
+  //   this.setState({
+  //     tableData : []
+  //   });
+  // }
   year() {
     let financeYear;
     let today = moment();
@@ -675,7 +676,7 @@ class ActivitywisePlan extends Component{
                                 tableHeading={this.state.tableHeading} 
                                 tableData={this.state.tableData} 
                                 tableObjects={this.state.tableObjects}
-                                getSearchText={this.getSearchText.bind(this)}/>
+                                />
                         </div>
                     </div>
                 </div> 

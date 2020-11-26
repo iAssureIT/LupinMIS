@@ -22,7 +22,7 @@ class GoalSectorReport extends Component{
         "district"           : "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        "limitRange"        : 10000,
+        "limitRange"        : 10000000,
         // "dataApiUrl"        : "http://apitgk3t.iassureit.com/api/masternotifications/list",
         "twoLevelHeader"    : {
             apply           : true,
@@ -649,7 +649,7 @@ class GoalSectorReport extends Component{
                   <div className="marginTop11">
                     <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <IAssureTable  
-                          tableName = "ADP Report"
+                          tableName = "Goal Report"
                           id = "GoalSectorReport"
                           completeDataCount={this.state.tableDatas.length}
                           twoLevelHeader={this.state.twoLevelHeader} 

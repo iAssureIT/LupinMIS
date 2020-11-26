@@ -7,7 +7,7 @@ import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 import Loader                 from "../../../common/Loader.js";
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureITTable.jsx";
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";

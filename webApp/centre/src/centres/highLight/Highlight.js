@@ -51,7 +51,7 @@ class Highlight extends Component{
         pageURL         : '/highlight',
       }, 
       "startRange"        : 0,
-      "limitRange"        : 10000,
+      "limitRange"        : 1000000,
       "editId"            : this.props.match.params ? this.props.match.params.id : '',
     }
   }
@@ -451,6 +451,8 @@ class Highlight extends Component{
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
                         tableObjects={this.state.tableObjects}       
+                        startRange={this.state.startRange} 
+                        limitRange={this.state.limitRange} 
                       />
                     </div> 
                   </div>              

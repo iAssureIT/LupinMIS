@@ -23,7 +23,7 @@ class FilewiseActivityList extends Component{
               searchApply               : false,
             },
           startRange : 0,
-          limitRange : 100000
+          limitRange : 10000000
     }
     
   }

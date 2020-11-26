@@ -17,12 +17,11 @@ var sum = 0;
 class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
-	    console.log('this.props',this.props)
 		this.state = {
 			"totalDataCount" 	    	: props && props.dataCount ? props.dataCount : 0,
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
 		    "filterData" 				: props && props.filterData ? props.filterData : "",
-		    "downloadData" 				: props && props.downloadData ? props.downloadData : [],
+		    "downloadData" 				: props && props.downloadData && props.downloadData !== undefined ? props.downloadData : [],
 		    "tableName" 				: props && props.tableName ? props.tableName : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
@@ -35,10 +34,8 @@ class IAssureTable extends Component {
 		    "examMasterData2" 			: '',
 		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
-		    "startRange" 	      	    : props && props.startRange  ? props && props.startRange  : 0,		    
-		    "limitRange" 	      	    : props && props.limitRange ? props && props.limitRange : 10,		    
-		    // "startRange" 				: 0,
-		    // "limitRange" 				: 10,
+		    "startRange" 				: 0,
+		    "limitRange" 				: 10,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
@@ -49,7 +46,6 @@ class IAssureTable extends Component {
 		this.printTable = this.printTable.bind(this);
 
 		var tableHeading = Object.keys(props.tableHeading);
-
 		var index = 0;
 		// console.log("props.twoLevelHeader.firstHeaderData",props.twoLevelHeader.firstHeaderData.length);
 		if (props.twoLevelHeader) {
@@ -88,18 +84,18 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    console.log('this.props.downloadData',this.props.downloadData)
+
 	    this.setState({
 		    center_ID    	: center_ID,
 		    centerName   	: centerName,
 		    tableHeading    : this.props.tableHeading,
 	      	tableData 	    : this.props.tableData,
 	      	filterData 	    : this.props.filterData,
-		    downloadData 	: this.props.downloadData,
+	      	downloadData    : this.props.downloadData,
 	      	tableName 	    : this.props.tableName,
 	      	id 			    : this.props.id,
+	      	totalDataCount  : this.props.filterDataCount,
 	    },()=>{
-	    	this.getDwldData()
 		    // this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
 	}
@@ -109,6 +105,7 @@ class IAssureTable extends Component {
 	        this.setState({
 	            id	            : nextProps.id,
 	            tableData	    : nextProps.tableData,
+      			downloadData    : nextProps.downloadData,
 	            tableName	    : nextProps.tableName,
 	            totalDataCount  : nextProps.dataCount,
 	            filterData 	    : nextProps.filterData,
@@ -416,6 +413,153 @@ class IAssureTable extends Component {
 		});	
 	}
 
+
+  //   showNextPaginationButtons(){
+  //   	var beforeDataLength = this.state.dataLength > 0 ? this.state.dataLength : 20;
+		// if(beforeDataLength !== this.state.dataCount){
+		// 	this.setState({
+		// 		dataLength : (beforeDataLength+ 20) > this.state.dataCount ? this.state.dataCount : (beforeDataLength+ 20),
+		// 	},()=>{
+		// 		$('li').removeClass('activeCircle');
+		// 		$(".queDataCircle:first").addClass('activeCircle');
+		// 		const maxRowsPerPage = this.state.limitRange;
+		// 		var dataLength = this.state.dataLength;
+		// 		var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+		// 		var pageCount = Math.ceil(paginationNum);
+
+		// 		var paginationArray = [];
+
+		// 		for (var i=beforeDataLength+1; i<=pageCount;i++){
+		// 			var countNum = maxRowsPerPage * i;
+		// 			var startRange = countNum - maxRowsPerPage;
+		// 			if(i === beforeDataLength+1){
+		// 				var activeClass = 'activeCircle';
+		// 			}else{
+		// 				activeClass = '';
+		// 			}
+		// 			paginationArray.push(
+		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+		// 			);
+		// 		}
+		// 		if(pageCount>=1){				
+		// 			this.setState({
+		// 				paginationArray : paginationArray,
+		// 			});
+		// 		}
+		// 		return paginationArray;
+		// 	});
+		// }		
+  //   }
+  //   showPreviousPaginationButtons(){
+  //   	var beforeDataLength = this.state.dataLength;
+		
+		// this.setState({
+		// 	dataLength : beforeDataLength > 20 ? beforeDataLength- this.state.paginationArray.length : 0,
+		// },()=>{
+		// 	$('li').removeClass('activeCircle');
+		// 	$(".queDataCircle:first").addClass('activeCircle');
+		// 	const maxRowsPerPage = this.state.limitRange;
+		// 	var dataLength = this.state.dataLength;
+		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+		// 	if(dataLength !== 0 && paginationNum!== 0){
+		// 		var pageCount = Math.ceil(paginationNum);
+		// 		var paginationArray = [];
+		// 		var forLoop = (beforeDataLength-this.state.paginationArray.length) < 0 ?  1: beforeDataLength-this.state.paginationArray.length;
+		// 		for (var i=forLoop-19; i<=pageCount;i++){
+		// 			var countNum = maxRowsPerPage * i;
+		// 			var startRange = countNum - maxRowsPerPage;
+		// 			if(i === beforeDataLength-39 || i === 1){
+		// 				var activeClass = 'activeCircle';
+		// 			}else{
+		// 				activeClass = '';
+		// 			}
+		// 			paginationArray.push(
+		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+		// 			);
+		// 		}
+		// 		if(pageCount>=1){				
+		// 			this.setState({
+		// 				paginationArray : paginationArray,
+		// 			});
+		// 		}
+		// 		return paginationArray;
+		// 	}			
+		// });
+  //   }
+  //   showFirstTweentyButtons(){
+  //   	var beforeDataLength = this.state.dataCount;
+		
+		// this.setState({
+		// 	dataLength : 20,
+		// },()=>{
+		// 	$('li').removeClass('activeCircle');
+		// 	$(".queDataCircle:first").addClass('activeCircle');
+		// 	const maxRowsPerPage = this.state.limitRange;
+		// 	var dataLength = this.state.dataLength;
+		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+		// 	if(dataLength !== 0 && paginationNum!== 0){
+		// 		var pageCount = Math.ceil(paginationNum);
+		// 		var paginationArray = [];
+
+		// 		for (var i=1; i<=pageCount;i++){
+		// 			var countNum = maxRowsPerPage * i;
+		// 			var startRange = countNum - maxRowsPerPage;
+		// 			if(i === 1){
+		// 				var activeClass = 'activeCircle';
+		// 			}else{
+		// 				activeClass = '';
+		// 			}
+		// 			paginationArray.push(
+		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+		// 			);
+		// 		}
+		// 		if(pageCount>=1){				
+		// 			this.setState({
+		// 				paginationArray : paginationArray,
+		// 			});
+		// 		}
+		// 		return paginationArray;
+		// 	}			
+		// });
+  //   }
+  //   showLastTweentyButtons(){
+  //   	var beforeDataLength = this.state.dataLength;
+		
+		// this.setState({
+		// 	dataLength : this.state.dataCount,
+		// },()=>{
+		// 	$('li').removeClass('activeCircle');
+		// 	$(".queDataCircle:first").addClass('activeCircle');
+		// 	const maxRowsPerPage = this.state.limitRange;
+		// 	var dataLength = this.state.dataLength;
+		// 	var paginationNum = parseInt(dataLength)/maxRowsPerPage;
+		// 	if(dataLength !== 0 && paginationNum!== 0){
+		// 		var pageCount = Math.ceil(paginationNum);
+		// 		var paginationArray = [];
+
+		// 		for (var i=(this.state.dataCount - 20)+1; i<=pageCount;i++){
+		// 			var countNum = maxRowsPerPage * i;
+		// 			var startRange = countNum - maxRowsPerPage;
+		// 			if(i === 1 || i === (this.state.dataCount - 20)+1){
+		// 				var activeClass = 'activeCircle';
+		// 			}else{
+		// 				activeClass = '';
+		// 			}
+		// 			paginationArray.push(
+		// 				<li key={i} className={"queDataCircle page-link "+activeClass+" parseIntagination"+i} id={countNum+'|'+startRange} onClick={this.getStartEndNum.bind(this)} title={"Click to jump on "+i+ " page"}>{i}</li>
+		// 			);
+		// 		}
+		// 		if(pageCount>=1){				
+		// 			this.setState({
+		// 				paginationArray : paginationArray,
+		// 			});
+		// 		}
+		// 		return paginationArray;
+		// 	}			
+		// });
+  //   }    
+
+
     printTableCenter(event){
     	event.preventDefault();
 		var printContents = document.getElementById('section-to-screen').innerHTML;    
@@ -452,9 +596,9 @@ class IAssureTable extends Component {
 	    WindowObject.close();
     }
     getDwldData(){
-		this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    // this.props.getDownloadData() ? this.props.getDownloadData() : this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	    this.props.getDownloadData();
     }
- 
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
@@ -471,83 +615,59 @@ class IAssureTable extends Component {
 			        	:
 			        	null
 			       	}
-
-
-
-
-			{ 
-			       		this.state.tableObjects.downloadApply === true ?
-		                	this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData ?
-		                	// this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length > 0 && this.state.downloadData.length ===0?
-				                <React.Fragment>
-				                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-				                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-				                           <ReactHTMLTableToExcel
-				                                id="table-to-xls"                           
-				                                className="download-table-xls-button fa fa-download tableicons pull-right"
-				                                table={this.state.id}
-				                                sheet="tablexls"
-				                                filename={this.state.tableName}
-				                                buttonText=""/>
-
-				                            <IAssureTableTable 
-					                          tableName = {this.state.tableName}
-					                          id = {this.state.id}
-					                          displayTable = "displayTable"
-					                          data={this.props.propsdata}
-					                          getData={this.getDwldData.bind(this)}
-					                          tableHeading={this.props.tableHeading}
-				                          	  twoLevelHeader={this.props.twoLevelHeader} 
-					                          tableData={this.state.tableData}
-					                          tableObjects={this.state.tableObjects}                          
-					                        />
-				                    </div>
-				                </React.Fragment>
-		                    : null
-		                
-		                : null
-		            }   
-					{/*console.log("this.state.downloadData && this.state.downloadData.length > 0 && this.state.id && this.state.tableName && this.state.tableData.length !== 0  && this.state.downloadData.length !== 0",this.state.downloadData && this.state.downloadData.length > 0 && this.state.id && this.state.tableName && this.state.tableData.length !== 0  && this.state.downloadData.length !== 0)*/}
-		           	{ this.state.tableObjects.downloadApply === true ?
-		                this.state.downloadData && this.state.downloadData.length > 0 && this.state.id && this.state.tableName && this.state.tableData.length !== 0  && this.state.downloadData.length !== 0 ?
-
-		            // { this.state.tableObjects.downloadApply === true ?
-		            //     this.state.downloadData && this.state.id && this.state.tableName && this.state.tableData.length !== 0  && this.state.downloadData.length !== 0 ?
-		                // this.state.id && this.state.tableName ?
-			                <React.Fragment>
-			                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
-			                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-			                           <ReactHTMLTableToExcel
-			                                id="table-to-xls"                           
-			                                className="download-table-xls-button fa fa-download tableicons pull-right"
-			                                table={this.state.id}
-			                                sheet="tablexls"
-			                                filename={this.state.tableName}
-			                                buttonText=""
-			                            />
-			                            <IAssureTableTable 
-				                          tableName = {this.state.tableName}
-				                          id = {this.state.id}
-				                          displayTable = "displayTable"
-				                          data={this.props.propsdata}
-				                          getData={this.getDwldData.bind(this)}
-				                          tableHeading={this.props.downloadtableHeading}
-			                          	  twoLevelHeader={this.props.twoLevelHeader} 
-				                          tableData={this.state.downloadData}
-				                          tableObjects={this.state.tableObjects}                          
-				                        />
-			                    </div>
-			                </React.Fragment>
-		                    : null
-		                
-		                : null
-		            }   
-
-                	{console.log("this.state.downloadDataaaaaaaaaaaaaa",this.state.downloadData,!this.state.downloadData)}
-		            {/*console.log("this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length > 0  && this.state.downloadData.length ===0",this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length > 0  && this.state.downloadData.length ===0)*/}
-		            {/*console.log("this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData  && this.state.downloadData.length ===0",this.state.tableData , this.state.id , this.state.tableName , this.state.tableData.length !== 0 , this.state.downloadData.length ===0)*/}
 			       
-			  
+			       	{ this.state.tableObjects.downloadApply === true ?
+		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData ?
+		                <React.Fragment>
+		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+		                           <ReactHTMLTableToExcel
+		                                id="table-to-xls"                           
+		                                className="download-table-xls-button fa fa-download tableicons pull-right"
+		                                table={this.state.id}
+		                                sheet="tablexls"
+		                                filename={this.state.tableName}
+		                                buttonText=""/>
+		                    </div>
+		                </React.Fragment>
+		                    : null
+		                
+		                : null
+		            }   
+		            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
+		            {/*console.log("this.state.id",this.state.id)*/}
+		            { this.state.tableObjects.downloadApply === true ?
+		                // this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length !== 0 ?
+		                this.state.id && this.state.tableName ?
+		                <React.Fragment>
+		          
+		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
+		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
+		                           <ReactHTMLTableToExcel
+		                                id="table-to-xls"                           
+		                                className="download-table-xls-button fa fa-download tableicons pull-right"
+		                                table={this.state.id}
+		                                sheet="tablexls"
+		                                filename={this.state.tableName}
+		                                buttonText=""
+		                            />
+		                            <IAssureTableTable 
+			                          tableName = {this.state.tableName}
+			                          id = {this.state.id}
+			                          displayTable = "displayTable"
+			                          data={this.props.propsdata}
+			                          getData={this.getDwldData.bind(this)}
+			                          tableHeading={this.props.downloadtableHeading}
+		                          	  twoLevelHeader={this.props.twoLevelHeader} 
+			                          tableData={this.state.downloadData}
+			                          tableObjects={this.state.tableObjects}                          
+			                        />
+		                    </div>
+		                </React.Fragment>
+		                    : null
+		                
+		                : null
+		            }   
 				</div>
 		                
 	       	{
@@ -650,7 +770,7 @@ class IAssureTable extends Component {
 																((Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')))
 																?
 																	<td className="textAlignCenter">
-																		<div className="colSr">{0+1+i}</div>
+																		<div className="colSr">{this.state.startRange+1+i}</div>
 																	</td>
 																:
 																	<td className="textAlignCenter">

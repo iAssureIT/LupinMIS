@@ -16,6 +16,7 @@ var sum = 0;
 class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
+	    console.log('this.props',this.props)
 		this.state = {
 			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
@@ -32,7 +33,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10000,
+		    "limitRange" 				: 1000000,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
@@ -84,25 +85,19 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    // console.log("localStorage =",localStorage.getItem('centerName'));
-	    // console.log("localStorage =",localStorage);
+	    console.log('this.props',this.props)
 	    this.setState({
-	      center_ID    : center_ID,
-	      centerName   : centerName,
+	      	center_ID    : center_ID,
+	      	centerName   : centerName,
+	      	tableHeading	: this.props.tableHeading,
+	      	tableData 		: this.props.tableData,
+	      	tableName 		: this.props.tableName,
+	      	dataCount 		: this.props.dataCount,
+	      	id 				: this.props.id,
 	    },()=>{
 		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
-      
-      // this.palindrome('Moam');
-      this.setState({
-      	tableHeading	: this.props.tableHeading,
-      	tableData 		: this.props.tableData,
-      	tableName 		: this.props.tableName,
-      	dataCount 		: this.props.dataCount,
-      	id 				: this.props.id,
-      });
-
-      // this.paginationFunction();
+	      // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
 		if(nextProps){

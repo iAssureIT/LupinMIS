@@ -17,7 +17,7 @@ class ActivitywiseAnnualPlanReport extends Component{
             'reportData'        : {},
             'tableData'         : [],
             "startRange"        : 0,
-            "limitRange"        : 10000,
+            "limitRange"        : 10000000,
             // 'year'              : "FY 2019 - 2020",
             // "years"             :["FY 2019 - 2020","FY 2020 - 2021","FY 2021 - 2022"],
             "startDate"         : "",

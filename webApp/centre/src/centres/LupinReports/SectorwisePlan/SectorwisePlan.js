@@ -17,7 +17,7 @@ class SectorwisePlan extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "limitRange"        : 10000,
+        "limitRange"        : 1000000,
         "sector"            : "all",
         "sector_ID"         : "all",
         "projectCategoryType": "all",

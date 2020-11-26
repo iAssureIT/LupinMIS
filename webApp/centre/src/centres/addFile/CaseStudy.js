@@ -583,7 +583,9 @@ class CaseStudy extends Component{
                         dataCount={this.state.dataCount}
                         tableData={this.state.tableData}
                         getData={this.getData.bind(this)}
-                        tableObjects={this.state.tableObjects}                          
+                        tableObjects={this.state.tableObjects} 
+                        startRange={this.state.startRange} 
+                        limitRange={this.state.limitRange}                          
                       />
                     </div> 
                   </div>              

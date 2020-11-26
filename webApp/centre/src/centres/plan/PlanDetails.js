@@ -114,7 +114,7 @@ class PlanDetails extends Component{
         editUrl             : '/plan-details',
       },   
       "startRange"          : 0,
-      "limitRange"          : 10000,
+      "limitRange"          : 1000000,
       "editId"              : this.props.match.params ? this.props.match.params.id : '',
       "fields"                : {},
       "errors"                : {},
@@ -888,6 +888,55 @@ class PlanDetails extends Component{
         console.log("error"+error);
       });
     }
+  }  
+  getDownloadData(){
+    var inputGetAllData = {
+      center_ID  : this.state.center_ID,
+      month      : this.state.month,
+      year       : this.state.year,
+      startRange : "all",
+      limitRange : "all",
+      startDate  : this.state.startDate,
+      endDate    : this.state.endDate,
+    }
+    $(".fullpageloader").show();
+    axios.post(this.state.apiCall+'/list', inputGetAllData)
+    .then((response)=>{
+      $(".fullpageloader").hide();
+      console.log("response plan Details===>",response);
+      var tableData = response.data.map((a, i)=>{
+        return {
+          _id                 : a._id,
+          month               : a.month,
+          year                : a.year,
+          projectCategoryType : a.projectCategoryType,
+          projectName         : a.projectName === 'all'?'-':a.projectName,
+          sectorName          : a.sectorName,
+          activityName        : a.activityName,
+          subactivityName     : a.subactivityName,
+          unit                : a.unit,
+          physicalUnit        : this.addCommas(a.physicalUnit),
+          unitCost            : this.addCommas(a.unitCost),
+          totalBudget         : this.addCommas(a.totalBudget),
+          noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
+          noOfFamilies        : this.addCommas((a.noOfFamilies)),
+          LHWRF               : this.addCommas(a.LHWRF),
+          NABARD              : this.addCommas(a.NABARD),
+          bankLoan            : this.addCommas(a.bankLoan),
+          govtscheme          : this.addCommas(a.govtscheme),
+          directCC            : this.addCommas(a.directCC),
+          indirectCC          : this.addCommas(a.indirectCC),
+          other               : this.addCommas(a.other),
+          remark              : a.remark,
+        }
+      })
+      this.setState({
+        downloadData : tableData
+      });
+    })
+    .catch(function(error){
+      console.log("error"+error);
+    });
   }
   componentWillReceiveProps(nextProps){
     this.year();
@@ -1899,6 +1948,7 @@ class PlanDetails extends Component{
                             getData={this.getData.bind(this)}
                             tableObjects={this.state.tableObjects}
                             getSearchText={this.getSearchText.bind(this)}
+                            getDownloadData      ={this.getDownloadData.bind(this)}
                           />
                         </div>
                       </div> 

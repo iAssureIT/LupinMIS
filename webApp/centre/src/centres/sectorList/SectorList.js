@@ -136,6 +136,8 @@ class SectorList extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          startRange={this.state.startRange} 
+                          limitRange={this.state.limitRange} 
                         />
                       </div>
                     </div>

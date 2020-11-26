@@ -7,7 +7,8 @@ import moment                 from "moment";
 import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 import Loader                 from "../../../common/Loader.js";
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureITTable.jsx";
+
 import ListOfBeneficiaries    from "../listOfBeneficiaries/ListOfBeneficiaries.js";
 import BulkUpload             from "../../../centres/bulkupload/BulkUpload.js";
 import "./Activity.css";
@@ -821,7 +822,6 @@ class ActivityTypeA extends Component{
     this.setState({
       propsdata : inputGetData
     })
-
     if(inputGetData){
       // console.log("getData inputGetData = ",inputGetData);
       $(".fullpageloader").show();
@@ -854,60 +854,86 @@ class ActivityTypeA extends Component{
                 remark                     : a.remark,
               }
             })
-            var newDownloadData = response.data.data.map((a, i)=>{
-              return {
-                _id                        : a._id,
-                projectCategoryType        : a.projectCategoryType,
-                projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD-MM-YYYY'),
-                // date                       : a.date,
-                place                      : a.place,
-                sectorName                 : a.sectorName,
-                activity                   : a.activity,
-                subactivityName            : a.subactivityName,
-                unit                       : a.unit,
-                unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-                remark                     : a.remark,
-              }
-            })
-
             if(inputGetData.appendArray){
               this.setState({
                 tableData    : this.state.tableData.concat(newTableData),
-                downloadData : this.state.downloadData.concat(newDownloadData)
+                // downloadData : this.state.downloadData.concat(newDownloadData)
               })              
             }else{
               this.setState({
                 tableData    : newTableData,
-                downloadData : newDownloadData
+                // downloadData : newDownloadData
               })                            
             }
           })
           .catch(function(error){      
             console.log("error = ",error); 
           });
-
       axios.get('/api/activityReport/count/'+inputGetData.center_ID+'/'+inputGetData.year+'/Family Level Activity')
           .then((res)=>{
             this.setState({
               dataCount    : res.data.dataCount,
-            },()=>{
-              // console.log("this.state.dataCount",this.state.dataCount)
             })
           })
           .catch(function(error){      
             console.log("error = ",error); 
           });
+    }
+  }
+  getDownloadData(year){ 
+    if(year){
+      var inputGetAllData = {
+        "sector_ID"      : "all",
+        "activity_ID"    : "all",
+        "subactivity_ID" : "all",
+        "typeofactivity" : "Family Level Activity",
+        "startRange"     : "all",
+        "limitRange"     : "all",
+        "year"           : year,
+        "center_ID"      : this.state.center_ID,
+      }
+      if(inputGetAllData){
+        axios.post('/api/activityReport/filterlist',inputGetAllData)
+            .then((response)=>{
+              // console.log('response',response)
+              var newDownloadData = response.data.data.map((a, i)=>{
+                return {
+                  _id                        : a._id,
+                  projectCategoryType        : a.projectCategoryType,
+                  projectName                : a.projectName==='all'?'-':a.projectName,
+                  date                       : moment(a.date).format('DD-MM-YYYY'),
+                  district                   : a.district,
+                  block                      : a.block,
+                  village                    : a.village,
+                  location                   : a.location,
+                  sectorName                 : a.sectorName,
+                  activityName               : a.activityName,
+                  typeofactivity             : a.typeofactivity,
+                  subactivityName            : a.subactivityName,
+                  unit                       : a.unit,
+                  unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                  qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                  totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+                  numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                  LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                  NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                  bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                  govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                  directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                  indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                  other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+                  remark                     : a.remark,
+                }
+              })
+
+              this.setState({
+                downloadData : newDownloadData
+              })                            
+            })
+            .catch(function(error){      
+              console.log("error = ",error); 
+            });
+      }
     }
   }
 
@@ -1488,6 +1514,7 @@ class ActivityTypeA extends Component{
           "year"           :  this.state.year,
         }
         this.getData(inputGetData);
+        this.getDownloadData(this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1957,6 +1984,7 @@ class ActivityTypeA extends Component{
                             isDeleted            ={this.deleted.bind(this)}
                             viewTable            = {true}
                             viewLink             = "activityReportView"
+                            getDownloadData      ={this.getDownloadData.bind(this)}
                           /> 
                         </div> 
                       </div>

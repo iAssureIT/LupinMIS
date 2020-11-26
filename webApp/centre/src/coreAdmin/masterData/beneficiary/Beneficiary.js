@@ -8,7 +8,7 @@ import DatePicker           from "react-datepicker";
 // import YearPicker from "react-year-picker";
 import Datetime from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
-import IAssureTable           from "../../IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../IAssureTable/IAssureITTable.jsx";
 import Loader                 from "../../../common/Loader.js";
 import CreateBeneficiary      from "./CreateBeneficiary.js";
 import "./Beneficiary.css";
@@ -299,6 +299,7 @@ class Beneficiary extends Component{
         "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
+      this.getDownloadData(this.state.center_ID);
       this.getAvailableFamilyId(this.state.center_ID);
     });    
  
@@ -415,7 +416,7 @@ class Beneficiary extends Component{
       this.setState({
         dataCount : response.data.dataCount
       },()=>{
-        // console.log('dataCount', this.state.dataCount);
+        console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -455,12 +456,12 @@ class Beneficiary extends Component{
         if(inputGetData.appendArray){
           this.setState({
             tableData    : this.state.tableData.concat(newTableData),
-            downloadData : this.state.downloadData.concat(newTableData)
+            // downloadData : this.state.downloadData.concat(newDownloadData)
           })              
         }else{
           this.setState({
             tableData    : newTableData,
-            downloadData : newTableData
+            // downloadData : newTableData
           })                            
         }
       })
@@ -468,6 +469,47 @@ class Beneficiary extends Component{
         console.log("error = ",error);
       }); 
     }      
+  } 
+  getDownloadData(center_ID){
+    var inputGetAllData = {
+      "center_ID"       : center_ID,
+      "district"        : "all",
+      "blocks"          : "all",
+      "village"         : "all", 
+      "searchText"      : "all", 
+      "startRange"      : "all",
+      "limitRange"      : "all"
+    }
+    axios.post('/api/beneficiaries/get/beneficiary/list', inputGetAllData)
+    .then((res)=>{
+      console.log('res',res);
+      var downloadData = res.data.map((a, i)=>{
+        return {
+          _id                       : a._id,
+          beneficiaryID             : a.beneficiaryID,
+          familyID                  : a.familyID,
+          // nameofbeneficiaries       : a.nameofbeneficiaries,
+          surnameOfBeneficiary      : a.surnameOfBeneficiary,
+          firstNameOfBeneficiary    : a.firstNameOfBeneficiary,
+          middleNameOfBeneficiary   : a.middleNameOfBeneficiary,
+          uidNumber                 : a.uidNumber,
+          relation                  : a.relation,
+          genderOfbeneficiary       : a.genderOfbeneficiary,   
+          birthYearOfbeneficiary    : a.birthYearOfbeneficiary,   
+          dist                      : a.dist,
+          block                     : a.block,
+          village                   : a.village,
+        }
+      })
+      this.setState({
+        downloadData : downloadData
+      },()=>{
+        console.log("this.state.downloadData",this.state.downloadData)
+      })    
+    })
+    .catch(function(error){
+      console.log("error = ",error);
+    }); 
   }
   getAvailableFamilyId(center_ID){
     if(center_ID){
@@ -1050,6 +1092,7 @@ class Beneficiary extends Component{
                           tableObjects         ={this.state.tableObjects} 
                           filterData           ={this.state.propsdata}
                           getSearchText        ={this.getSearchText.bind(this)}
+                          getDownloadData      ={this.getDownloadData.bind(this)}
                         /> 
                       </div>
                     </div>

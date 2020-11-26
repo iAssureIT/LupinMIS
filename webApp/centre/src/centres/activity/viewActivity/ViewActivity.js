@@ -8,7 +8,7 @@ import 'bootstrap/js/tab.js';
 import 'react-table/react-table.css'; 
 
 import Loader                 from "../../../common/Loader.js";
-import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../../coreAdmin/IAssureTable/IAssureITTable.jsx";
 import "./ViewActivity.css";
 
 class ViewActivity extends Component{
@@ -198,10 +198,13 @@ class ViewActivity extends Component{
             projectCategoryType        : a.projectCategoryType,
             projectName                : a.projectName==='all'?'-':a.projectName,
             date                       : moment(a.date).format('DD-MM-YYYY'),
-            // date                       : a.date,
-            place                      : a.place,
+            district                   : a.district,
+            block                      : a.block,
+            village                    : a.village,
+            location                   : a.location,
             sectorName                 : a.sectorName,
-            activity                   : a.activity,
+            activityName               : a.activityName,
+            typeofactivity             : a.typeofactivity,
             subactivityName            : a.subactivityName,
             unit                       : a.unit,
             unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
@@ -222,12 +225,12 @@ class ViewActivity extends Component{
         if(inputGetData.appendArray){
           this.setState({
             tableData    : this.state.tableData.concat(newTableData),
-            downloadData : this.state.downloadData.concat(newDownloadData)
+            // downloadData : this.state.downloadData.concat(newDownloadData)
           })              
         }else{
           this.setState({
             tableData    : newTableData,
-            downloadData : newDownloadData
+            // downloadData : newDownloadData
           })                            
         }
       })
@@ -246,6 +249,63 @@ class ViewActivity extends Component{
           .catch(function(error){      
             console.log("error = ",error); 
           });
+    }
+  }
+
+  getDownloadData(year){ 
+    if(year){
+      var inputGetAllData = {
+        "sector_ID"      : "all",
+        "activity_ID"    : "all",
+        "subactivity_ID" : "all",
+        "typeofactivity" : "all",
+        "startRange"     : "all",
+        "limitRange"     : "all",
+        "year"           : year,
+        "center_ID"      : this.state.center_ID,
+      }
+      if(inputGetAllData){
+        axios.post('/api/activityReport/filterlist',inputGetAllData)
+            .then((response)=>{
+              console.log('response',response)
+              var newDownloadData = response.data.data.map((a, i)=>{
+                return {
+                  _id                        : a._id,
+                  projectCategoryType        : a.projectCategoryType,
+                  projectName                : a.projectName==='all'?'-':a.projectName,
+                  date                       : moment(a.date).format('DD-MM-YYYY'),
+                  district                   : a.district,
+                  block                      : a.block,
+                  village                    : a.village,
+                  location                   : a.location,
+                  sectorName                 : a.sectorName,
+                  activityName               : a.activityName,
+                  typeofactivity             : a.typeofactivity,
+                  subactivityName            : a.subactivityName,
+                  unit                       : a.unit,
+                  unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+                  qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+                  totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+                  numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+                  LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+                  NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+                  bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+                  govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+                  directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+                  indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+                  other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+                  remark                     : a.remark,
+                }
+              })
+
+              this.setState({
+                downloadData : newDownloadData
+              })                            
+            })
+            .catch(function(error){      
+              console.log("error = ",error); 
+            });
+      }
     }
   }
 
@@ -488,6 +548,7 @@ class ViewActivity extends Component{
           "year"           :  this.state.year,
         }
         this.getData(inputGetData);
+        this.getDownloadData(this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -649,6 +710,7 @@ class ViewActivity extends Component{
                       filterData           ={this.state.propsdata}
                       viewTable            = {true}
                       viewLink             = "activityReportView"
+                      getDownloadData      ={this.getDownloadData.bind(this)}
                     /> 
                   
                   </div> 
