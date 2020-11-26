@@ -2,7 +2,7 @@ import React, { Component }   from 'react';
 import axios                  from 'axios';
 import swal                   from 'sweetalert';
 import _                      from 'underscore';
-import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureTable.jsx";
+import IAssureTable           from "../../coreAdmin/IAssureTable/IAssureITTable.jsx";
 import Loader                 from "../../common/Loader.js";
 import BulkUpload             from "../bulkupload/BulkUpload.js";
 import $                      from 'jquery';
