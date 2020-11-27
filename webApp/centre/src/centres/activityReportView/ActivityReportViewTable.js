@@ -109,7 +109,7 @@ class ActivityReportView extends Component{
       axios
       .post('https://jsonplaceholder.typicode.com/posts',{annualPlanValues})
       .then(function(response){
-        console.log(response);
+        // console.log(response);
       })
       .catch(function(error){
         console.log(error);
@@ -124,7 +124,7 @@ class ActivityReportView extends Component{
       url: '/api/centers/'+id,
     }).then((response)=> {
       var editData = response.data[0];
-      console.log('editData',editData);
+      // console.log('editData',editData);
       editData.villagesCovered.map((data, i)=>{
         this.setState({
           [data.village] : true

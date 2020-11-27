@@ -17,7 +17,7 @@ var sum = 0;
 class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
-	    console.log('this.props',this.props)
+	    // console.log('this.props',this.props)
 		this.state = {
 			"totalDataCount" 	    	: props && props.dataCount ? props.dataCount : 0,
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
@@ -88,7 +88,7 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    console.log('this.props.downloadData',this.props.downloadData)
+	    // console.log('this.props.downloadData',this.props.downloadData)
 	    this.setState({
 		    center_ID    	: center_ID,
 		    centerName   	: centerName,
@@ -543,7 +543,7 @@ class IAssureTable extends Component {
 		                : null
 		            }   
 
-                	{console.log("this.state.downloadDataaaaaaaaaaaaaa",this.state.downloadData,!this.state.downloadData)}
+                	{/*console.log("this.state.downloadDataaaaaaaaaaaaaa",this.state.downloadData,!this.state.downloadData)*/}
 		            {/*console.log("this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length > 0  && this.state.downloadData.length ===0",this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length > 0  && this.state.downloadData.length ===0)*/}
 		            {/*console.log("this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData  && this.state.downloadData.length ===0",this.state.tableData , this.state.id , this.state.tableName , this.state.tableData.length !== 0 , this.state.downloadData.length ===0)*/}
 			       

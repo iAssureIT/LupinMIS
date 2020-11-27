@@ -35,7 +35,7 @@ class FilewiseBeneficiaryActivityList extends Component{
       }
       axios.post('/api/activityReport/get/beneficiaryfiles', data)
       .then((response)=>{
-        console.log(response.data);
+        // console.log(response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName: a._id !== null ? a._id : "Manual", 
@@ -54,7 +54,7 @@ class FilewiseBeneficiaryActivityList extends Component{
     getCount(){
       axios.get('/api/activityReport/get/beneficiaryFiles/count/'+localStorage.getItem('center_ID'))
       .then((response)=>{
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           dataCount : response.data
         })

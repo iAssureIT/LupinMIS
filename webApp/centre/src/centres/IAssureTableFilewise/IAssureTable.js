@@ -16,7 +16,7 @@ var sum = 0;
 class IAssureTable extends Component { 
 	constructor(props){
 		super(props);
-	    console.log('this.props',this.props)
+	    // console.log('this.props',this.props)
 		this.state = {
 			"dataCount" 				: props && props.dataCount ? props.dataCount : [],
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
@@ -85,7 +85,7 @@ class IAssureTable extends Component {
 	    $("html,body").scrollTop(0); 
 	    const center_ID = localStorage.getItem("center_ID");
 	    const centerName = localStorage.getItem("centerName");
-	    console.log('this.props',this.props)
+	    // console.log('this.props',this.props)
 	    this.setState({
 	      	center_ID    : center_ID,
 	      	centerName   : centerName,
@@ -357,7 +357,6 @@ class IAssureTable extends Component {
 		});
 	}
 	getStartEndNum(event){	
-		// console.log('getStartEndNum');	
 		var limitRange = $(event.target).attr('id').split('|')[0];
 		var limitRange2     = parseInt(limitRange);
 		var startRange = parseInt($(event.target).attr('id').split('|')[1]);

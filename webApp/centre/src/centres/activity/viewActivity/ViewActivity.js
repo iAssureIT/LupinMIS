@@ -267,7 +267,7 @@ class ViewActivity extends Component{
       if(inputGetAllData){
         axios.post('/api/activityReport/filterlist',inputGetAllData)
             .then((response)=>{
-              console.log('response',response)
+              // console.log('response',response)
               var newDownloadData = response.data.data.map((a, i)=>{
                 return {
                   _id                        : a._id,

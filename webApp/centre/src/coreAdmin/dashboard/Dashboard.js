@@ -389,7 +389,7 @@ export default class Dashboard extends Component{
       $(".fullpageloader").show();
       axios.get('/api/reports/center_wise_Achievements/'+startDate+'/'+endDate)
       .then((response)=>{
-        console.log('getCenterwiseAchievement_Data======',response);
+        // console.log('getCenterwiseAchievement_Data======',response);
         $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {

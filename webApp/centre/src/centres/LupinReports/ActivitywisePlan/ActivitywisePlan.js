@@ -388,7 +388,7 @@ class ActivitywisePlan extends Component{
           $(".fullpageloader").show();
           axios.get(url)
             .then((response)=>{
-              console.log('response',response);
+              // console.log('response',response);
               $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
                 return {
@@ -415,7 +415,7 @@ class ActivitywisePlan extends Component{
                         remark                         : (a.remark),
                     }
               })
-              console.log("tableData",tableData.length)
+              // console.log("tableData",tableData.length)
               this.setState({
                 tableData : tableData
               })
@@ -432,7 +432,7 @@ class ActivitywisePlan extends Component{
           axios.get(url)
             .then((response)=>{
                 $(".fullpageloader").hide();
-                console.log("resp",response);
+                // console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
                   // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")
                   return {

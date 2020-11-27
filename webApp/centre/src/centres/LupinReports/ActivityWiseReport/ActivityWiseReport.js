@@ -284,7 +284,7 @@ class ActivityWiseReport extends Component{
     }
     selectprojectCategoryType(event){
         event.preventDefault();
-        console.log(event.target.value)
+        // console.log(event.target.value)
         var projectCategoryType = event.target.value;
         this.setState({
             projectCategoryType : projectCategoryType,
