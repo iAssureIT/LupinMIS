@@ -140,8 +140,8 @@ export default class Dashboard extends Component{
         NABARD            : "NABARD",
         bankLoan          : "Bank Loan",
         directCC          : "DirectCC",
-        govtscheme        : "Govt.",
         indirectCC        : "IndirectCC",
+        govtscheme        : "Govt.",
         other             : "Other",
       },
     }
@@ -402,8 +402,8 @@ export default class Dashboard extends Component{
             NABARD            : a.NABARD,
             bankLoan          : a.bankLoan,
             directCC          : a.directCC,
-            govtscheme        : a.govtscheme,
             indirectCC        : a.indirectCC,
+            govtscheme        : a.govtscheme,
             other             : a.other,
             total             : a.total,
           }

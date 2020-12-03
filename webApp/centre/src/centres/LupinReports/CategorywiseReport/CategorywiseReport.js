@@ -213,34 +213,31 @@ class CategorywiseReport extends Component{
     }
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village){        
-    if(center_ID){
-      if( startDate && endDate && center_ID && selectedDistrict && block  && village){
-        $(".fullpageloader").show();
-        axios.get('/api/report/report_category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village)
-        .then((response)=>{
-          $(".fullpageloader").hide();
-          console.log("resp",response);
-            var tableData = response.data.map((a, i)=>{
-            return {
-              _id             : a._id,
-              srNo            : a.srNo,
-              categoryName    : a.categoryName,
-              reachCount      : a.reachCount,
-              upgraded        : a.upgraded,
-            }
-          })
-          this.setState({
-            tableData : tableData
-          },()=>{
-          })
-        })
-        .catch(function(error){  
-          console.log("error = ",error.message);
-          if(error.message === "Request failed with status code 500"){
-              $(".fullpageloader").hide();
+    if(startDate && endDate && center_ID && selectedDistrict && block  && village){
+      $(".fullpageloader").show();
+      axios.get('/api/report/report_category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village)
+      .then((response)=>{
+        $(".fullpageloader").hide();
+        // console.log("resp",response);
+        var tableData = response.data.map((a, i)=>{
+          return {
+            _id             : a._id,
+            srNo            : a.srNo,
+            categoryName    : a.categoryName,
+            reachCount      : a.reachCount,
+            upgraded        : a.upgraded,
           }
-        });
-      }
+        })
+        this.setState({
+          tableData : tableData
+        })
+      })
+      .catch(function(error){  
+        console.log("error = ",error.message);
+        if(error.message === "Request failed with status code 500"){
+            $(".fullpageloader").hide();
+        }
+      });
     }
   }
   handleFromChange(event){

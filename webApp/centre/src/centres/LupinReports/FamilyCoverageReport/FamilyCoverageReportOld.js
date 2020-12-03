@@ -6,6 +6,7 @@ import _                    from 'underscore';
 import jQuery               from 'jquery';
 import moment               from 'moment';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 
 import "./FamilyCoverageReport.css"
@@ -1133,6 +1134,18 @@ class FamilyCoverageReport extends Component{
                                   </th>
                                   <th id="" className="umDynamicHeader srpadd textAlignLeft ">
                                   </th>
+                                  {/*<th id="village" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col19">Village</div>
+                                    <span id="village" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="block" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col20">Block</div>
+                                    <span id="block" className="fa fa-sort tableSort"></span>
+                                  </th>
+                                  <th id="district" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col21">District</div>
+                                    <span id="district" className="fa fa-sort tableSort"></span>
+                                  </th>*/}
                                 </tr>
                               </thead>
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1152,7 +1165,10 @@ class FamilyCoverageReport extends Component{
                                           { 
                                             sectorLength !== 0 && value.sectorData ?
                                               Object.entries(value.sectorData).map(([key, value1], index)=> {
+                                              // console.log("value1=====================",value1[0])
+                                              // console.log("value1.isUpgraded",value1.isUpgraded)
                                                 return(
+
                                                   <tr className="tableRow" key={index}>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}> {value1.district}</div></td>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}> {value1.block}</div></td>
@@ -1176,7 +1192,11 @@ class FamilyCoverageReport extends Component{
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {value1.DirectCC}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {value1.IndirectCC}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {value1.Other}</div></td>
-                                                  </tr>                                                 
+                                                    {/*<td className=""><div className="col19">{value1.village}</div></td>
+                                                    <td className=""><div className="col20">{value1.block}</div></td>
+                                                    <td className=""><div className="col21">{value1.district}</div></td>*/}
+                                                  </tr>
+                                                 
                                                 )
                                               })
                                             : null

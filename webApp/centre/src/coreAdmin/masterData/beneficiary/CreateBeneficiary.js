@@ -407,7 +407,7 @@ class Beneficiary extends Component{
         method: 'get',
         url: '/api/families/list/'+this.state.center_ID,
       }).then((response)=> {
-      console.log("availableFamiliesresponse", response);
+      // console.log("availableFamiliesresponse", response);
           this.setState({
             availableFamilies : response.data
           })

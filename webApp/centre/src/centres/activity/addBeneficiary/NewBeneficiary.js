@@ -74,10 +74,10 @@ class NewBeneficiary extends Component{
   }
   getData(startRange, limitRange, center_ID, district, block, village){
     if(center_ID && district && block && village){
-    // console.log(center_ID, district, block, village)
+    console.log(center_ID, district, block, village)
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
       .then((response)=>{
-        // console.log('bbbbbbbbbbbbbbbbbbbresponse', response.data.length);
+        console.log('bbbbbbbbbbbbbbbbbbbresponse', response.data.length);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,

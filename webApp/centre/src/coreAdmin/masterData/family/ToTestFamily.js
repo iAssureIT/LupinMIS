@@ -78,6 +78,7 @@ class Family extends Component{
         surnameOfFH           : "Surname",
         firstNameOfFH         : "FirstName",
         middleNameOfFH        : "MiddleName",
+        isUpgraded            : "Upgraded",        
         FHGender              : "Gender",
         FHYearOfBirth         : "Birth Year",
         uidNumber             : "UID Number",
@@ -152,6 +153,7 @@ class Family extends Component{
     .catch(function(error){
     });
   }
+
   getData(inputGetData){ 
     // console.log("inputGetData",inputGetData);
     this.setState({
@@ -173,7 +175,7 @@ class Family extends Component{
             surnameOfFH           : a.surnameOfFH,
             firstNameOfFH         : a.firstNameOfFH,
             middleNameOfFH        : a.middleNameOfFH,
-            isUpgraded            : a.isUpgraded,
+            isUpgraded            : a.isUpgraded,        
             FHGender              : a.FHGender,
             FHYearOfBirth         : a.FHYearOfBirth,
             uidNumber             : a.uidNumber,
@@ -204,6 +206,53 @@ class Family extends Component{
       }); 
     }
   }
+  getDownloadData(){ 
+    var inputGetAllData = {
+      "center_ID"       : this.state.center_ID,
+      "caste"           : "all",
+      "district"        : "all",
+      "blocks"          : "all",
+      "village"         : "all", 
+      "specialCategory" : "all",
+      "landCategory"    : "all",
+      "incomeCategory"  : "all",
+      "searchText"      : "all",
+      "startRange"      : "all",
+      "limitRange"      : "all"
+    }
+    axios.post('/api/families/get/family/list',inputGetAllData)
+      .then((response)=>{
+        console.log('response',response)
+        var downloadData = response.data.map((a, i)=>{
+          return {
+            _id                   : a._id,
+            familyID              : "<div class= 'noWrapText'>" + a.familyID + "</div>",
+            surnameOfFH           : a.surnameOfFH,
+            firstNameOfFH         : a.firstNameOfFH,
+            middleNameOfFH        : a.middleNameOfFH,
+            isUpgraded            : a.isUpgraded,        
+            FHGender              : a.FHGender,
+            FHYearOfBirth         : a.FHYearOfBirth,
+            uidNumber             : a.uidNumber,
+            contactNumber         : a.contactNumber,
+            caste                 : a.caste,
+            landCategory          : a.landCategory,
+            incomeCategory        : a.incomeCategory,
+            specialCategory       : a.specialCategory,
+            dist                  : a.dist,
+            block                 : a.block,
+            village               : a.village,
+          }
+        })
+        this.setState({
+          downloadData : downloadData
+        })                            
+      
+      })    
+      .catch(function(error){      
+        console.log("error"+error);
+      }); 
+  }
 
   render() {     
     var hidden = {
@@ -228,7 +277,8 @@ class Family extends Component{
                   </div>
                    
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <IAssureTable 
+                     
+                        <IAssureTable 
                           tableName            = "Family"
                           id                   = "Family"
                           downloadtableHeading ={this.state.downloadtableHeading}
@@ -240,6 +290,7 @@ class Family extends Component{
                           getData              ={this.getData.bind(this)}
                           tableObjects         ={this.state.tableObjects} 
                           filterData           ={this.state.propsdata}
+                          getDownloadData      ={this.getDownloadData.bind(this)}
                         /> 
                   </div>
                 </div>              

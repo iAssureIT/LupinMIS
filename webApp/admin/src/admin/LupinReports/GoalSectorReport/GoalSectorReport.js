@@ -232,7 +232,7 @@ class GoalSectorReport extends Component{
   }  
   getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName, selectedDistrict){
     if(center_ID && beneficiaryType && goalType && goalName){
-      // $(".fullpageloader").show();
+      $(".fullpageloader").show();
       // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
       if(center_ID==="all"){
         var url=('/api/reports/goal/'+startDate+'/'+endDate+'/'+"all"+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
@@ -241,8 +241,8 @@ class GoalSectorReport extends Component{
       }  
       axios.get(url)
       .then((response)=>{
-        // $(".fullpageloader").hide();
-        console.log("resp",response);
+        $(".fullpageloader").hide();
+        // console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                         : a._id,           
