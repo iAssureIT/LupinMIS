@@ -777,6 +777,7 @@ class ActivityTypeA extends Component{
             "activityId"            : editData.activity_ID,
           }, ()=>{
             // console.log("this.state.selectedBeneficiaries",this.state.selectedBeneficiaries);
+            this.getAvailableSectors()
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)

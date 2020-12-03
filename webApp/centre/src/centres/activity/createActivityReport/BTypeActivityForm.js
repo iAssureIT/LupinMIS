@@ -713,7 +713,8 @@ class ActivityTypeB extends Component{
             "sectorId"              : editData.sector_ID,
             "activityId"            : editData.activity_ID,
           }, ()=>{
-            // console.log("this.state.selectedBeneficiaries",this.state.selectedBeneficiaries);
+            // console.log("this.state.sector",this.state.sector);
+            this.getAvailableSectors();
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
@@ -840,7 +841,6 @@ class ActivityTypeB extends Component{
       if(inputGetAllData){
         axios.post('/api/activityReport/filterlist',inputGetAllData)
             .then((response)=>{
-              console.log('response',response)
               var newDownloadData = response.data.data.map((a, i)=>{
                 return {
                   _id                        : a._id,
@@ -1647,6 +1647,7 @@ class ActivityTypeB extends Component{
                               <div className=" col-lg-12 col-sm-12 col-xs-12  boxHeight ">
                                 <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
                                   <label className="formLable">Sector<span className="asterix">*</span></label>
+                                      {/*this.state.sector*/}
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                     <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
                                       <option disabled="disabled" selected={true}>-- Select --</option>
