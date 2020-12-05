@@ -1389,7 +1389,7 @@ class PlanDetails extends Component{
     axios
     .get(fileDetailUrl+this.state.center_ID+"/"+fileName)
     .then((response)=> {
-      // console.log(" response.data.failedRecords", response.data.failedRecords);
+      console.log(" response.data.failedRecords", response);
       // console.log(" response.data.goodrecords", response.data.goodrecords);
       $('.fullpageloader').hide();  
       if (response) {
@@ -1400,27 +1400,27 @@ class PlanDetails extends Component{
         });
         var tableData = response.data.goodrecords.map((a, i)=>{ 
           return{
-            "month"                : a.month        ? a.month    : '-',
-            "year"                 : a.year        ? a.year    : '-',
+            "month"                : a.month                      ? a.month    : '-',
+            "year"                 : a.year                       ? a.year    : '-',
             "projectCategoryType"  : a.projectCategoryType        ? a.projectCategoryType    : '-',
-            "projectName"          : a.projectName==="all"  ? '-' : a.projectName,
-            "sectorName"           : a.sectorName        ? a.sectorName    : '-',
-            "activityName"         : a.activityName        ? a.activityName    : '-',
-            "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                 : a.unit     ? a.unit : '-',
-            "physicalUnit"         : a.physicalUnit     ? a.physicalUnit : 0,
-            "unitCost"             : a.unitCost     ? a.unitCost : 0,
-            "totalBudget"          : a.totalBudget     ? a.totalBudget : 0,
-            "noOfBeneficiaries"    : a.noOfBeneficiaries     ? a.noOfBeneficiaries : 0,
-            "noOfFamilies"         : a.noOfFamilies     ? a.noOfFamilies : 0,
-            "LHWRF"                : a.LHWRF ? a.LHWRF : 0,
-            "NABARD"               : a.NABARD ? a.NABARD : 0, 
-            "bankLoan"             : a.bankLoan     ? a.bankLoan : 0, 
-            "govtscheme"           : a.govtscheme     ? a.govtscheme : 0,
-            "directCC"             : a.directCC     ? a.directCC : 0,
-            "indirectCC"           : a.indirectCC     ? a.indirectCC : 0,
-            "other"                : a.other     ? a.other : 0,
-            "remark"               : a.remark     ? a.remark : '-'
+            "projectName"          : a.projectName==="all"        ? '-' : a.projectName,
+            "sectorName"           : a.sectorName                 ? a.sectorName    : '-',
+            "activityName"         : a.activityName               ? a.activityName    : '-',
+            "subactivityName"      : a.subactivityName            ? a.subactivityName : '-',
+            "unit"                 : a.unit                       ?  a.unit : '-',
+            "physicalUnit"         : a.physicalUnit               ? a.physicalUnit : 0,
+            "unitCost"             : a.unitCost                   ? a.unitCost : 0,
+            "totalBudget"          : a.totalBudget                ? a.totalBudget : 0,
+            "noOfBeneficiaries"    : a.noOfBeneficiaries          ? a.noOfBeneficiaries : 0,
+            "noOfFamilies"         : a.noOfFamilies               ? a.noOfFamilies : 0,
+            "LHWRF"                : a.LHWRF                      ? a.LHWRF : 0,
+            "NABARD"               : a.NABARD                     ? a.NABARD : 0, 
+            "bankLoan"             : a.bankLoan                   ? a.bankLoan : 0, 
+            "govtscheme"           : a.govtscheme                 ? a.govtscheme : 0,
+            "directCC"             : a.directCC                   ? a.directCC : 0,
+            "indirectCC"           : a.indirectCC                 ? a.indirectCC : 0,
+            "other"                : a.other                      ? a.other : 0,
+            "remark"               : a.remark                     ? a.remark : '-'
           }
         })
         var failedRecordsTable = response.data.failedRecords.map((a, i)=>{
@@ -1428,25 +1428,25 @@ class PlanDetails extends Component{
             // "month"                : a.month        ? a.month    : '-',
             // "year"                 : a.year        ? a.year    : '-',
             "programCategory"      : a.programCategory        ? a.programCategory    : '-',
-            "projectName"          : a.projectName==="all"  ? '-' : a.projectName,
-            "sectorName"           : a.sectorName        ? a.sectorName    : '-',
-            "activityName"         : a.activityName        ? a.activityName    : '-',
-            "subactivityName"      : a.subactivityName     ? a.subactivityName : '-',
-            "unit"                 : a.unit     ? a.unit : '-',
-            "physicalUnit"         : a.physicalUnit     ? a.physicalUnit : 0,
-            "unitCost"             : a.unitCost     ? a.unitCost : 0,
-            "totalBudget"          : a.totalBudget     ? a.totalBudget : 0,
-            "noOfBeneficiaries"    : a.noOfBeneficiaries     ? a.noOfBeneficiaries : 0,
-            "noOfFamilies"         : a.noOfFamilies     ? a.noOfFamilies : 0,
-            "LHWRF"                : a.LHWRF ? a.LHWRF : 0,
-            "NABARD"               : a.NABARD ? a.NABARD : 0, 
-            "bankLoan"             : a.bankLoan     ? a.bankLoan : 0, 
-            "govtscheme"           : a.govtscheme     ? a.govtscheme : 0,
-            "directCC"             : a.directCC     ? a.directCC : 0,
-            "indirectCC"           : a.indirectCC     ? a.indirectCC : 0,
-            "other"                : a.other     ? a.other : 0,
-            "remark"               : a.remark     ? a.remark : '-',
-            "failedRemark"         : a.failedRemark     ? a.failedRemark : '-'
+            "projectName"          : a.projectName==="all"    ? '-' : a.projectName,
+            "sectorName"           : a.sectorName             ? a.sectorName    : '-',
+            "activityName"         : a.activityName           ? a.activityName    : '-',
+            "subactivityName"      : a.subactivityName        ? a.subactivityName : '-',
+            "unit"                 : a.unit                   ? a.unit : '-',
+            "physicalUnit"         : a.physicalUnit           ? a.physicalUnit : 0,
+            "unitCost"             : a.unitCost               ? a.unitCost : 0,
+            "totalBudget"          : a.totalBudget            ? a.totalBudget : 0,
+            "noOfBeneficiaries"    : a.Reach_Beneficiary      ? a.Reach_Beneficiary : 0,
+            "noOfFamilies"         : a.Upgradation_Family     ? a.Upgradation_Family : 0,
+            "LHWRF"                : a.LHWRF                  ? a.LHWRF : 0,
+            "NABARD"               : a.NABARD                 ? a.NABARD : 0, 
+            "bankLoan"             : a.bankLoan               ? a.bankLoan : 0, 
+            "govtscheme"           : a.govtscheme             ? a.govtscheme : 0,
+            "directCC"             : a.directCC               ? a.directCC : 0,
+            "indirectCC"           : a.indirectCC             ? a.indirectCC : 0,
+            "other"                : a.other                  ? a.other : 0,
+            "remark"               : a.remark                 ? a.remark : '-',
+            "failedRemark"         : a.failedRemark           ? a.failedRemark : '-'
           }
         })
         this.setState({

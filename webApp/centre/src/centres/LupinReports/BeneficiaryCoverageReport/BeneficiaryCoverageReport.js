@@ -1042,9 +1042,10 @@ class BeneficiaryCoverageReport extends Component{
                           : null
                         }   
                       </div>
+
                       <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="table-responsive mt" id="section-to-screen">
-                          <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="BeneficiaryCoverageReport">
+                        <div className="table-responsive commonHeaderFixTable mt" id="section-to-screen">
+                          <table className="table iAssureITtable-bordered fixedTable" id="BeneficiaryCoverageReport">
                             <thead className="tempTableHeader fixedHeader">
                               <tr className="tempTableHeader"></tr>
                               <tr className="">
@@ -1152,8 +1153,8 @@ class BeneficiaryCoverageReport extends Component{
                                   <div className="wrapWord col21">Other</div>
                                   <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                 </th>
-                                <th id="" className="umDynamicHeader srpadd textAlignLeft ">
-                                </th>
+                                {/*<th id="" className="umDynamicHeader srpadd textAlignLeft ">
+                                </th>*/}
                               </tr>
                             </thead>
                             <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1163,22 +1164,31 @@ class BeneficiaryCoverageReport extends Component{
                                   // console.log("value.sectorData",value.sectorData)
                                   var sectorLength=value.sectorData.length
                                     return(                                    
-                                      <tr className="tableRow"  key={i}>
-                                        <td className="textAlignCenter"><div className="colSr">{i+1}</div>
-                                        </td>
-                                        <td className=""><div className=" col1">{value._id.name_beneficiary}</div>
-                                        </td>
-                                        <td className=""><div className=" col2">{value._id.beneficiaryID}</div>
-                                        </td>
-                                        <td className=""><div className=" col2">{value._id.familyID}</div>
-                                        </td>
+                                      <React.Fragment>
                                         { 
                                           sectorLength !== 0 && value.sectorData ?
                                             Object.entries(value.sectorData).map(([key, value1], index)=> {
                                             // console.log("value1=====================",value1[0])
                                             // console.log("value1.uidNumber",value1.uidNumber)
-                                              return(                                                
-                                                <tr className="tableRow" key={index}>
+                                              return(         
+                                                <tr className="tableRow"  key={index}>
+                                                  {
+                                                    index === 0 
+                                                    ?
+                                                      <React.Fragment>
+                                                        <td rowspan={sectorLength} className="textAlignCenter"> 
+                                                          <div className="colSr">{i+1}</div>
+                                                        </td>
+                                                        <td rowspan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                                        </td>
+                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.beneficiaryID}</div>
+                                                        </td>
+                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
+                                                        </td>
+                                                      </React.Fragment>
+                                                    :
+                                                      null
+                                                  }                                       
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}>{value1.district}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}>{value1.block}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}>{value1.village}</div></td>
@@ -1206,7 +1216,7 @@ class BeneficiaryCoverageReport extends Component{
                                             })
                                           : null
                                         }
-                                      </tr>
+                                      </React.Fragment>
                                     )
                                   })
                                 :

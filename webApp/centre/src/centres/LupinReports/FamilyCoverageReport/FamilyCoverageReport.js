@@ -1026,9 +1026,10 @@ class FamilyCoverageReport extends Component{
                             : null
                           }   
                         </div>
+
                         <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div className="table-responsive mt" id="section-to-screen">
-                            <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="FamilyCoverageReport">
+                          <div className="table-responsive commonHeaderFixTable mt" id="section-to-screen">
+                            <table className="table iAssureITtable-bordered fixedTable" id="FamilyCoverageReport">
                               <thead className="tempTableHeader fixedHeader">
                                 <tr className="tempTableHeader"></tr>
                                 <tr className="">
@@ -1131,29 +1132,39 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col21">Other</div>
                                     <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
-                                  <th id="" className="umDynamicHeader srpadd textAlignLeft ">
-                                  </th>
+                                  // <th id="" className="umDynamicHeader srpadd textAlignLeft ">
+                                  // </th>
                                 </tr>
                               </thead>
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
-                                { this.state.tableData && this.state.tableData.length > 0?
-                                  this.state.tableData.map((value, i)=> {
-                                            // console.log("value",value,"i", i)
-                                    // console.log("value.sectorData",value.sectorData)
-                                    var sectorLength=value.sectorData.length
-                                      return(                                    
-                                        <tr className="tableRow"  key={i}>
-                                          <td className="textAlignCenter"><div className="colSr">{i+1}</div>
-                                          </td>
-                                          <td className=""><div className=" col1">{value._id.name_family}</div>
-                                          </td>
-                                          <td className=""><div className=" col2">{value._id.familyID}</div>
-                                          </td>
+                                { 
+                                  this.state.tableData && this.state.tableData.length > 0
+                                  ?
+                                    this.state.tableData.map((value, i)=> {
+                                      var sectorLength = value.sectorData.length;
+                                      return(    
+                                        <React.Fragment>
                                           { 
                                             sectorLength !== 0 && value.sectorData ?
                                               Object.entries(value.sectorData).map(([key, value1], index)=> {
+                                                // console.log("index",index)
                                                 return(
-                                                  <tr className="tableRow" key={index}>
+                                                  <tr className="tableRow"  key={index}>
+                                                    {
+                                                      index === 0 
+                                                      ?
+                                                        <React.Fragment>
+                                                          <td rowspan={sectorLength} className="textAlignCenter"> 
+                                                            <div className="colSr">{i+1}</div>
+                                                          </td>
+                                                          <td rowspan={sectorLength} className=""><div className=" col1">{value._id.name_family}</div>
+                                                          </td>
+                                                          <td rowspan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
+                                                          </td>
+                                                        </React.Fragment>
+                                                      :
+                                                        null
+                                                    }
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}> {value1.district}</div></td>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}> {value1.block}</div></td>
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}> {value1.village}</div></td>
@@ -1176,16 +1187,16 @@ class FamilyCoverageReport extends Component{
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {value1.DirectCC}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {value1.IndirectCC}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {value1.Other}</div></td>
-                                                  </tr>                                                 
+                                                  </tr>
                                                 )
                                               })
                                             : null
                                           }
-                                        </tr>
+                                        </React.Fragment>
                                       )
                                     })
                                   :
-                                  <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
+                                    <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
                                 } 
                               </tbody>
                             </table>

@@ -1,46 +1,56 @@
+.commonHeaderFixTable{
+  max-height: 40em;
+  margin-top: 10px !important;
+}
+#BeneficiaryCoverageReport {
+  width: 120%;
+}
+
+#BeneficiaryCoverageReport thead th { 
+  color: #333;
+  background: #c2c6c3 !important;
+  position: sticky;
+  border: 1px solid #e9e8e8;
+  top: 0;
+  z-index: 4;
+}
+
 .boldDiv{
 	font-weight: 700;	
 }
 .fixedTable .colSr{
-	width: 30px !important;
+	/*width: 30px !important;*/
 }
 #BeneficiaryCoverageReport .col1{
-	width: 150px !important;
-	white-space: pre-wrap!important;
+	white-space: nowrap !important;
 }
 #BeneficiaryCoverageReport .col2{
-	white-space: pre-wrap!important;
-	width: 90px !important;
+	white-space: nowrap !important;
 }
-#BeneficiaryCoverageReport .col3{
-	white-space: pre-wrap!important;
-	width: 80px !important;
+#BeneficiaryCoverageReport .col3, #BeneficiaryCoverageReport .col6, #BeneficiaryCoverageReport .col11{
+	white-space: nowrap !important;
 }
 #BeneficiaryCoverageReport .col4{
 	white-space: pre-wrap!important;
-	width: 80px !important;
 }
 #BeneficiaryCoverageReport .col9{
 	white-space: pre-wrap!important;
-	width: 120px !important;
+	width: 120px;
 } 
-#BeneficiaryCoverageReport .col5, #BeneficiaryCoverageReport .col6, #BeneficiaryCoverageReport .col7{
+#BeneficiaryCoverageReport .col5, #BeneficiaryCoverageReport .col7{
 	white-space: pre-wrap!important;
-	width: 80px !important;
 }
 #BeneficiaryCoverageReport .col10, #BeneficiaryCoverageReport .col8{
 	white-space: pre-wrap!important;
-	width: 120px !important;
+	width: 120px;
 }
-#BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
+/*#BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
 	white-space: pre-wrap!important;
-	width: 72px !important;
 }
 #BeneficiaryCoverageReport .col14{
 	white-space: pre-wrap!important;
-	width: 70px !important;
-} 
-#BeneficiaryCoverageReport .col12, #BeneficiaryCoverageReport .col11, #BeneficiaryCoverageReport .col13{	
+} */
+/*#BeneficiaryCoverageReport .col12, #BeneficiaryCoverageReport .col11, #BeneficiaryCoverageReport .col13{	
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
@@ -51,10 +61,9 @@
 #BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 62px !important;
-} 
+} */
 #BeneficiaryCoverageReport .uidNumber{
 	white-space: pre-wrap!important;
-	width: 85px !important;
 } 
 
 
@@ -96,7 +105,7 @@
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } */
-#BeneficiaryCoverageReport .scrollContent {
+/*#BeneficiaryCoverageReport .scrollContent {
   display: block;
   height: 450px;
   overflow: auto;
@@ -108,9 +117,9 @@
   overflow: auto;
   width: 100%
 }
-
+*/
 .tableRow > td {
-  	border: 1px solid #e9e8e8 !important;
+  	/*border: 1px solid #e9e8e8 !important;*/
 	/*border: 1px solid #fff6 !important;*/
     /*border: 1px solid #2f9c3f !important;*/
 	padding: 8px;

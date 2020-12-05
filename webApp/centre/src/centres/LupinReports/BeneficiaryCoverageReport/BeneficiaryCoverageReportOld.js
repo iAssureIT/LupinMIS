@@ -6,7 +6,6 @@ import _                    from 'underscore';
 import moment               from 'moment';
 import jQuery               from 'jquery';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import IAssureTable         from "../../../coreAdmin/IAssureTable/IAssureTable.jsx";
 import Loader               from "../../../common/Loader.js";
 import "./BeneficiaryCoverageReport.css"
 import "../../Reports/Reports.css";
@@ -18,9 +17,7 @@ class BeneficiaryCoverageReport extends Component{
         'reportData'        : {},
         'tableData'         : [],
         "startRange"        : 0,
-        "limitRange"        : 10000,
-        "center"            : "all",
-        "center_ID"         : "all",
+        "limitRange"        : 10000000,
         "sector"            : "all",
         "sector_ID"         : "all",
         "activity_ID"       : "all",
@@ -92,18 +89,29 @@ class BeneficiaryCoverageReport extends Component{
       this.getAvailableSectors = this.getAvailableSectors.bind(this);
   }
   componentDidMount(){
+    const center_ID = localStorage.getItem("center_ID");
+    const centerName = localStorage.getItem("centerName");
+    this.year();
+    this.setState({
+      center_ID    : center_ID,
+      centerName   : centerName,
+    },()=>{
+    this.getAvailableCenterData(this.state.center_ID);
+    // console.log("center_ID =",this.state.center_ID);
     this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
+    });
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.getAvailableProjects();
-    this.getAvailableCenters();
     this.getAvailableSectors();
-    this.year();
     // this.currentFromDate();
     // this.currentToDate();
     this.setState({
+      // "center"  : this.state.center[0],
+      // "sector"  : this.state.sector[0],
       tableData : this.state.tableData,
     },()=>{
-      this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
+    // console.log('DidMount', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
+    this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     })
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
@@ -117,43 +125,6 @@ class BeneficiaryCoverageReport extends Component{
     this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
     // console.log('componentWillReceiveProps', this.state.startDate, this.state.endDate,'center_ID', this.state.center_ID,'sector_ID', this.state.sector_ID)
   }
-
-  getAvailableCenters(){
-    axios({
-      method: 'get',
-      url: '/api/centers/list',
-    }).then((response)=> {
-      // console.log('response',response);
-      this.setState({
-        availableCenters : response.data,
-        // center           : response.data[0].centerName+'|'+response.data[0]._id
-      },()=>{
-      })
-    }).catch(function (error) {
-      console.log("error = ",error);
-     
-    });
-  } 
-  selectCenter(event){
-    var selectedCenter = event.target.value;
-    this.setState({
-      [event.target.name] : event.target.value,
-      selectedCenter : selectedCenter,
-    },()=>{
-      if(this.state.selectedCenter==="all"){
-        var center = this.state.selectedCenter;
-      }else{
-        var center = this.state.selectedCenter.split('|')[1];
-      }
-      // console.log('center', center);
-      this.setState({
-        center_ID :center,            
-      },()=>{
-        this.getData(this.state.startDate, this.state.endDate, this.state.selectedDistrict, this.state.block, this.state.village, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.center_ID, this.state.activity_ID, this.state.subActivity_ID, this.state.isUpgraded);
-        this.getAvailableCenterData(this.state.center_ID);
-      })
-    });
-  } 
   handleChange(event){
     event.preventDefault();
     this.setState({
@@ -320,7 +291,7 @@ class BeneficiaryCoverageReport extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;
@@ -342,7 +313,7 @@ class BeneficiaryCoverageReport extends Component{
       method: 'get',
       url: 'http://locations2.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
@@ -386,7 +357,7 @@ class BeneficiaryCoverageReport extends Component{
       // url: 'http://locations2.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
@@ -637,36 +608,42 @@ class BeneficiaryCoverageReport extends Component{
     // console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       // var endDate = "2021-06-17"
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
-        if(center_ID==="all"){
-          if(sector_ID==="all"){
-            var url = ('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+"all"+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
-          }else{
-            var url = ('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+"all"+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
-          }
-        }else{
-          if(sector_ID==="all"){
-            var url = ('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
-          }else{
-            var url = ('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
-          }
-        }
-        $(".fullpageloader").show();
-        axios.get(url)
-        .then((response)=>{
-          $(".fullpageloader").hide();
-          console.log("resp",response);
-          this.setState({
-            tableData : response.data
-          },()=>{
-            // console.log("resp",this.state.tableData)
+        if(sector_ID==="all"){
+          $(".fullpageloader").show();
+
+          axios.get('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
+          .then((response)=>{
+            $(".fullpageloader").hide();
+            console.log("resp",response);
+            this.setState({
+              tableData : response.data
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
           })
-        })
-        .catch(function(error){  
-          console.log("error = ",error.message);
-          if(error.message === "Request failed with status code 500"){
-              $(".fullpageloader").hide();
-          }
-        });
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
+          });
+        }else{
+          axios.get('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
+          .then((response)=>{
+            console.log("resp",response);
+            this.setState({
+              tableData : response.data
+            },()=>{
+              // console.log("resp",this.state.tableData)
+            })
+          })
+          .catch(function(error){  
+            console.log("error = ",error.message);
+            if(error.message === "Request failed with status code 500"){
+                $(".fullpageloader").hide();
+            }
+          });
+        }
       }
   }
   handleFromChange(event){
@@ -771,7 +748,8 @@ class BeneficiaryCoverageReport extends Component{
         swal("End date","To date should be greater than From date");
         this.refs.endDate.value="";
     }
-  }  
+  }
+  
   printTable(event){
     var DocumentContainer = document.getElementById('section-to-screen');
     var WindowObject = window.open('', 'PrintWindow', 'height=400,width=600');
@@ -781,6 +759,7 @@ class BeneficiaryCoverageReport extends Component{
     WindowObject.print();
     WindowObject.close();
   }
+
   year() {
     let financeYear;
     let today = moment();
@@ -845,25 +824,6 @@ class BeneficiaryCoverageReport extends Component{
                   </div>
                   <hr className="hr-head"/>
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
-                      <label className="formLable">Center</label><span className="asterix"></span>
-                      <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="center" >
-                        <select className="custom-select form-control inputBox" ref="center" name="center" value={this.state.center} onChange={this.selectCenter.bind(this)} >
-                          <option className="hidden" >-- Select --</option>
-                          <option value="all" >All</option>
-                          {
-                            this.state.availableCenters && this.state.availableCenters.length >0 ?
-                            this.state.availableCenters.map((data, index)=>{
-                              return(
-                                <option key={data._id} value={data.centerName+'|'+data._id}>{data.centerName}</option>
-                              );
-                            })
-                            :
-                            null
-                          }
-                        </select>
-                      </div>
-                    </div>
                     <div className=" col-lg-3 col-md-3 col-sm-12 col-xs-12 valid_box ">
                       <label className="formLable">Sector</label><span className="asterix"></span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
@@ -1066,7 +1026,7 @@ class BeneficiaryCoverageReport extends Component{
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">                        
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         { 
-                          this.state.tableData && this.state.tableData.length != 0 ?
+                          this.state.tableData && this.state.tableData.length !== 0 ?
                             <React.Fragment>
                               <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
                                 <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
@@ -1083,8 +1043,8 @@ class BeneficiaryCoverageReport extends Component{
                         }   
                       </div>
                       <div className="report-list-downloadMain col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="table-responsive commonHeaderFixTable mt" id="section-to-screen">
-                          <table className="table iAssureITtable-bordered fixedTable" id="BeneficiaryCoverageReport">
+                        <div className="table-responsive mt" id="section-to-screen">
+                          <table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id="BeneficiaryCoverageReport">
                             <thead className="tempTableHeader fixedHeader">
                               <tr className="tempTableHeader"></tr>
                               <tr className="">
@@ -1145,7 +1105,7 @@ class BeneficiaryCoverageReport extends Component{
                                   <span onClick={this.sort.bind(this)}  id="date" className="fa fa-sort tableSort"></span>
                                 </th>
                                 <th id="isUpgraded" className="umDynamicHeader srpadd textAlignLeft ">
-                                  <div className="wrapWord col11">Upgraded</div>
+                                  <div className="wrapWord col12">Upgraded</div>
                                   <span onClick={this.sort.bind(this)}  id="isUpgraded" className="fa fa-sort tableSort"></span>
                                 </th>
                                 <th id="uidNumber" className="umDynamicHeader srpadd textAlignLeft ">
@@ -1192,8 +1152,8 @@ class BeneficiaryCoverageReport extends Component{
                                   <div className="wrapWord col21">Other</div>
                                   <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                 </th>
-                                {/*<th id="" className="umDynamicHeader srpadd textAlignLeft ">
-                                </th>*/}
+                                <th id="" className="umDynamicHeader srpadd textAlignLeft ">
+                                </th>
                               </tr>
                             </thead>
                             <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1203,31 +1163,22 @@ class BeneficiaryCoverageReport extends Component{
                                   // console.log("value.sectorData",value.sectorData)
                                   var sectorLength=value.sectorData.length
                                     return(                                    
-                                      <React.Fragment>
+                                      <tr className="tableRow"  key={i}>
+                                        <td className="textAlignCenter"><div className="colSr">{i+1}</div>
+                                        </td>
+                                        <td className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                        </td>
+                                        <td className=""><div className=" col2">{value._id.beneficiaryID}</div>
+                                        </td>
+                                        <td className=""><div className=" col2">{value._id.familyID}</div>
+                                        </td>
                                         { 
                                           sectorLength !== 0 && value.sectorData ?
                                             Object.entries(value.sectorData).map(([key, value1], index)=> {
-                                            // console.log("value1===================",value1[0])
-                                            // console.log("value1.isUpgraded",value1.isUpgraded)
-                                              return(
-                                                <tr className="tableRow"  key={index}>
-                                                  {
-                                                    index === 0 
-                                                    ?
-                                                      <React.Fragment>
-                                                        <td rowspan={sectorLength} className="textAlignCenter"> 
-                                                          <div className="colSr">{i+1}</div>
-                                                        </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>
-                                                        </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.beneficiaryID}</div>
-                                                        </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
-                                                        </td>
-                                                      </React.Fragment>
-                                                    :
-                                                      null
-                                                  }      
+                                            // console.log("value1=====================",value1[0])
+                                            // console.log("value1.uidNumber",value1.uidNumber)
+                                              return(                                                
+                                                <tr className="tableRow" key={index}>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}>{value1.district}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}>{value1.block}</div></td>
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}>{value1.village}</div></td>
@@ -1255,7 +1206,7 @@ class BeneficiaryCoverageReport extends Component{
                                             })
                                           : null
                                         }
-                                      </React.Fragment>
+                                      </tr>
                                     )
                                   })
                                 :

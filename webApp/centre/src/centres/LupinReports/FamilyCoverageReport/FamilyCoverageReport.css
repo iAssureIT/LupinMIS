@@ -1,20 +1,35 @@
+.commonHeaderFixTable{
+  max-height: 40em;
+  margin-top: 10px !important;
+}
+#FamilyCoverageReport {
+  width: 120%;
+}
+
+#FamilyCoverageReport thead th { 
+  color: #333;
+  background: #c2c6c3 !important;
+  position: sticky;
+  border: 1px solid #e9e8e8;
+  top: 0;
+  z-index: 4;
+}
+
 .boldDiv{
 	font-weight: 700;	
 }
 .fixedTable .colSr{
-	width: 30px !important;
+	/*width: 30px !important;*/
 }
 #FamilyCoverageReport .col1{
-	width: 150px !important;
-	white-space: pre-wrap!important;
+	/*width: 100px !important;*/
+	white-space: nowrap !important;
 }
-#FamilyCoverageReport .col2{
-	white-space: pre-wrap!important;
-	width: 80px !important;
+#FamilyCoverageReport .col2, #FamilyCoverageReport .col11{
+	white-space: nowrap !important;
 }
 #FamilyCoverageReport .col3{
 	white-space: pre-wrap!important;
-	width: 80px !important;
 }
 #FamilyCoverageReport .col4{
 	white-space: pre-wrap!important;
@@ -32,7 +47,7 @@
 	white-space: pre-wrap!important;
 	width: 120px !important;
 }
-#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+/*#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 72px !important;
 }
@@ -41,14 +56,14 @@
 	width: 70px !important;
 } 
 #FamilyCoverageReport .col12, #FamilyCoverageReport .col11, #FamilyCoverageReport .col13{	
-	/*white-space: pre-wrap!important;*/
+	white-space: pre-wrap!important;
 	width: 72px !important;
 } 
 #FamilyCoverageReport .col15, #FamilyCoverageReport .col16, #FamilyCoverageReport .col17, #FamilyCoverageReport .col18, #FamilyCoverageReport .col19{
 	white-space: pre-wrap!important;
 	width: 62px !important;
-} 
-#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
+} */
+/*#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;
 	width: 62px !important;
 } 
@@ -68,10 +83,10 @@
   display: table;
   overflow: auto;
   width: 100%
-}
+}*/
 
 .tableRow > td {
-  	border: 1px solid #e9e8e8 !important;
+  	/*border: 1px solid #e9e8e8 !important;*/
 	/*border: 1px solid #fff6 !important;*/
     /*border: 1px solid #2f9c3f !important;*/
 	padding: 8px;
