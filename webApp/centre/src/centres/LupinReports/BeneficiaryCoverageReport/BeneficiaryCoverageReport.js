@@ -1153,8 +1153,6 @@ class BeneficiaryCoverageReport extends Component{
                                   <div className="wrapWord col21">Other</div>
                                   <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                 </th>
-                                {/*<th id="" className="umDynamicHeader srpadd textAlignLeft ">
-                                </th>*/}
                               </tr>
                             </thead>
                             <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1164,7 +1162,7 @@ class BeneficiaryCoverageReport extends Component{
                                   // console.log("value.sectorData",value.sectorData)
                                   var sectorLength=value.sectorData.length
                                     return(                                    
-                                      <React.Fragment>
+                                      <React.Fragment key={i}>
                                         { 
                                           sectorLength !== 0 && value.sectorData ?
                                             Object.entries(value.sectorData).map(([key, value1], index)=> {
@@ -1176,14 +1174,14 @@ class BeneficiaryCoverageReport extends Component{
                                                     index === 0 
                                                     ?
                                                       <React.Fragment>
-                                                        <td rowspan={sectorLength} className="textAlignCenter"> 
+                                                        <td rowSpan={sectorLength} className="textAlignCenter"> 
                                                           <div className="colSr">{i+1}</div>
                                                         </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                                        <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>
                                                         </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.beneficiaryID}</div>
+                                                        <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.beneficiaryID}</div>
                                                         </td>
-                                                        <td rowspan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
+                                                        <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
                                                         </td>
                                                       </React.Fragment>
                                                     :
