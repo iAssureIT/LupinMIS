@@ -22,8 +22,8 @@
 	/*width: 30px !important;*/
 }
 #FamilyCoverageReport .col1{
-	/*width: 100px !important;*/
-	white-space: nowrap !important;
+	width: 120px !important;
+	white-space: pre-wrap !important;
 }
 #FamilyCoverageReport .col2, #FamilyCoverageReport .col11{
 	white-space: nowrap !important;
@@ -46,6 +46,12 @@
 #FamilyCoverageReport .col10, #FamilyCoverageReport .col8{
 	white-space: pre-wrap!important;
 	width: 120px !important;
+}
+
+#FamilyCoverageReport .col22{
+	white-space: pre-wrap!important;
+	width: 150px;
+	text-align: left;
 }
 /*#FamilyCoverageReport .col20, #FamilyCoverageReport .col21{
 	white-space: pre-wrap!important;

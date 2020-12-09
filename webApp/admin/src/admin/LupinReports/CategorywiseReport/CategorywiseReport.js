@@ -50,7 +50,7 @@ class CategorywiseReport extends Component{
     this.setState({
       tableData : this.state.tableData,
     },()=>{
-      console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
+      // console.log(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
       this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.selectedDistrict, this.state.block, this.state.village);
     })
     this.handleFromChange = this.handleFromChange.bind(this);

@@ -22,7 +22,8 @@
 	/*width: 30px !important;*/
 }
 #BeneficiaryCoverageReport .col1{
-	white-space: nowrap !important;
+	width: 120px !important;
+	white-space: pre-wrap !important;
 }
 #BeneficiaryCoverageReport .col2{
 	white-space: nowrap !important;
@@ -43,6 +44,11 @@
 #BeneficiaryCoverageReport .col10, #BeneficiaryCoverageReport .col8{
 	white-space: pre-wrap!important;
 	width: 120px;
+}
+#BeneficiaryCoverageReport .col22{
+	white-space: pre-wrap!important;
+	width: 150px;
+	text-align: left;
 }
 /*#BeneficiaryCoverageReport .col20, #BeneficiaryCoverageReport .col21{
 	white-space: pre-wrap!important;

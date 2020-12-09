@@ -32,53 +32,7 @@ class BeneficiaryCoverageReport extends Component{
         "projectCategoryType": "all",
         "beneficiaryType"    : "all",
         "projectName"        : "all",
-        "twoLevelHeader"    : {
-            apply           : false,
-            firstHeaderData : [
-                {
-                    heading : 'Family Details',
-                    mergedColoums : 3,
-                    hide : false
-                }, 
-               
-                {
-                    heading : 'Activity Details',
-                    mergedColoums : 6,
-                     hide : false
-                },
-               
-            ]
-        },
-        "tableHeading"      : {         
-            "name_beneficiary"         : 'Family Head Name',     
-            "familyID"            : 'Family ID',
-            "projectCategoryType" : 'Project Category',
-            "projectName"         : 'Project Name',
-            "name"                : 'Activity',
-            // "sectorName"          : 'Sector',
-            // "activityName"        : 'Activity',
-            // "subactivityName"     : 'Subactivity',
-            "unit"                : "Unit",    
-            "unitCost"            : "Unit Cost",    
-            "quantity"            : "Quantity",    
-            "total"               : "Total",    
-            "LHWRF"               : "LHWRF",    
-            "NABARD"              : "NABARD",     
-            "Bank_Loan"           : "Bank_Loan",        
-            "Govt"                : "Govt",   
-            "DirectCC"            : "DirectCC",       
-            "IndirectCC"          : "IndirectCC",         
-            "Other"               : "Other",    
-            "village"             : 'Village',
-            "block"               : 'Block',
-            "district"            : 'District',
-                
-        },
-        "tableObjects"        : {
-          paginationApply     : false,
-          searchApply         : false,
-          downloadApply       : true,
-        },   
+       
     }
    
       window.scrollTo(0, 0);
@@ -1153,6 +1107,10 @@ class BeneficiaryCoverageReport extends Component{
                                   <div className="wrapWord col21">Other</div>
                                   <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                 </th>
+                                <th id="Remark" className="umDynamicHeader srpadd textAlignLeft ">
+                                  <div className="wrapWord col22">Remark</div>
+                                  <span onClick={this.sort.bind(this)}  id="Remark" className="fa fa-sort tableSort"></span>
+                                </th>
                               </tr>
                             </thead>
                             <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1199,16 +1157,17 @@ class BeneficiaryCoverageReport extends Component{
                                                   <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}>{value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
                                                   <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}>{value1.isUpgraded}</div></td>
                                                   <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv uidNumber"  : "uidNumber"}>{value1.uidNumber}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}>{value1.unitCost}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}>{value1.quantity}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}>{value1.total}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}>{value1.LHWRF}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}>{value1.NABARD}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}>{value1.Bank_Loan}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}>{value1.Govt}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}>{value1.DirectCC}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}>{value1.IndirectCC}</div></td>
-                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}>{value1.Other}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}>{(value1.unitCost === "-") ? value1.unitCost :(value1.unitCost).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}>{(value1.quantity === "-") ? value1.quantity :(value1.quantity).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}>{(value1.total).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}>{(value1.LHWRF).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}>{(value1.NABARD).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}>{(value1.Bank_Loan).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}>{(value1.Govt).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}>{(value1.DirectCC).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}>{(value1.IndirectCC).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}>{(value1.Other).toFixed(2)}</div></td>
+                                                  <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col22"  : "col22"}>{value1.remark}</div></td>
                                                 </tr>
                                               )
                                             })

@@ -20,8 +20,8 @@ class FamilyCoverageReport extends Component{
         'tableData'         : [],
         "startRange"        : 0,
         "limitRange"        : 10000,
-        "center"            : "all",
-        "center_ID"         : "all",
+        // "center"            : "all",
+        // "center_ID"         : "all",
         "sector"            : "all",
         "sector_ID"         : "all",
         "activity_ID"       : "all",
@@ -470,7 +470,7 @@ class FamilyCoverageReport extends Component{
   }
       
   getData(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID, activity_ID, subActivity_ID, isUpgraded){        
-    console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
+    // console.log(startDate, endDate, selectedDistrict, block, village, sector_ID, projectCategoryType, projectName, beneficiaryType, center_ID);
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(center_ID==="all"){
           if(sector_ID==="all"){
@@ -1187,6 +1187,10 @@ class FamilyCoverageReport extends Component{
                                     <div className="wrapWord col21">Other</div>
                                     <span onClick={this.sort.bind(this)}  id="Other" className="fa fa-sort tableSort"></span>
                                   </th>
+                                  <th id="Remark" className="umDynamicHeader srpadd textAlignLeft ">
+                                    <div className="wrapWord col22">Remark</div>
+                                    <span onClick={this.sort.bind(this)}  id="Remark" className="fa fa-sort tableSort"></span>
+                                  </th>
                                 </tr>
                               </thead>                              
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
@@ -1230,16 +1234,17 @@ class FamilyCoverageReport extends Component{
                                                     <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}> {value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {value1.isUpgraded}</div></td>
                                                     <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv uidNumber"  : "uidNumber"}>{value1.uidNumber}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {value1.unitCost}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}> {value1.quantity}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}> {value1.total}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}> {value1.LHWRF}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}> {value1.NABARD}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}> {value1.Bank_Loan}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}> {value1.Govt}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {value1.DirectCC}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {value1.IndirectCC}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {value1.Other}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {(value1.unitCost === "-") ? value1.unitCost :(value1.unitCost).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}> {(value1.quantity === "-") ? value1.quantity :(value1.quantity).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}> {(value1.total).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}> {(value1.LHWRF).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}> {(value1.NABARD).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}> {(value1.Bank_Loan).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}> {(value1.Govt).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {(value1.DirectCC).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {(value1.IndirectCC).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {(value1.Other).toFixed(2)}</div></td>
+                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col22"  : "col22"}>{(value1.remark)}</div></td>
                                                   </tr>
                                                 )
                                               })

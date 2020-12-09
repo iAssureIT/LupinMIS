@@ -842,6 +842,7 @@ class ActivityTypeB extends Component{
         axios.post('/api/activityReport/filterlist',inputGetAllData)
             .then((response)=>{
               var newDownloadData = response.data.data.map((a, i)=>{
+
                 return {
                   _id                        : a._id,
                   projectCategoryType        : a.projectCategoryType,
@@ -856,19 +857,21 @@ class ActivityTypeB extends Component{
                   typeofactivity             : a.typeofactivity,
                   subactivityName            : a.subactivityName,
                   unit                       : a.unit,
-                  unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                  qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                  totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                  numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                  LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                  NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                  bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                  govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                  directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                  indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                  other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+                  unitCost                   : this.addCommas(a.unitCost),
+                  quantity                   : this.addCommas(a.quantity),
+                  totalCost                  : this.addCommas(a.totalCost),
+                  numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries): 0,
+                  // numofBeneficiaries         : a.noOfBeneficiaries,
+                  LHWRF                      : this.addCommas(a.LHWRF),
+                  NABARD                     : this.addCommas(a.NABARD),
+                  bankLoan                   : this.addCommas(a.bankLoan),
+                  govtscheme                 : this.addCommas(a.govtscheme),
+                  directCC                   : this.addCommas(a.directCC),
+                  indirectCC                 : this.addCommas(a.indirectCC),
+                  other                      : this.addCommas(a.other),
                   remark                     : a.remark,
                 }
+   
               })
               this.setState({
                 downloadData : newDownloadData
