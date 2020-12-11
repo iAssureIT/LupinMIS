@@ -1,0 +1,97 @@
+
+API's
+1. Insert Type of center
+2. Update Type of center
+3. List Type of centers
+4. Delete Type of center
+5. Fetch Type of Center
+
+------------------------------------------------------------------------------------------
+                        1. Insert Type of center
+------------------------------------------------------------------------------------------
+
+    Method      : POST
+    
+    URL         : /api/typeofcenters
+
+    Input       : 
+                    {
+                        "typeofCenter"            : String,
+					    "createdBy"               : String, //should be _id of the user or null
+                    }
+
+    Output      : 
+                    {
+                        "message"	: "TYPE_OF_CENTER_CREATED",
+                        "ID"		: String
+                    }
+
+------------------------------------------------------------------------------------------
+                        2. Update Type of center
+------------------------------------------------------------------------------------------
+
+    Method      : PATCH
+    
+    URL         : /api/typeofcenters/update
+
+    Input       : 
+                    {
+                        "typeofCenter"            : String,
+                    }
+
+    Output      : 
+                    {
+                        "message"	: "TYPE_OF_CENTER_UPDATED",
+                    }
+                  
+------------------------------------------------------------------------------------------
+                        3. List Type of centers
+------------------------------------------------------------------------------------------
+
+    Method      : GET
+    
+    URL         : /api/typeofcenters/list
+
+    Input       :  - NA -
+                    
+
+    Output      : 
+                    {
+                        "typeofCenter"            : String,
+					    "createdBy"               : String,
+					    "createdAt"				  : String
+                    }
+                  
+------------------------------------------------------------------------------------------
+                        4. Delete Type of center
+------------------------------------------------------------------------------------------
+
+    Method      : DELETE
+    
+    URL         : /api/typeofcenters/:ID
+
+    Input       :  - NA -
+                    
+
+    Output      :   {
+                        "message"	: "TYPE_OF_CENTER_DELETED",
+                    }
+                   
+------------------------------------------------------------------------------------------
+                        5. Fetch Type of Center
+------------------------------------------------------------------------------------------
+
+    Method      : GET
+    
+    URL         : /api/typeofcenters/:ID
+
+    Input       :  - NA -
+                    
+
+    Output      : 
+                    {
+                        "typeofCenter"            : String,
+					    "createdBy"               : String,
+					    "createdAt"				  : String
+                    }
+                  

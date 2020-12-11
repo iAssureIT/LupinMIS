@@ -1,0 +1,473 @@
+List of Reports :
+
+1	Activity wise Annual Plan report 									- Done
+2	Activity wise Periodic Plan Report 									- Done
+3	Sector wise Periodic Plan Summary Reports 							- Done
+4	Sector wise Annual Plan Summary 									- Done
+5	Activity wise Annual completion Reports 							- Done
+6	Sector wise Annual Completion Report Summary 						- Done
+7	Activity wise periodic variance report (Physical & Financial) 		- Done
+8	Sector wise variance report (Physical & Financial) 					- Done
+9	Activity Wise Periodic Physical Variance Report 					- Done
+10	Geographical report (District/Block/Village) 						- Done
+11	Village wise family report 			 								- Done
+12	Category wise report  												- Done
+13	Upgraded beneficiary report 										-
+14	Progress of Reporting Month 										- Need to Discuss
+15	Source Wise Financial status 'Lakh' 								- Done
+16	Family Coverage 													- Done
+17	Centre Wise Overall Status 											- Done
+18	SDG Report 															- Done
+19	EMP Report 															- Done
+20	ADP Report 															- Done
+-----------------------------------------------------------------------------------------------------------
+/*********************************************
+
+Note : For All Center : use center_ID = "all"
+
+************************************************/
+1	Activity wise Annual Plan Report 
+2	Activity wise Periodic Plan Report
+5	Activity wise Annual completion Report
+7	Activity wise periodic variance report (Physical & Financial)
+9	Activity Wise Periodic Physical Variance report
+
+	Method 		: GET
+
+	URL			: /activity/:startDate/:endDate/:center_ID/:sector_ID
+
+	Input       : - NA -
+
+	OutPut 		: 
+					[
+						{
+							"name" 									: String,
+					        "unit"									: String,
+					        "annualPlan_physicalUnit"				: Number,
+					        "annualPlan_totalBudget"				: Number,
+					        "annualPlan_totalBudget_L" 				: Number,
+					        "annualPlan_LHWRF"						: Number,
+					        "annualPlan_LHWRF_L"					: Number,
+					        "annualPlan_NABARD"						: Number,
+					        "annualPlan_NABARD_L"					: Number,
+					        "annualPlan_Bank_Loan"					: Number,
+					        "annualPlan_Bank_Loan_L"					: Number,
+					        "annualPlan_govtscheme"					: Number,
+					        "annualPlan_govtscheme_L"				: Number,
+					        "annualPlan_directCC"					: Number,
+					        "annualPlan_directCC_L"					: Number,
+					        "annualPlan_indirectCC"					: Number,
+					        "annualPlan_indirectCC_L"				: Number,
+					        "annualPlan_other"						: Number,
+					        "annualPlan_other_L"					: Number,
+					        "annualPlan_remark"						: Number,
+					        "achievement_Reach"						: Number,
+					        "achievement_Upgradation"				: Number,
+					        "achievement_physcialUnit"				: Number,
+					        "achievement_totalExp"					: Number,
+					        "achievement_totalExp_L"				: Number,
+					        "achievement_LHWRF"						: Number,
+					        "achievement_LHWRF_L"					: Number,
+					        "achievement_NABARD"					: Number,
+					        "achievement_NABARD_L" 					: Number,
+					        "achievement_Bank_Loan"					: Number,
+					        "achievement_Bank_Loan_L"				: Number,
+					        "achievement_Direct"					: Number,
+					        "achievement_Direct_L"					: Number,
+					        "achievement_Indirect"					: Number,
+					        "achievement_Indirect_L"				: Number,
+					        "achievement_Govt"						: Number,
+					        "achievement_Govt_L"					: Number,
+					        "achievement_Other"						: Number,
+					        "achievement_Other_L"					: Number,
+					        "monthlyPlan_physicalUnit" 				: Number,
+					        "monthlyPlan_totalBudget"				: Number,
+					        "monthlyPlan_totalBudget_L"				: Number,
+					        "monthlyPlan_LHWRF"						: Number,
+					        "monthlyPlan_LHWRF_L"					: Number,
+					        "monthlyPlan_NABARD"					: Number,
+					        "monthlyPlan_NABARD_L"					: Number,
+					        "monthlyPlan_Bank_Loan"					: Number,
+					        "monthlyPlan_Bank_Loan_L"				: Number,
+					        "monthlyPlan_Indirect"					: Number,
+					        "monthlyPlan_Indirect_L"				: Number,
+					        "monthlyPlan_DirectCC"					: Number,
+					        "monthlyPlan_DirectCC_L"				: Number,
+					        "monthlyPlan_govtscheme"				: Number,
+					        "monthlyPlan_govtscheme_L"				: Number,
+					        "monthlyPlan_other"						: Number,
+					        "monthlyPlan_other_L"					: Number,
+					        "monthlyPlan_reach"						: Number,
+					        "monthlyPlan_familyUpgrade"				: Number,
+					        "variance_monthlyPlan_physicalUnit"		: Number,
+					        "variance_monthlyPlan_totalBudget"		: Number,
+					        "variance_monthlyPlan_LHWRF"			: Number,
+					        "variance_monthlyPlan_NABARD"			: Number,
+					        "variance_monthlyPlan_Bank_Loan"		: Number,
+					        "variance_monthlyPlan_Indirect"			: Number,
+					        "variance_monthlyPlan_DirectCC"			: Number,
+					        "variance_monthlyPlan_govtscheme"		: Number,
+					        "variance_monthlyPlan_other"			: Number,
+					        "variance_monthlyPlan_reach"			: Number,
+					        "variance_monthlyPlan_familyUpgrade"	: Number,
+					        "variance_monthlyPlan_totalBudget_L"	: Number,
+					        "variance_monthlyPlan_LHWRF_L"			: Number,
+					        "variance_monthlyPlan_NABARD_L"			: Number,
+					        "variance_monthlyPlan_Bank_Loan_L"		: Number,
+					        "variance_monthlyPlan_Indirect_L"		: Number,
+					        "variance_monthlyPlan_DirectCC_L"		: Number,
+					        "variance_monthlyPlan_govtscheme_l"		: Number,
+					        "variance_monthlyPlan_other_L"			: Number,
+						}
+					]
+
+3	Sector wise Periodic Plan Summary Report
+4	Sector wise Annual Plan Summary
+6	Sector wise Annual Completion Report Summary
+8	Sector wise variance report (Physical & Financial)
+16	Family Coverage
+
+	Method 		: GET
+
+	URL			: /api/report/sector/:startDate/:endDate/:center_ID
+
+	Input       : - NA -
+
+	OutPut 		: 
+					[
+						{
+							"name" 									: String,
+							"unit" 									: String,
+					        "annualPlan_physicalUnit"				: Number,
+					        "annualPlan_totalBudget"				: Number,
+					        "annualPlan_totalBudget_L" 				: Number,
+					        "annualPlan_LHWRF"						: Number,
+					        "annualPlan_LHWRF_L"					: Number,
+					        "annualPlan_NABARD"						: Number,
+					        "annualPlan_NABARD_L"					: Number,
+					        "annualPlan_Bank_Loan"					: Number,
+					        "annualPlan_Bank_Loan_L"					: Number,
+					        "annualPlan_govtscheme"					: Number,
+					        "annualPlan_govtscheme_L"				: Number,
+					        "annualPlan_directCC"					: Number,
+					        "annualPlan_directCC_L"					: Number,
+					        "annualPlan_indirectCC"					: Number,
+					        "annualPlan_indirectCC_L"				: Number,
+					        "annualPlan_other"						: Number,
+					        "annualPlan_other_L"					: Number,
+					        "annualPlan_remark"						: Number,
+					        "achievement_Reach"						: Number,
+					        "achievement_Upgradation"				: Number,
+					        "achievement_physcialUnit"				: Number,
+					        "achievement_totalExp"					: Number,
+					        "achievement_totalExp_L"				: Number,
+					        "achievement_LHWRF"						: Number,
+					        "achievement_LHWRF_L"					: Number,
+					        "achievement_NABARD"					: Number,
+					        "achievement_NABARD_L" 					: Number,
+					        "achievement_Bank_Loan"					: Number,
+					        "achievement_Bank_Loan_L"				: Number,
+					        "achievement_Direct"					: Number,
+					        "achievement_Direct_L"					: Number,
+					        "achievement_Indirect"					: Number,
+					        "achievement_Indirect_L"				: Number,
+					        "achievement_Govt"						: Number,
+					        "achievement_Govt_L"					: Number,
+					        "achievement_Other"						: Number,
+					        "achievement_Other_L"					: Number,
+					        "monthlyPlan_physicalUnit" 				: Number,
+					        "monthlyPlan_totalBudget"				: Number,
+					        "monthlyPlan_totalBudget_L"				: Number,
+					        "monthlyPlan_LHWRF"						: Number,
+					        "monthlyPlan_LHWRF_L"					: Number,
+					        "monthlyPlan_NABARD"					: Number,
+					        "monthlyPlan_NABARD_L"					: Number,
+					        "monthlyPlan_Bank_Loan"					: Number,
+					        "monthlyPlan_Bank_Loan_L"				: Number,
+					        "monthlyPlan_Indirect"					: Number,
+					        "monthlyPlan_Indirect_L"				: Number,
+					        "monthlyPlan_DirectCC"					: Number,
+					        "monthlyPlan_DirectCC_L"				: Number,
+					        "monthlyPlan_govtscheme"				: Number,
+					        "monthlyPlan_govtscheme_L"				: Number,
+					        "monthlyPlan_other"						: Number,
+					        "monthlyPlan_other_L"					: Number,
+					        "monthlyPlan_reach"						: Number,
+					        "monthlyPlan_familyUpgrade"				: Number,
+					        "variance_monthlyPlan_physicalUnit"		: Number,
+					        "variance_monthlyPlan_totalBudget"		: Number,
+					        "variance_monthlyPlan_LHWRF"			: Number,
+					        "variance_monthlyPlan_NABARD"			: Number,
+					        "variance_monthlyPlan_Bank_Loan"		: Number,
+					        "variance_monthlyPlan_Indirect"			: Number,
+					        "variance_monthlyPlan_DirectCC"			: Number,
+					        "variance_monthlyPlan_govtscheme"		: Number,
+					        "variance_monthlyPlan_other"			: Number,
+					        "variance_monthlyPlan_reach"			: Number,
+					        "variance_monthlyPlan_familyUpgrade"	: Number,
+					        "variance_monthlyPlan_totalBudget_L"	: Number,
+					        "variance_monthlyPlan_LHWRF_L"			: Number,
+					        "variance_monthlyPlan_NABARD_L"			: Number,
+					        "variance_monthlyPlan_Bank_Loan_L"		: Number,
+					        "variance_monthlyPlan_Indirect_L"		: Number,
+					        "variance_monthlyPlan_DirectCC_L"		: Number,
+					        "variance_monthlyPlan_govtscheme_l"		: Number,
+					        "variance_monthlyPlan_other_L"			: Number,
+						}
+					]
+
+10	Geographical report (District/Block/Village) 
+
+	Method 		: GET
+
+	URL			: /geographical/:startDate/:endDate/:center_ID/:district/:block/:village/:sector_ID
+
+	Input       : - NA -
+					
+
+	OutPut 		: 
+					[
+						{
+							"_id"						: String,
+					        "achievement_Reach"			: Number,
+					        "achievement_Upgradation"	: Number,
+					        "achievement_LHWRF"			: Number,
+					        "achievement_NABARD"		: Number,
+					        "achievement_Bank_Loan"		: Number,
+					        "achievement_Direct"		: Number,
+					        "achievement_Indirect"		: Number,
+					        "achievement_Govt"			: Number,
+					        "achievement_Other"			: Number
+						}
+					]
+
+17 	Centre Wise Overall Status
+
+	Method 		: GET
+
+	URL			: /center/:startDate/:endDate/:center_ID
+
+/center/:startDate/:endDate/center_ID/all
+/center/:startDate/:endDate/all/:centertype_ID
+/center/:startDate/:endDate/all/all
+
+	Input       : - NA -
+
+	OutPut 		: 
+					[
+						{
+							"name" 									: String,
+					        "unit"									: String,
+					        "annualPlan_physicalUnit"				: Number,
+					        "annualPlan_totalBudget"				: Number,
+					        "annualPlan_totalBudget_L" 				: Number,
+					        "annualPlan_LHWRF"						: Number,
+					        "annualPlan_LHWRF_L"					: Number,
+					        "annualPlan_NABARD"						: Number,
+					        "annualPlan_NABARD_L"					: Number,
+					        "annualPlan_Bank_Loan"					: Number,
+					        "annualPlan_Bank_Loan_L"					: Number,
+					        "annualPlan_govtscheme"					: Number,
+					        "annualPlan_govtscheme_L"				: Number,
+					        "annualPlan_directCC"					: Number,
+					        "annualPlan_directCC_L"					: Number,
+					        "annualPlan_indirectCC"					: Number,
+					        "annualPlan_indirectCC_L"				: Number,
+					        "annualPlan_other"						: Number,
+					        "annualPlan_other_L"					: Number,
+					        "annualPlan_remark"						: Number,
+					        "achievement_Reach"						: Number,
+					        "achievement_Upgradation"				: Number,
+					        "achievement_physcialUnit"				: Number,
+					        "achievement_totalExp"					: Number,
+					        "achievement_totalExp_L"				: Number,
+					        "achievement_LHWRF"						: Number,
+					        "achievement_LHWRF_L"					: Number,
+					        "achievement_NABARD"					: Number,
+					        "achievement_NABARD_L" 					: Number,
+					        "achievement_Bank_Loan"					: Number,
+					        "achievement_Bank_Loan_L"				: Number,
+					        "achievement_Direct"					: Number,
+					        "achievement_Direct_L"					: Number,
+					        "achievement_Indirect"					: Number,
+					        "achievement_Indirect_L"				: Number,
+					        "achievement_Govt"						: Number,
+					        "achievement_Govt_L"					: Number,
+					        "achievement_Other"						: Number,
+					        "achievement_Other_L"					: Number,
+					        "monthlyPlan_physicalUnit" 				: Number,
+					        "monthlyPlan_totalBudget"				: Number,
+					        "monthlyPlan_totalBudget_L"				: Number,
+					        "monthlyPlan_LHWRF"						: Number,
+					        "monthlyPlan_LHWRF_L"					: Number,
+					        "monthlyPlan_NABARD"					: Number,
+					        "monthlyPlan_NABARD_L"					: Number,
+					        "monthlyPlan_Bank_Loan"					: Number,
+					        "monthlyPlan_Bank_Loan_L"				: Number,
+					        "monthlyPlan_Indirect"					: Number,
+					        "monthlyPlan_Indirect_L"				: Number,
+					        "monthlyPlan_DirectCC"					: Number,
+					        "monthlyPlan_DirectCC_L"				: Number,
+					        "monthlyPlan_govtscheme"				: Number,
+					        "monthlyPlan_govtscheme_L"				: Number,
+					        "monthlyPlan_other"						: Number,
+					        "monthlyPlan_other_L"					: Number,
+					        "monthlyPlan_reach"						: Number,
+					        "monthlyPlan_familyUpgrade"				: Number,
+					        "variance_monthlyPlan_physicalUnit"		: Number,
+					        "variance_monthlyPlan_totalBudget"		: Number,
+					        "variance_monthlyPlan_LHWRF"			: Number,
+					        "variance_monthlyPlan_NABARD"			: Number,
+					        "variance_monthlyPlan_Bank_Loan"		: Number,
+					        "variance_monthlyPlan_Indirect"			: Number,
+					        "variance_monthlyPlan_DirectCC"			: Number,
+					        "variance_monthlyPlan_govtscheme"		: Number,
+					        "variance_monthlyPlan_other"			: Number,
+					        "variance_monthlyPlan_reach"			: Number,
+					        "variance_monthlyPlan_familyUpgrade"	: Number,
+					        "variance_monthlyPlan_totalBudget_L"	: Number,
+					        "variance_monthlyPlan_LHWRF_L"			: Number,
+					        "variance_monthlyPlan_NABARD_L"			: Number,
+					        "variance_monthlyPlan_Bank_Loan_L"		: Number,
+					        "variance_monthlyPlan_Indirect_L"		: Number,
+					        "variance_monthlyPlan_DirectCC_L"		: Number,
+					        "variance_monthlyPlan_govtscheme_l"		: Number,
+					        "variance_monthlyPlan_other_L"			: Number,
+						}
+					]
+
+11	Village wise family report
+
+	Note 		: For all sector set sector_ID = "all"
+
+	Method 		: GET
+
+	URL			: /village/:startDate/:endDate/:center_ID/:district/:block/:village/:sector_ID
+
+	Input       : - NA -
+
+	OutPut 		: 
+					[
+						{
+							"unitCost"			: Number,
+					        "quantity"			: Number,
+					        "LHWRF"				: Number,
+					        "NABARD"			: Number,
+					        "Bank_Loan"			: Number,
+					        "govtscheme"		: Number,
+					        "directCC"			: Number,
+					        "indirectCC"		: Number,
+					        "other"				: Number,
+					        "total"				: Number,
+					        "name_family"		: String,
+					        "familyID"			: String,
+					        "activityName"		: String,
+					        "subactivityName"	: String,
+					        "unit"				: String
+						}
+					]
+
+15	Source Wise Financial status 'Lakh'
+
+	Note 		: For all sector set center_ID = "all"
+
+	Method 		: GET
+
+	URL			: /source/:startDate/:endDate/:center_ID/:state/:distict
+
+	Input       : - NA -
+
+	OutPut 		: 
+					[
+						{
+							"source"		: String,
+					        "annualPlan"	: Number,
+					        "cum_monthly"	: Number,
+					        "cum_achi"		: Number,
+					        "per_cum_achi"	: Number,
+					        "monthlyPlan"	: Number,
+					        "achi_month"	: Number,
+					        "per_achi"		: Number
+						}
+					]
+
+18	SDG Report
+19	EMP Report
+20	ADP Report
+
+	Method 		: GET
+
+	URL			: /goal/:startDate/:endDate/:center_ID/:goal
+
+	Input       : - NA -
+
+	Note 		: for all center set center_ID = "all"
+
+	OutPut 		: 
+					[
+						{
+							"source"		: String,
+					        "annualPlan"	: Number,
+					        "cum_monthly"	: Number,
+					        "cum_achi"		: Number,
+					        "per_cum_achi"	: Number,
+					        "monthlyPlan"	: Number,
+					        "achi_month"	: Number,
+					        "per_achi"		: Number
+						}
+					]
+
+12	Category wise report
+
+	Method 		: GET
+
+	URL			: /category/:startDate/:endDate/:center
+
+	Input       : - NA -
+
+	Note 		: for all center set center_ID = "all"
+
+	OutPut 		: 
+					[
+						{
+							"Reach"					: Number,
+					        "FamilyUpgradation"		: Number,
+					        "FamilyCategory"		: Number
+						}
+					]
+
+13	Upgraded beneficiary report
+
+	Method 		: GET
+
+	URL			: /upgraded/:startDate/:endDate/:center_ID
+
+	Input       : - NA -
+
+	Note 		: for all center set center_ID = "all"
+
+	OutPut 		: 
+					[
+						{
+							"_id"				: String,
+					        "district"			: String,
+					        "block"				: String,
+					        "date"				: String,
+					        "sectorName"		: String,
+					        "activityName"		: String,
+					        "subactivityName"	: String,
+					        "unit"				: String,
+					        "quantity"			: Number,
+					        "unitCost"			: Number,
+					        "totalcost"			: Number,
+					        "LHWRF"				: Number,
+					        "NABARD"			: Number,
+					        "bankLoan"			: Number,
+					        "govtscheme"		: Number,
+					        "directCC"			: Number,
+					        "indirectCC"		: Number,
+					        "other"				: Number,
+					        "total"				: Number,
+					        "beneficiaryName"	: String
+						}
+					]

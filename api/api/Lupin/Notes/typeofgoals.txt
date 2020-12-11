@@ -1,0 +1,97 @@
+
+API's
+1. Insert Type of goal
+2. Update Type of goal
+3. List Type of goals
+4. Delete Type of goal
+5. Fetch Type of goal
+
+------------------------------------------------------------------------------------------
+                        1. Insert Type of goal
+------------------------------------------------------------------------------------------
+
+    Method      : POST
+    
+    URL         : /api/typeofgoals
+
+    Input       : 
+                    {
+                        "typeofGoal"            : String,
+					    "createdBy"               : String, //should be _id of the user or null
+                    }
+
+    Output      : 
+                    {
+                        "message"	: "TYPE_OF_goal_CREATED",
+                        "ID"		: String
+                    }
+
+------------------------------------------------------------------------------------------
+                        2. Update Type of goal
+------------------------------------------------------------------------------------------
+
+    Method      : PATCH
+    
+    URL         : /api/typeofgoals/update
+
+    Input       : 
+                    {
+                        "typeofGoal"            : String,
+                    }
+
+    Output      : 
+                    {
+                        "message"	: "TYPE_OF_goal_UPDATED",
+                    }
+                  
+------------------------------------------------------------------------------------------
+                        3. List Type of goals
+------------------------------------------------------------------------------------------
+
+    Method      : GET
+    
+    URL         : /api/typeofgoals/list
+
+    Input       :  - NA -
+                    
+
+    Output      : 
+                    {
+                        "typeofGoal"            : String,
+					    "createdBy"               : String,
+					    "createdAt"				  : String
+                    }
+                  
+------------------------------------------------------------------------------------------
+                        4. Delete Type of goal
+------------------------------------------------------------------------------------------
+
+    Method      : DELETE
+    
+    URL         : /api/typeofgoals/:ID
+
+    Input       :  - NA -
+                    
+
+    Output      :   {
+                        "message"	: "TYPE_OF_goal_DELETED",
+                    }
+                   
+------------------------------------------------------------------------------------------
+                        5. Fetch Type of goal
+------------------------------------------------------------------------------------------
+
+    Method      : GET
+    
+    URL         : /api/typeofgoals/:ID
+
+    Input       :  - NA -
+                    
+
+    Output      : 
+                    {
+                        "typeofGoal"            : String,
+					    "createdBy"               : String,
+					    "createdAt"				  : String
+                    }
+                  
