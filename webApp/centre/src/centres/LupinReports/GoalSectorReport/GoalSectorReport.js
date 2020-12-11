@@ -204,12 +204,12 @@ class GoalSectorReport extends Component{
   }  
   getData(startDate, endDate,center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName, selectedDistrict){
     if(center_ID && beneficiaryType && goalType && goalName){
-      $(".fullpageloader").show();
+      // $(".fullpageloader").show();
       // console.log(startDate, endDate, center_ID, goalType, goalName, beneficiaryType, projectCategoryType, projectName,selectedDistrict);
       // axios.get('/api/reports/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       axios.get('/api/reports/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       .then((response)=>{
-        $(".fullpageloader").hide();
+        // $(".fullpageloader").hide();
         console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -245,7 +245,7 @@ class GoalSectorReport extends Component{
       .catch(function(error){  
         console.log("error = ",error.message);
         if(error.message === "Request failed with status code 500"){
-            $(".fullpageloader").hide();
+            // $(".fullpageloader").hide();
         }
       });
     }

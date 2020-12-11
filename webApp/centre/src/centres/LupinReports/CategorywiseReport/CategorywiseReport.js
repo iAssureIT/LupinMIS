@@ -214,10 +214,10 @@ class CategorywiseReport extends Component{
   }
   getData(startDate, endDate, center_ID, selectedDistrict, block, village){        
     if(startDate && endDate && center_ID && selectedDistrict && block  && village){
-      $(".fullpageloader").show();
+      // $(".fullpageloader").show();
       axios.get('/api/report/report_category/'+startDate+'/'+endDate+'/'+center_ID+'/'+selectedDistrict+'/'+block+'/'+village)
       .then((response)=>{
-        $(".fullpageloader").hide();
+        // $(".fullpageloader").hide();
         // console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
@@ -235,7 +235,7 @@ class CategorywiseReport extends Component{
       .catch(function(error){  
         console.log("error = ",error.message);
         if(error.message === "Request failed with status code 500"){
-            $(".fullpageloader").hide();
+            // $(".fullpageloader").hide();
         }
       });
     }

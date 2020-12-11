@@ -402,10 +402,10 @@ class FamilyCoverageReport extends Component{
         }else{
           var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
         }
-        $(".fullpageloader").show();
+        // $(".fullpageloader").show();
         axios.get(url)
         .then((response)=>{
-          $(".fullpageloader").hide();
+          // $(".fullpageloader").hide();
           console.log("resp",response);
           
           this.setState({
@@ -417,7 +417,7 @@ class FamilyCoverageReport extends Component{
         .catch(function(error){  
           console.log("error = ",error.message);
           if(error.message === "Request failed with status code 500"){
-              $(".fullpageloader").hide();
+              // $(".fullpageloader").hide();
           }
         });
       }

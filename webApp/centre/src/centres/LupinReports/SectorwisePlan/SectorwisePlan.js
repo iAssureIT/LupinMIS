@@ -269,12 +269,12 @@ class SectorwisePlan extends Component{
         if(year && center_ID && projectCategoryType  && beneficiaryType){ 
           var startDate = year.substring(3, 7)+"-04-01";
           var endDate = year.substring(10, 15)+"-03-31";    
-          $(".fullpageloader").show();
+          // $(".fullpageloader").show();
           if (month==="All"){
             axios.get('/api/reports/sector_annualPlan/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
               .then((response)=>{
                 console.log("resp",response);
-                $(".fullpageloader").hide();
+                // $(".fullpageloader").hide();
                 var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
@@ -307,7 +307,7 @@ class SectorwisePlan extends Component{
             axios.get('/api/reports/sector_quarterly_plans/'+month+'/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
               .then((response)=>{
                 console.log("resp",response);
-                $(".fullpageloader").hide();
+                // $(".fullpageloader").hide();
                 var value = response.data.filter((a)=>{return a.sectorName === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")

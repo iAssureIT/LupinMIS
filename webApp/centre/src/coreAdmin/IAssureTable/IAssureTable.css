@@ -5,6 +5,10 @@
 #commonTable {
   width: 120%;
 }
+.spinAnimation{
+  display: block;
+  color: #ff0;
+}
 
 #commonTable thead th { 
   color: #333;

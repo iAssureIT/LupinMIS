@@ -228,11 +228,11 @@ class SectorwiseReport extends Component{
     }
     getData(startDate, endDate, center_ID, projectCategoryType, projectName, beneficiaryType){        
         if(startDate && endDate && center_ID && projectCategoryType  && beneficiaryType){ 
-            $(".fullpageloader").show();
+            // $(".fullpageloader").show();
             axios.get('/api/reports/sectorwise_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
                 console.log("resp",response);
-                $(".fullpageloader").hide();
+                // $(".fullpageloader").hide();
                 var tableData = response.data.map((a, i)=>{
                     return {
 
@@ -263,7 +263,7 @@ class SectorwiseReport extends Component{
             .catch(function(error){  
                 console.log("error = ",error.message);
                 if(error.message === "Request failed with status code 500"){
-                    $(".fullpageloader").hide();
+                    // $(".fullpageloader").hide();
                 }
             });
         }

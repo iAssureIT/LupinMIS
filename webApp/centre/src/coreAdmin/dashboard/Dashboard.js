@@ -149,9 +149,6 @@ export default class Dashboard extends Component{
     this.handleToChange = this.handleToChange.bind(this);
   }
 
-
-
-
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.year();

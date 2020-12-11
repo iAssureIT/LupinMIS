@@ -563,11 +563,11 @@ class BeneficiaryCoverageReport extends Component{
       // var endDate = "2021-06-17"
       if(startDate && endDate && selectedDistrict && block && village && sector_ID && projectCategoryType  && beneficiaryType && center_ID){
         if(sector_ID==="all"){
-          $(".fullpageloader").show();
+          // $(".fullpageloader").show();
 
           axios.get('/api/report/report_upgraded_beneficiary_coverage/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/all/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
           .then((response)=>{
-            $(".fullpageloader").hide();
+            // $(".fullpageloader").hide();
             console.log("resp",response);
             this.setState({
               tableData : response.data
@@ -578,7 +578,7 @@ class BeneficiaryCoverageReport extends Component{
           .catch(function(error){  
             console.log("error = ",error.message);
             if(error.message === "Request failed with status code 500"){
-                $(".fullpageloader").hide();
+                // $(".fullpageloader").hide();
             }
           });
         }else{
@@ -594,7 +594,7 @@ class BeneficiaryCoverageReport extends Component{
           .catch(function(error){  
             console.log("error = ",error.message);
             if(error.message === "Request failed with status code 500"){
-                $(".fullpageloader").hide();
+                // $(".fullpageloader").hide();
             }
           });
         }
