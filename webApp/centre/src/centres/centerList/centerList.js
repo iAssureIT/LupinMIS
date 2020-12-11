@@ -65,7 +65,7 @@ class centerList extends Component{
       "tableObjects"              : {
         deleteMethod              : 'delete',
         apiLink                   : '/api/centers/',
-        paginationApply           : false,
+        downloadApply             : true,
         searchApply               : false,
         editUrl                   : '/center-detail/'
       },
@@ -75,11 +75,12 @@ class centerList extends Component{
   }
 
   getData(startRange, limitRange){
+    // console.log("startRange, limitRange",startRange, limitRange)
     $(".fullpageloader").show();
     axios.get('/api/centers/list/'+startRange+'/'+limitRange)
     .then((response)=>{
     $(".fullpageloader").hide();
-      // console.log('response', response.data);
+      // console.log('response', response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                       : a._id,
@@ -152,6 +153,8 @@ class centerList extends Component{
                           tableData={this.state.tableData}
                           getData={this.getData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          startRange={this.state.startRange}
+                          limitRange={this.state.limitRange}
                         />
                       </div>
                     </div>
