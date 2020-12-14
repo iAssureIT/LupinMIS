@@ -402,10 +402,10 @@ class FamilyCoverageReport extends Component{
         }else{
           var url = ('/api/report/upgrade_family_report/'+startDate+'/'+endDate+'/'+selectedDistrict+'/'+block+'/'+village+'/'+sector_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType+'/'+center_ID+'/'+activity_ID+'/'+subActivity_ID+'/'+isUpgraded)
         }
-        // $(".fullpageloader").show();
+        $(".fullpageloader").show();
         axios.get(url)
         .then((response)=>{
-          // $(".fullpageloader").hide();
+          $(".fullpageloader").hide();
           console.log("resp",response);
           
           this.setState({
@@ -417,7 +417,7 @@ class FamilyCoverageReport extends Component{
         .catch(function(error){  
           console.log("error = ",error.message);
           if(error.message === "Request failed with status code 500"){
-              // $(".fullpageloader").hide();
+              $(".fullpageloader").hide();
           }
         });
       }
@@ -1093,66 +1093,75 @@ class FamilyCoverageReport extends Component{
                               </thead>
                               <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""} >
                                 { 
-                                  this.state.tableData && this.state.tableData.length > 0
+                                  this.state.tableData 
                                   ?
-                                    this.state.tableData.map((value, i)=> {
-                                      var sectorLength = value.sectorData.length;
-                                      return(    
-                                        <React.Fragment key ={i}>
-                                          { 
-                                            sectorLength !== 0 && value.sectorData ?
-                                              Object.entries(value.sectorData).map(([key, value1], index)=> {
-                                                // console.log("index",index)
-                                                return(
-                                                  <tr className="tableRow"  key={index}>
-                                                    {
-                                                      index === 0 
-                                                      ?
-                                                        <React.Fragment>
-                                                          <td rowSpan={sectorLength} className="textAlignCenter"> 
-                                                            <div className="colSr">{i+1}</div>
-                                                          </td>
-                                                          <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_family}</div>
-                                                          </td>
-                                                          <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
-                                                          </td>
-                                                        </React.Fragment>
-                                                      :
-                                                        null
-                                                    }
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}> {value1.district}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}> {value1.block}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}> {value1.village}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col6"  : "col6"}> {value1.projectCategoryType ? value1.projectCategoryType : "-"}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col7"  : "col7"}> {value1.projectName === "all" ? "-" : value1.projectName}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col8"  : "col8"}> {value1.sectorName}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col9"  : "col9"}> {value1.activityName}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col10"  : "col10"}> {value1.subactivityName}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}> {value1.unit}</div></td>
-                                                    <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}> {value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {value1.isUpgraded}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv uidNumber"  : "uidNumber"}>{value1.uidNumber}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {(value1.unitCost === "-") ? value1.unitCost :(value1.unitCost).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}> {(value1.quantity === "-") ? value1.quantity :(value1.quantity).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}> {(value1.total).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}> {(value1.LHWRF).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}> {(value1.NABARD).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}> {(value1.Bank_Loan).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}> {(value1.Govt).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {(value1.DirectCC).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {(value1.IndirectCC).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {(value1.Other).toFixed(2)}</div></td>
-                                                    <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col22"  : "col22"}>{value1.remark}</div></td>
-                                                  </tr>
-                                                )
-                                              })
-                                            : null
-                                          }
-                                        </React.Fragment>
-                                      )
-                                    })
+                                    this.state.tableData.length > 0
+                                    ?
+                                      this.state.tableData.map((value, i)=> {
+                                        var sectorLength = value.sectorData.length;
+                                        return(    
+                                          <React.Fragment key ={i}>
+                                            { 
+                                              sectorLength !== 0 && value.sectorData ?
+                                                Object.entries(value.sectorData).map(([key, value1], index)=> {
+                                                  // console.log("index",index)
+                                                  return(
+                                                    <tr className="tableRow"  key={index}>
+                                                      {
+                                                        index === 0 
+                                                        ?
+                                                          <React.Fragment>
+                                                            <td rowSpan={sectorLength} className="textAlignCenter"> 
+                                                              <div className="colSr">{i+1}</div>
+                                                            </td>
+                                                            <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_family}</div>
+                                                            </td>
+                                                            <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.familyID}</div>
+                                                            </td>
+                                                          </React.Fragment>
+                                                        :
+                                                          null
+                                                      }
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col3"  : "col3"}> {value1.district}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col4"  : "col4"}> {value1.block}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col5"  : "col5"}> {value1.village}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col6"  : "col6"}> {value1.projectCategoryType ? value1.projectCategoryType : "-"}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col7"  : "col7"}> {value1.projectName === "all" ? "-" : value1.projectName}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col8"  : "col8"}> {value1.sectorName}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col9"  : "col9"}> {value1.activityName}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col10"  : "col10"}> {value1.subactivityName}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}> {value1.unit}</div></td>
+                                                      <td className=""><div className={value1.unit === "Total" ? "boldDiv col11"  : "col11"}> {value1.date !== "-" ? moment(value1.date).format('DD-MM-YYYY'): "-"}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {value1.isUpgraded}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv uidNumber"  : "uidNumber"}>{value1.uidNumber}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col12"  : "col12"}> {(value1.unitCost === "-") ? value1.unitCost :(value1.unitCost).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col13"  : "col13"}> {(value1.quantity === "-") ? value1.quantity :(value1.quantity).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col14"  : "col14"}> {(value1.total).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col15"  : "col15"}> {(value1.LHWRF).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col16"  : "col16"}> {(value1.NABARD).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col17"  : "col17"}> {(value1.Bank_Loan).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col18"  : "col18"}> {(value1.Govt).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col19"  : "col19"}> {(value1.DirectCC).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col20"  : "col20"}> {(value1.IndirectCC).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col21"  : "col21"}> {(value1.Other).toFixed(2)}</div></td>
+                                                      <td className="textAlignRight"><div className={value1.unit === "Total" ? "boldDiv col22"  : "col22"}>{value1.remark}</div></td>
+                                                    </tr>
+                                                  )
+                                                })
+                                              : null
+                                            }
+                                          </React.Fragment>
+                                        )
+                                      })
+                                    :
+                                      <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
                                   :
-                                    <tr className="trAdmin"><td colSpan= "21" className="noTempData textAlignCenter">No Record Found!</td></tr>                   
+                                    <tr className="trAdmin">
+                                      <td colSpan="22" className="noTempData textAlignCenter">
+                                        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                        <span className="sr-only">Loading...</span>                 
+                                      </td>
+                                    </tr>    
                                 } 
                               </tbody>
                             </table>

@@ -238,13 +238,13 @@ class Sector extends Component{
           tableData : []
       });
   }
-  componentWillUnmount(){
-    this.setState({
-      "sectorShortName" :"",
-      "sector" :"",
-      "editId" : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "sectorShortName" :"",
+  //     "sector" :"",
+  //     "editId" : ""
+  //   })
+  // }
 
   render() {
     return (

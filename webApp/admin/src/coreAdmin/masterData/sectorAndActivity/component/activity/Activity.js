@@ -252,13 +252,13 @@ class Activity extends Component{
           tableData : []
       });
   }
-  componentWillUnmount(){
-    this.setState({
-      "sector"   :"",
-      "activityName" :"",
-      "editId"   : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "sector"   :"",
+  //     "activityName" :"",
+  //     "editId"   : ""
+  //   })
+  // }
   render() {
     
     return (

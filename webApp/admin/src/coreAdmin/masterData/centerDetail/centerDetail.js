@@ -85,7 +85,7 @@ class centerDetail extends Component{
         editUrl                   : '/center-details/'
       },
       "startRange"                : 0,
-      "limitRange"                : 10000,
+      "limitRange"                : 10000000,
       "editId"                    : this.props.match.params ? this.props.match.params.id : '',
        "role"                : localStorage.getItem("role")
 

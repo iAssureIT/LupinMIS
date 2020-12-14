@@ -1,3 +1,21 @@
+.commonHeaderFixTable{
+  max-height: 40em;
+  margin-top: 10px !important;
+}
+#commonTable {
+  width: 120%;
+}
+.spinAnimation{
+  display: block;
+}
+#commonTable thead th { 
+  color: #333;
+  background: #c2c6c3 !important;
+  position: sticky;
+  border: 1px solid #e9e8e8;
+  top: 0;
+  z-index: 4;
+}
 .scrollContent{
   /*background: #fff;*/
 }

@@ -211,12 +211,12 @@ class Unit extends Component{
         tableData : []
     });
   }
-  componentWillUnmount(){
-    this.setState({
-      "sector" :"",
-      "editId" : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "sector" :"",
+  //     "editId" : ""
+  //   })
+  // }
 
   render() {
     return (

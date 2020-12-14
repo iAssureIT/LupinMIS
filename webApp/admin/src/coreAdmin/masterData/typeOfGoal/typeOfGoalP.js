@@ -267,12 +267,12 @@ class typeOfGoal extends Component{
         tableData : []
     });
   }
-  componentWillUnmount(){
-    this.setState({
-      "typeofGoal" :"",
-      "editId"      : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "typeofGoal" :"",
+  //     "editId"      : ""
+  //   })
+  // }
 
   render() {
   // console.log('render');

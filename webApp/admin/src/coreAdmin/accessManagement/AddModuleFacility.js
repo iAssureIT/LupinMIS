@@ -63,10 +63,10 @@ class AddModuleFacility extends Component {
   	}
 
 	
-  	componentWillUnmount(){
-    	$("script[src='/js/adminLte.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-  	}
+  	// componentWillUnmount(){
+   //  	$("script[src='/js/adminLte.js']").remove();
+   //  	$("link[href='/css/dashboard.css']").remove();
+  	// }
 
 	handleChange(event){
 		var moduleName = this.refs.moduleName.value;

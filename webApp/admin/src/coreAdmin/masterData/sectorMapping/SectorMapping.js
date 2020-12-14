@@ -39,7 +39,7 @@ class SectorMapping extends Component{
         editUrl            : '/sector-mapping/'
       },
       "startRange"         : 0,
-      "limitRange"         : 10000,
+      "limitRange"         : 10000000,
       "editId"             : this.props.match.params ? this.props.match.params.sectorMappingId : '',
       "role"               : localStorage.getItem("role")
     }
@@ -82,7 +82,7 @@ class SectorMapping extends Component{
         axios.post('/api/sectorMappings',mappingValues)
           .then((response)=>{
             if(response.data==="Data Already Exists"){
-              console.log('response', response);
+              // console.log('response', response);
               swal({
                 title : response.data,
                 text  : response.data
@@ -93,7 +93,7 @@ class SectorMapping extends Component{
                 "goalType"           :"-- Select --",
               });
             }else{
-              console.log("sectorMappings = ",response);
+              // console.log("sectorMappings = ",response);
               swal({
                 title : response.data.message,
                 text  : response.data.message
@@ -150,7 +150,7 @@ class SectorMapping extends Component{
         axios.patch('/api/sectorMappings/update',mappingValues)
           .then((response)=>{
             if(response.data==="Data Already Exists"){
-              console.log('response', response);
+              // console.log('response', response);
               swal({
                 title : response.data,
                 text  : response.data
@@ -278,7 +278,7 @@ class SectorMapping extends Component{
         url: '/api/sectorMappings/'+id,
       }).then((response)=> {
         var editData = response.data[0];
-        console.log('editData=====',editData)
+        // console.log('editData=====',editData)
         if(editData){
           axios({
             method: 'get',
@@ -335,6 +335,7 @@ class SectorMapping extends Component{
     // console.log('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange);
     axios.get('/api/sectorMappings/edit/list/'+startRange+'/'+limitRange)
     .then((response)=>{
+      // console.log('response', response);
       $(".fullpageloader").hide();
       var tableData = response.data.map((a, i)=>{
           return {

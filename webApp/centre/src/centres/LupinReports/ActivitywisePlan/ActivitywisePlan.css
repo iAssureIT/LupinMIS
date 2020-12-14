@@ -1,3 +1,18 @@
+.activitywisePlan .col4, .activitywisePlan .col3{
+	width: 160px !important;
+	text-align: left !important;
+	white-space: pre-wrap!important;
+}
+.activitywisePlan .col5{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 160px !important;
+}
+.activitywisePlan .col2{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 130px !important;
+}
 #ActivitywisePlan .col1{
 	width: 80px !important;
 	white-space: pre-wrap!important;

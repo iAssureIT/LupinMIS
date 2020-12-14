@@ -1,15 +1,18 @@
-/*#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(2), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+6){
-	background: var(--color1);
+.activityWiseReport .col4, .activityWiseReport .col3{
+	width: 160px !important;
+	text-align: left !important;
+	white-space: pre-wrap!important;
 }
-#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(3), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+9){
-	background: var(--color2);
+.activityWiseReport .col5{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 160px !important;
 }
- #ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(4), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+19){
-	background: var(--color1);
+.activityWiseReport .col2{
+	text-align: left !important;
+	white-space: pre-wrap!important;
+	width: 130px !important;
 }
-#ActivityWisePeriodicVarianceReport tr .colorTable:nth-child(5), #ActivityWisePeriodicVarianceReport tr .srpadd:nth-child(n+29){
-	background: var(--color2);
-}*/
 
 #ActivityWiseReport .col1{
 	width: 110px !important;

@@ -23,10 +23,10 @@ class SectorAndActivity extends Component{
   componentDidMount(){
     var editId = this.props.match.params;
   }
-  componentWillUnmount(){
-    $("script[src='/js/adminLte.js']").remove();
-    $("link[href='/css/dashboard.css']").remove();
-  }
+  // componentWillUnmount(){
+  //   $("script[src='/js/adminLte.js']").remove();
+  //   $("link[href='/css/dashboard.css']").remove();
+  // }
   toglehidden(){
     this.setState({
      shown: !this.state.shown

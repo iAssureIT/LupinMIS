@@ -4,7 +4,7 @@ import axios                  from 'axios';
 import moment                 from 'moment';
 import swal                   from 'sweetalert';
 import validate               from 'jquery-validation';
-import DatePicker           from "react-datepicker";
+import DatePicker             from "react-datepicker";
 // import YearPicker from "react-year-picker";
 import Datetime from "react-datetime";
 import 'react-datetime/css/react-datetime.css';

@@ -44,11 +44,10 @@ class SandA extends Component{
     //   console.log(' tabtype ======================', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
     // });
   }
-  componentWillUnmount(){
-    $("script[src='/js/adminLte.js']").remove();
-    $("link[href='/css/dashboard.css']").remove();
-
-  }
+  // componentWillUnmount(){
+  //   $("script[src='/js/adminLte.js']").remove();
+  //   $("link[href='/css/dashboard.css']").remove();
+  // }
   toglehidden(){
     this.setState({
      shown: !this.state.shown

@@ -773,6 +773,7 @@ class ActivityWiseReport extends Component{
                                                 <IAssureTable 
                                                     tableName = "ActivityWise Periodic Variance Report"
                                                     id = "ActivityWiseReport"
+                                                    tableClass = "activityWiseReport"
                                                     completeDataCount={this.state.tableDatas.length}
                                                     twoLevelHeader={this.state.twoLevelHeader} 
                                                     editId={this.state.editSubId} 

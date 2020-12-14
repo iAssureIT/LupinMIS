@@ -162,10 +162,10 @@ class BulkUpload extends Component{
    
   }
 
-  componentWillUnmount(){
-      $("script[src='/js/adminLte.js']").remove();
-      $("link[href='/css/dashboard.css']").remove();
-  }
+  // componentWillUnmount(){
+  //     $("script[src='/js/adminLte.js']").remove();
+  //     $("link[href='/css/dashboard.css']").remove();
+  // }
 
   changeTab = (data)=>{
     this.setState({

@@ -211,12 +211,12 @@ class typeOfCenter extends Component{
       tableData : []
     });
   }
-  componentWillUnmount(){
-    this.setState({
-      "typeofCenter" :"",
-      "editId"      : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "typeofCenter" :"",
+  //     "editId"      : ""
+  //   })
+  // }
 
   render() {
     // console.log('render');

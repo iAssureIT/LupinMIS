@@ -9,10 +9,9 @@
 	global.JWT_KEY 						= globalVariable.JWT_KEY;
 
 	mongoose.connect('mongodb://localhost/'+dbname,{
-		useNewUrlParser: true
+		useNewUrlParser: true,	
 	})
 	mongoose.promise = global.Promise;
-
 
 	app.use(morgan("dev"));
 	app.use('/uploads', express.static('uploads'));

@@ -75,7 +75,7 @@ class nameOfGoal extends Component{
       axios.patch('/api/typeofgoals/goalName',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
-        console.log("nameGoalValues",response );
+        // console.log("nameGoalValues",response );
         swal({
           title : response.data.message,
           text  : response.data.message
@@ -106,7 +106,7 @@ class nameOfGoal extends Component{
       };
       axios.patch('/api/typeofgoals/goalName/update',typeofGoalValues)
         .then((response)=>{
-          console.log("response",response );
+          // console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -183,7 +183,7 @@ class nameOfGoal extends Component{
   edit(id){
     var goal_id =this.props.match.params.goalNameId;
     if(id){
-      console.log('editId',id);
+      // console.log('editId',id);
       axios({
         method: 'get',
         url: '/api/typeofgoals/'+id,
@@ -214,7 +214,7 @@ class nameOfGoal extends Component{
       limitRange : limitRange,
       startRange : startRange,
     }
-    console.log('data', data);
+    // console.log('data', data);
     $(".fullpageloader").show();
     axios.post('/api/typeofgoals/goalName/list',data)
     .then((response)=>{
@@ -258,18 +258,18 @@ class nameOfGoal extends Component{
         tableData : []
     });
   }
-  componentWillUnmount(){
-    this.setState({
-      "typeofGoal" :"",
-      "editId"      : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "typeofGoal" :"",
+  //     "editId"      : ""
+  //   })
+  // }
   getAvailableGoalType(){
     axios({
       method: 'get',
       url: '/api/typeofgoals/list',
     }).then((response)=> {
-      console.log("typeofgoals = ",response);
+      // console.log("typeofgoals = ",response);
       this.setState({
         availableGoalType: response.data
       })

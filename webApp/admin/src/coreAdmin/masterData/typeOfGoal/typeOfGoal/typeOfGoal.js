@@ -56,7 +56,7 @@ class typeOfGoal extends Component{
       axios.post('/api/typeofgoals',typeofGoalValues)
       .then((response)=>{
         this.getData(this.state.startRange, this.state.limitRange);
-        console.log("typeofGoalValues",response );
+        // console.log("typeofGoalValues",response );
         swal({
           title : response.data.message,
           text  : response.data.message
@@ -82,7 +82,7 @@ class typeOfGoal extends Component{
       };
       axios.patch('/api/typeofgoals/update',typeofGoalValues, this.state.editId)
         .then((response)=>{
-          console.log("response",response );
+          // console.log("response",response );
           this.getData(this.state.startRange, this.state.limitRange);
           swal({
             title : response.data.message,
@@ -205,12 +205,12 @@ class typeOfGoal extends Component{
         tableData : []
     });
   }
-  componentWillUnmount(){
-    this.setState({
-      "typeofGoal" :"",
-      "editId"      : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "typeofGoal" :"",
+  //     "editId"      : ""
+  //   })
+  // }
 
   render() {
   // console.log('render');

@@ -32,7 +32,7 @@ class IAssureTable extends Component {
 		    "activeClass" 				: 'activeCircle',
 		    "paginationArray" 			: [],
 		    "startRange" 				: 0,
-		    "limitRange" 				: 10000,
+		    "limitRange" 				: 1000000000,
 		    "activeClass" 				: 'activeCircle', 		    
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
@@ -93,7 +93,7 @@ class IAssureTable extends Component {
 	      center_ID    : center_ID,
 	      centerName   : centerName,
 	    },()=>{
-		    this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
+		    // this.props.getData(this.props.data ? this.props.data : this.state.startRange, this.state.limitRange, this.state.center_ID);
 	    }); 
 	      
 		// this.palindrome('Moam');
@@ -137,10 +137,10 @@ class IAssureTable extends Component {
         	this.paginationFunction();
         })
     }
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
 	edit(event){
 		event.preventDefault();
 		$("html,body").scrollTop(0);
@@ -685,11 +685,12 @@ class IAssureTable extends Component {
 				:
 				null        
 	       	}
-           
+            
+            
 	            <div className={this.props.divClass ? this.props.divClass+" col-sm-12 col-md-12 col-xs-12 NOpadding" : "col-lg-12 col-sm-12 col-md-12 col-xs-12 NOpadding"}>
-	                <div className={!this.props.divClass ? "table-responsive" : ""}  id="section-to-print">
-						<table className="table iAssureITtable-bordered table-striped table-hover fixedTable" id={this.state.id}>
-	                        <thead className="fixedHeader">	     
+	            	<div className={!this.props.divClass ?  "table-responsive commonHeaderFixTable " + this.props.customTableHeight : "table-responsive commonHeaderFixTable"} id="section-to-screen">
+						<table className={"table iAssureITtable-bordered table-striped table-hover fixedTable "+ this.props.tableClass} id="commonTable">
+	                        <thead className="">	     
 		                        <tr className="tempTableHeader">
 		                            { this.state.twoLevelHeader.apply === true ?
 		                            	this.state.twoLevelHeader.firstHeaderData.map((data, index)=>{
@@ -737,147 +738,158 @@ class IAssureTable extends Component {
 	                            </tr>
 	                        </thead>
 	                        <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""}>
-	                           { this.state.tableData && this.state.tableData.length > 0 ?
-	                           		this.state.tableData.map( 
-										(value, i)=> {
-											return(
-												<tr key={i} className={"trow"+(i+1)}>
-													{/*console.log("((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))")*/}
-													{/*console.log("!(Object.entries(value)[1][1].includes('-'))",!(Object.entries(value)[1][1].includes('-')))*/}
-													{/*console.log((Object.entries(value)[1][1]) , Object.entries(value)[1][1] !=="-" , Object.entries(value)[1][1] !=="Total" , Object.entries(value)[1][1] !=="Total %" , !(Object.entries(value)[1][1].includes('%')) , !(Object.entries(value)[1][1].includes('Total')) , !(Object.entries(value)[1][1].includes('-')))*/}
-													{
-														!this.props.noSRNumber ?
-															((Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')))
-															?
-																<td className="textAlignCenter">
-																	<div className="colSr">{this.state.startRange+1+i}</div>
-																</td>
-															:
-																<td className="textAlignCenter">
-																	<div className="colSr"></div>
-																</td>
-														: null
-													}
-													{
-														Object.entries(value).map( 
-															([key, value1], i)=> {
-																// console.log("key",key,"value1", value1);
-																if($.type(value1) === 'string'){
-																	var numbers = /^[0-9]+$/;
-																	if(value1.includes(',')){
-																		var textAlign = 'textAlignRight';
-																	}else if(value1.includes('%') && ( value1.match(numbers)) || value1.includes('0')){
-																		var textAlign = 'textAlignRight';
-																	}else if(value1.match(numbers)){
-																		var textAlign = 'textAlignRight';
-																	}else{
-																		var regex = new RegExp(/(<([^>]+)>)/ig);
-																		var value2 = value1 ? value1.replace(regex,'') : '';
-																		var aN = value2.replace(this.state.reA, "");
-																		if(aN && $.type( aN ) === 'string'){
-																			var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
-																		}else{
-																			var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
-																			if(bN){
-																				var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+	                           	{ 
+		                           	this.state.tableData 
+		                           	?
+		                           		this.state.tableData.length > 0 
+		                           		?
+			                           		this.state.tableData.map( 
+												(value, i)=> {
+													return(
+														<tr key={i} className={"trow"+(i+1)}>
+															{/*console.log("((Object.entries(value)[1][1]) && (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')) && !(Object.entries(value)[1][1].includes('-')))")*/}
+															{/*console.log("!(Object.entries(value)[1][1].includes('-'))",!(Object.entries(value)[1][1].includes('-')))*/}
+															{/*console.log((Object.entries(value)[1][1]) , Object.entries(value)[1][1] !=="-" , Object.entries(value)[1][1] !=="Total" , Object.entries(value)[1][1] !=="Total %" , !(Object.entries(value)[1][1].includes('%')) , !(Object.entries(value)[1][1].includes('Total')) , !(Object.entries(value)[1][1].includes('-')))*/}
+															{
+																!this.props.noSRNumber ?
+																	((Object.entries(value)[1][1]) , (Object.entries(value)[1][1] !=="-" && Object.entries(value)[1][1] !=="Total" && Object.entries(value)[1][1] !=="Total %") && !(Object.entries(value)[1][1].includes('%')) && !(Object.entries(value)[1][1].includes('Total')))
+																	?
+																		<td className="textAlignCenter">
+																			<div className="colSr">{this.state.startRange+1+i}</div>
+																		</td>
+																	:
+																		<td className="textAlignCenter">
+																			<div className="colSr"></div>
+																		</td>
+																: null
+															}
+															{
+																Object.entries(value).map( 
+																	([key, value1], i)=> {
+																		// console.log("key",key,"value1", value1);
+																		if($.type(value1) === 'string'){
+																			var numbers = /^[0-9]+$/;
+																			if(value1.includes(',')){
+																				var textAlign = 'textAlignRight';
+																			}else if(value1.includes('%') && ( value1.match(numbers)) || value1.includes('0')){
+																				var textAlign = 'textAlignRight';
+																			}else if(value1.match(numbers)){
+																				var textAlign = 'textAlignRight';
 																			}else{
-																				var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																				var regex = new RegExp(/(<([^>]+)>)/ig);
+																				var value2 = value1 ? value1.replace(regex,'') : '';
+																				var aN = value2.replace(this.state.reA, "");
+																				if(aN && $.type( aN ) === 'string'){
+																					var textAlign = 'textAlignLeft noWrapText '+ (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																				}else{
+																					var bN = value1 ? parseInt(value1.replace(this.state.reN, ""), 10) : '';
+																					if(bN){
+																						var textAlign = 'textAlignRight ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																					}else{
+																						var textAlign = 'textAlignLeft noWrapText ' + (this.state.printhideArray[i-1] ? this.state.printhideArray[i-1].printhide : "");
+																					}
+																				}
+																			}
+																		}else{
+																			var textAlign = 'textAlignRight';
+																		}	
+																		var found = Object.keys(this.state.tableHeading).filter((k)=> {
+																		  return k === key;
+																		});
+																		// console.log('found',found);
+																		if(found.length > 0){
+																			if(key !== 'id'){
+																				// console.log(' value1', value1);
+																				if(value1){
+																					return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																				}else{
+																					return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
+																				}
 																			}
 																		}
-																	}
-																}else{
-																	var textAlign = 'textAlignRight';
-																}	
-																var found = Object.keys(this.state.tableHeading).filter((k)=> {
-																  return k === key;
-																});
-																// console.log('found',found);
-																if(found.length > 0){
-																	if(key !== 'id'){
-																		// console.log(' value1', value1);
-																		if(value1){
-																			return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
-																		}else{
-																			return(<td className={textAlign} key={i}><div className={textAlign+" col"+i } dangerouslySetInnerHTML={{ __html:value1}}></div></td>); 						
-																		}
-																	}
-																}
 
+																	}
+																)
 															}
-														)
-													}
-													{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viewer"? 
-														<td className="textAlignCenter">
-															<span className="actionsDiv">
-																<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
-																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
-															</span>
-															<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
-		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
-		                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id)}>&times;</button>
-		                                                            </div>
-		                                                           
-		                                                            </div>
-		                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure you want to delete?</h4>
-		                                                            </div>
-		                                                            
-		                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
-		                                                              </div>
-		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
-		                                                              </div>
-		                                                            </div>
-		                                                          </div>
-		                                                        </div>
-		                                                    </div>
-														</td>
-														:
-														null
-													}
-													{this.state.tableHeading && this.state.tableHeading.action && this.state.role !== "viewer"? 
-														<td className="textAlignCenter">
-															<span className="actionsDiv">
-															{/*console.log('this.props.editId',this.props.editId)*/}
-																{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
-															</span>
-															<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
-		                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
-		                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
-		                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id)}>&times;</button>
-		                                                            </div>
-		                                                            </div>
-		                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure you want to delete?</h4>
-		                                                            </div>
-		                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
-		                                                              </div>
-		                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		                                                                <button onClick={this.delete.bind(this)} id={(value._id).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
-		                                                              </div>
-		                                                            </div>
-		                                                          </div>
-		                                                        </div>
-		                                                    </div>
-														</td>
-														:
-														null
-													}
-												</tr>
-											);										
-										}
-									) 	
+															{this.state.tableHeading && this.state.tableHeading.actions && this.state.role !== "viewer"? 
+																<td className="textAlignCenter">
+																	<span className="actionsDiv">
+																		<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>&nbsp; &nbsp; 
+																		{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
+																	</span>
+																	<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
+				                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
+				                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
+				                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id)}>&times;</button>
+				                                                            </div>
+				                                                           
+				                                                            </div>
+				                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure you want to delete?</h4>
+				                                                            </div>
+				                                                            
+				                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
+				                                                              </div>
+				                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				                                                                <button onClick={this.delete.bind(this)} id={(value._id).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+				                                                              </div>
+				                                                            </div>
+				                                                          </div>
+				                                                        </div>
+				                                                    </div>
+																</td>
+																:
+																null
+															}
+															{this.state.tableHeading && this.state.tableHeading.action && this.state.role !== "viewer"? 
+																<td className="textAlignCenter">
+																	<span className="actionsDiv">
+																	{/*console.log('this.props.editId',this.props.editId)*/}
+																		{this.props.editId && this.props.editId === value._id? null :<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id}></i>}
+																	</span>
+																	<div className="modal fade" id={"showDeleteModal-"+(value._id)} role="dialog">
+				                                                        <div className=" adminModal adminModal-dialog col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                          <div className="modal-content adminModal-content col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12 noPadding">
+				                                                            <div className="modal-header adminModal-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                            <div className="adminCloseCircleDiv pull-right  col-lg-1 col-lg-offset-11 col-md-1 col-md-offset-11 col-sm-1 col-sm-offset-11 col-xs-12 NOpadding-left NOpadding-right">
+				                                                              <button type="button" className="adminCloseButton" data-dismiss="modal" data-target={"#showDeleteModal-"+(value._id)}>&times;</button>
+				                                                            </div>
+				                                                            </div>
+				                                                            <div className="modal-body adminModal-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                              <h4 className="blackLightFont textAlignCenter examDeleteFont col-lg-12 col-md-12 col-sm-12 col-xs-12">Are you sure you want to delete?</h4>
+				                                                            </div>
+				                                                            <div className="modal-footer adminModal-footer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				                                                                <button type="button" className="btn adminCancel-btn col-lg-7 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-10 col-xs-offset-1" data-dismiss="modal">CANCEL</button>
+				                                                              </div>
+				                                                              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				                                                                <button onClick={this.delete.bind(this)} id={(value._id).replace(/-/g, "/")} type="button" className="btn examDelete-btn col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-8 col-sm-offset-3 col-xs-10 col-xs-offset-1" data-dismiss="modal">DELETE</button>
+				                                                              </div>
+				                                                            </div>
+				                                                          </div>
+				                                                        </div>
+				                                                    </div>
+																</td>
+																:
+																null
+															}
+														</tr>
+													);										
+												}
+											) 	
+										:
+											<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
 									:
-									<tr className="trAdmin"><td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">No Record Found!</td></tr>               		
+										<tr className="trAdmin">
+											<td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">
+												<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+												<span className="sr-only">Loading...</span>									
+											</td>
+										</tr>   		
 								}
 	                    	</tbody>
 	                    </table>

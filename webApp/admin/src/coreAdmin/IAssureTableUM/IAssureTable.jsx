@@ -93,10 +93,10 @@ class IAssureTableUM extends Component {
 	        })
 		}
     }
-	componentWillUnmount(){
-    	$("script[src='/js/adminSide.js']").remove();
-    	$("link[href='/css/dashboard.css']").remove();
-	}
+	// componentWillUnmount(){
+ //    	$("script[src='/js/adminSide.js']").remove();
+ //    	$("link[href='/css/dashboard.css']").remove();
+	// }
 
 	edit(e){
 		e.preventDefault();

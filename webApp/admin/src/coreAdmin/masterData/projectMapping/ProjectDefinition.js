@@ -39,7 +39,7 @@ class ProjectMapping extends Component{
         editUrl            : '/project-definition/'
       },
       "startRange"         : 0,
-      "limitRange"         : 10000,
+      "limitRange"         : 10000000,
       "sectorData"         : [],
       "editId"             : this.props.match.params ? this.props.match.params.projectMappingId : '',
       "role"                : localStorage.getItem("role")

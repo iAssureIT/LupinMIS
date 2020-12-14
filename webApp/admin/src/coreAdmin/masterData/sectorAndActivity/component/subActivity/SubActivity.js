@@ -390,16 +390,16 @@ class SubActivity extends Component{
       })
     }
   }
-  componentWillUnmount(){
-    this.setState({
-      "sector"              :"",
-      "activityName"        :"",
-      "subActivityName"     :"",
-      "unit"                : 0, 
-      "familyUpgradation"   :"No",
-      "editId" : ""
-    })
-  }
+  // componentWillUnmount(){
+  //   this.setState({
+  //     "sector"              :"",
+  //     "activityName"        :"",
+  //     "subActivityName"     :"",
+  //     "unit"                : 0, 
+  //     "familyUpgradation"   :"No",
+  //     "editId" : ""
+  //   })
+  // }
   render() {
     return (
       <div className="container-fluid">

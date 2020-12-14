@@ -24,9 +24,7 @@ import CompanyPaymentGateway        from  '../Components/CompanyPaymentGateway.j
   }
 
   
-  componentWillUnmount(){
-    
-  }
+
   clickLi(event){
    // event.preventDefault();
     // $("#companyLocationForm").validate().resetForm();

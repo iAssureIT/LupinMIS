@@ -669,6 +669,7 @@ class ActivitywisePlan extends Component{
                             <IAssureTable 
                                 tableName = "Activitywise Plan"
                                 id = "ActivitywisePlan"
+                                tableClass = "activitywisePlan"
                                 completeDataCount={this.state.tableDatas.length}
                                 twoLevelHeader={this.state.twoLevelHeader} 
                                 editId={this.state.editSubId} 

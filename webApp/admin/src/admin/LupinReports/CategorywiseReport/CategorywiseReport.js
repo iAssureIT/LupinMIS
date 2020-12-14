@@ -528,18 +528,20 @@ class CategorywiseReport extends Component{
                     </div>
                     <div className="">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <IAssureTable  
-                              noSRNumber = {true}  
-                              divClass = "col-lg-8 col-lg-offset-2"
-                              tableName = "Categorywise Report"
-                              id = "CategorywiseReport"
-                              twoLevelHeader={this.state.twoLevelHeader} 
-                              editId={this.state.editSubId} 
-                              getData={this.getData.bind(this)} 
-                              tableHeading={this.state.tableHeading} 
-                              tableData={this.state.tableData} 
-                              tableObjects={this.state.tableObjects}
-                              getSearchText={this.getSearchText.bind(this)}/>
+                        <IAssureTable
+                          noSRNumber = {true}  
+                          divClass  = "col-lg-8 col-lg-offset-2"
+                          tableName = "Categorywise Report"
+                          id        = "CategorywiseReport"
+                          tableClass = "categorywiseReport"
+                          completeDataCount={this.state.tableDatas.length}
+                          twoLevelHeader={this.state.twoLevelHeader} 
+                          editId={this.state.editSubId} 
+                          getData={this.getData.bind(this)} 
+                          tableHeading={this.state.tableHeading} 
+                          tableData={this.state.tableData} 
+                          tableObjects={this.state.tableObjects}
+                          getSearchText={this.getSearchText.bind(this)}/>
                       </div>
                     </div>
                 </div>    

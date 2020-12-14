@@ -136,11 +136,11 @@ class AdminContent extends Component{
     })
   }
 
-  componentWillUnmount(){
-    // $("script[src='/js/adminLte.js']").remove();
-    // $("link[href='/css/dashboard.css']").remove();
-    // console.log('wow');
-  }
+  // componentWillUnmount(){
+  //   $("script[src='/js/adminLte.js']").remove();
+  //   $("link[href='/css/dashboard.css']").remove();
+  //   console.log('wow');
+  // }
 
   allUserCount(){
     return this.state.allUserData.length;
