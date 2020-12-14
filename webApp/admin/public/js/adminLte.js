@@ -1,6 +1,8 @@
 // $(document).ready(function(){
   $('body').addClass("adminLte");
     $(".main-header .sidebar-toggle").click(function(){
+        console.log('here');
+      
       if($(window).width()>768)
         $("body").toggleClass("sidebar-mini sidebar-collapse");
       else
@@ -17,15 +19,15 @@
             $(this).removeClass("menu-open");
           });
           setTimeout(function(){
-            $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50+  'px'});
-            // console.log("resize height: " + $(".main-sidebar .sidebar").outerHeight());
+            $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 100+  'px'});
+            console.log("resize height: " + $(".main-sidebar .sidebar").outerHeight());
           }, 500);
         }
       // }
     });
     setTimeout(function(){
-      $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50+  'px'});
-      // console.log("resize height: " + $(".main-sidebar .sidebar").outerHeight());
+      $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 200+  'px'});
+      console.log("resize height----: " + $(".main-sidebar .sidebar").outerHeight());
     }, 500);
     // new ResizeSensor(jQuery('.main-sidebar .sidebar'), function(){
     //   $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50 + 'px'});
@@ -35,7 +37,7 @@
     //   $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50 + 'px'});
     //   console.log("resize height: " + $(".main-sidebar .sidebar").outerHeight());
     // });
-    $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50 + 'px'});
+    $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 100 + 'px'});
     $(".box-header .btn-minus").click(function(){
       $(this).closest('.box').find(".box-body").slideToggle();
       $(this).closest('.box').find(".box-footer").slideToggle();
