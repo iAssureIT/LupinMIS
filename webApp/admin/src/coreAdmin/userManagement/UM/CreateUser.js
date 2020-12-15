@@ -50,7 +50,7 @@ const formValid = formerrors=>{
   }
 
  handleChange(event){
-  console.log('center_ID',event.target.value);
+  // console.log('center_ID',event.target.value);
     const datatype = event.target.getAttribute('data-text');
     const {name,value} = event.target;
     let formerrors = this.state.formerrors;
@@ -117,7 +117,7 @@ const formValid = formerrors=>{
                                     "startRange"        : this.state.startRange,
                                     "limitRange"        : this.state.limitRange, 
                             }
-                        console.log("data",data);
+                        // console.log("data",data);
                       axios.post('/api/users/userslist', data)
                       .then( (res)=>{      
                         var tableData = res.data.map((a, i)=>{
@@ -222,7 +222,7 @@ const formValid = formerrors=>{
                           "limitRange"        : this.state.limitRange, 
                         }
                         this.props.getData(this.state.startRange, this.state.limitRange);
-                                      console.log("createUser",this.state.startRange,this.state.limitRange)
+                                      // console.log("createUser",this.state.startRange,this.state.limitRange)
                         var modal = document.getElementById("CreateUserModal");
                         modal.style.display = "none";
                         $('.modal-backdrop').remove();
@@ -273,7 +273,7 @@ const formValid = formerrors=>{
         this.setState({
           listofCenters : response.data
         },()=>{
-        console.log('listofCenters', this.state.listofCenters);
+        // console.log('listofCenters', this.state.listofCenters);
         })
     }).catch(function (error) {
       console.log('error', error);

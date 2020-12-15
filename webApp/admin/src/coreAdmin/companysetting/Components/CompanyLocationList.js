@@ -1,6 +1,6 @@
 // import React, { Component } 		from 'react';
 // import CompanyLocation 					from './CompanyLocation.js';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 // import axios from 'axios';
 // import 'font-awesome/css/font-awesome.min.css';
 // import 'bootstrap/js/modal.js';

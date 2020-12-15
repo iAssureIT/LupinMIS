@@ -5,9 +5,9 @@ import _                       			 from 'underscore';
 import swal                     		 from 'sweetalert';
 import $ 							from 'jquery';
 import './userManagement.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import 'bootstrap/js/modal.js';
+// import 'bootstrap/js/modal.js';
 import IAssureTableUM 					from '../../IAssureTableUM/IAssureTable.jsx';
 
 import  UMDelRolRow 					from './UMDelRolRow.jsx';

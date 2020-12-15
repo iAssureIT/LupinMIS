@@ -4,7 +4,7 @@ import InputMask from 'react-input-mask';
 import swal from 'sweetalert';
 import $ from "jquery";
 import 'font-awesome/css/font-awesome.min.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 import "./userManagement.css";
 
 import axios from 'axios';

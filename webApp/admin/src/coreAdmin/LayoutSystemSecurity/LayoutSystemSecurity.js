@@ -10,7 +10,7 @@ import SignUp           from '../systemSecurity/SignUp.js';
 import VerifyAccount    from '../systemSecurity/VerifyAccount.js';
 // import CommonPage        from './components/layouts/CommonLayout.js';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 // import $ from "jquery";
 

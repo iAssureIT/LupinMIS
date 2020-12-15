@@ -5,7 +5,7 @@ import axios                                                 from 'axios';
 // import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import { render } from 'react-dom';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import html2canvas from 'html2canvas';
 import Chart from 'chart.js';

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import axios 						   from 'axios';
 import swal                            from 'sweetalert';
 import 'font-awesome/css/font-awesome.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 
 import './userManagement.css';

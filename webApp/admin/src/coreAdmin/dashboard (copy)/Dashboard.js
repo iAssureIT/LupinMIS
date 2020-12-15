@@ -13,7 +13,7 @@ import PieChart                  from './chart1/PieChart.js';
 import CenterWisePieChart        from './chart1/CenterWisePieChart.js';
 import Loader                       from "../../common/Loader.js";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './Dashboard.css';
  

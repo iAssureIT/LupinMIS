@@ -3,7 +3,7 @@ import $                    from 'jquery';
 import TypeOfGoal           from "./typeOfGoal/typeOfGoal.js";
 import NameOfGoal           from "./nameOfGoal/nameOfGoal.js";
 import _                    from 'underscore';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
 
 class typeOfGoalContainer extends Component{

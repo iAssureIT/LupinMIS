@@ -8,7 +8,7 @@ import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
 import IAssureTableTable            from '../../admin/IAssureTable/IAssureTable.js';
 
 import './IAssureTable.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import './print.css';
 var sum = 0;

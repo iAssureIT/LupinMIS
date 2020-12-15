@@ -5,7 +5,7 @@ import $ 						  from 'jquery';
 import axios 					  from 'axios';
 // import CKEditor 				  from "react-ckeditor-component";
 import InputMask                 from 'react-input-mask';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 
 

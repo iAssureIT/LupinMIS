@@ -4,7 +4,7 @@ import swal                       from 'sweetalert';
 import $ 						  from 'jquery';
 import axios 					  from 'axios';
 import CKEditor 				  from "react-ckeditor-component";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 
 

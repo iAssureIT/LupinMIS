@@ -7,7 +7,7 @@ import $ from "jquery";
 import validate               from 'jquery-validation';
 
 import 'font-awesome/css/font-awesome.min.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 
 class ResetPassword extends Component {

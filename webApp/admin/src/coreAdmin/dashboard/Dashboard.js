@@ -7,7 +7,7 @@ import StatusComponent           from './StatusComponent/StatusComponent.js';
 import Loader                    from "../../common/Loader.js";
 import IAssureTable              from "../IAssureTable/IAssureTable.jsx";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './Dashboard.css';
 

@@ -4,7 +4,7 @@ import $              from 'jquery';
 import { render } from 'react-dom';
 import { Route , withRouter} from 'react-router-dom';
 import Rightsidebar from '../rightSidebar/Rightsidebar.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 import './Header.css';

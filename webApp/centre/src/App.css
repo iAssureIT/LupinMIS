@@ -687,7 +687,7 @@ margin-right: 12px;
       display: inline-grid;
       box-shadow: 3px 4px 7px -3px #666!important;
       height: 30px;
-      width: 30px;
+      width: 30px !important;
       background: #fff;
       border-radius: 100% !important;
   }

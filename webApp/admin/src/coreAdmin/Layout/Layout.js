@@ -3,7 +3,7 @@ import { render }                                from 'react-dom';
 import { Redirect }                              from 'react-router-dom';
 import { BrowserRouter as Router, Route,Switch } from 'react-router-dom';
 import $                                         from "jquery";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 // Section: 1 - SystemSecurity ******************************************************

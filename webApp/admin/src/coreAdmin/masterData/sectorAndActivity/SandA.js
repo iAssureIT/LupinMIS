@@ -4,7 +4,7 @@ import Activity             from "./component/activity/Activity.js";
 import Sector               from "./component/sector/Sector.js";
 import SubActivity          from "./component/subActivity/SubActivity.js";
 import BulkUpload           from "./component/BulkUpload/BulkUpload.js";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/tab.js';
 import "./SectorAndActivity.css";
 

@@ -6,7 +6,7 @@ import $ from "jquery";
 import axios from 'axios';
 import validate               from 'jquery-validation';
 import 'font-awesome/css/font-awesome.min.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 
 class ForgotPassword extends Component {

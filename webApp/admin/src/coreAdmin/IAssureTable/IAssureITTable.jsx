@@ -9,7 +9,7 @@ import IAssureTableTable            from '../../admin/IAssureTable/IAssureTable.
 import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
 import './print.css';
 

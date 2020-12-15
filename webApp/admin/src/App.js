@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import $     from 'jquery';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './coreAdmin/css/root.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/js/modal.js';
 import './App.css';
 import './lib/router.js';
 import LayoutSystemSecurity from './coreAdmin/LayoutSystemSecurity/LayoutSystemSecurity.js';

@@ -6,7 +6,7 @@ import React, { Component } 		from 'react';
 // import { UserManagementMaster }  	from '/imports/admin/userManagement/UM/UserManagementMaster.js';
 /*import './userManagement.css';
 */
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/js/modal.js';
