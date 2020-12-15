@@ -852,7 +852,7 @@ class PlanDetails extends Component{
       axios.post(this.state.apiCall+'/list', inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("response plan Details===>",response);
+        // console.log("response plan Details===>",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                 : a._id,
@@ -903,7 +903,7 @@ class PlanDetails extends Component{
     axios.post(this.state.apiCall+'/list', inputGetAllData)
     .then((response)=>{
       $(".fullpageloader").hide();
-      console.log("response plan Details===>",response);
+      // console.log("response plan Details===>",response);
       var tableData = response.data.map((a, i)=>{
         return {
           _id                 : a._id,
@@ -1644,7 +1644,7 @@ class PlanDetails extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                          <option disabled="disabled" selected={true}>-- Select Plan --</option>
+                          <option disabled="disabled" value ="">-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
                           <option key={index}  value={data} >{data}</option>
                           )}
@@ -1658,7 +1658,7 @@ class PlanDetails extends Component{
                       <label className="formLable">Year</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" selected={true}>-- Select Year --</option>
+                          <option disabled="disabled" value = "">-- Select Year --</option>
                           {
                             ( this.state.years )
                             ? 
@@ -1690,7 +1690,7 @@ class PlanDetails extends Component{
                                 {this.state.type===true ?
 
                                  <div className=" switch" onClick={this.handleToggleP.bind(this)} >
-                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  defaultChecked />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
                                     <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
@@ -1700,7 +1700,7 @@ class PlanDetails extends Component{
                                    <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggleP.bind(this)} >
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" defaultChecked  />
                                     <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
                                     <span className="switch-selection" ></span>
                                   </div>
@@ -1734,7 +1734,7 @@ class PlanDetails extends Component{
                               <label className="formLable">Sector</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                 <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
+                                  <option disabled="disabled" value = "" value ="">-- Select --</option>
                                   {
                                     this.state.availableSectors && this.state.availableSectors.length >0 ?
                                     this.state.availableSectors.map((data, index)=>{
@@ -1753,7 +1753,7 @@ class PlanDetails extends Component{
                               <label className="formLable">Activity</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                 <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                  <option disabled="disabled" selected={true}>-- Select --</option>
+                                  <option disabled="disabled" value = "">-- Select --</option>
                                   {
                                     this.state.availableActivity && this.state.availableActivity.length >0 ?
                                     this.state.availableActivity.map((data, index)=>{

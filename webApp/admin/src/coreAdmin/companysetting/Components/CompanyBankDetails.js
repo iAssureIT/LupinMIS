@@ -210,7 +210,7 @@ handleChange(event){
                                 <label className="control-label statelabel locationlabel" >Enter Account Type</label><span className="astrick"></span>
                                 <input id="accType" value={this.state.accType} onChange={this.handleChange.bind(this)} type="text" name="accType" ref="accType" className="form-control areaStaes" title="Please enter alphanumeric only" />
                                  {/* <select value={this.state.accType} onChange={this.handleChange} className="form-control accType inputValid required" name="accType">
-                                  <option value="0" selected="true" disabled="disabled">Enter Account Type</option>
+                                  <option value="0" value = "" disabled="disabled">Enter Account Type</option>
                                   <option value="Current">Current</option>
                                   <option value="Saving">Saving</option>
                                 </select>    */}

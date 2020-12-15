@@ -475,7 +475,7 @@ class CategorywiseReport extends Component{
                         <label className="formLable">Land holding Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                           <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option  value="" disabled="disabled" >-- Select --</option>
                             <option value="all" >All</option>
                             <option>Big Farmer</option>
                             <option>Landless</option>
@@ -488,7 +488,7 @@ class CategorywiseReport extends Component{
                         <label className="formLable">Income Category </label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                           <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option  value="" disabled="disabled" >-- Select --</option>
                             <option value="all" >All</option>
                             <option>APL</option>
                             <option>BPL</option>
@@ -499,7 +499,7 @@ class CategorywiseReport extends Component{
                         <label className="formLable">Special Category</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                           <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                            <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                            <option  value="" disabled="disabled" >-- Select --</option>
                             <option value="all" >All</option>
                             <option>Normal</option>
                             <option>Differently Abled</option>

@@ -427,7 +427,7 @@ class VillageBulkUpload extends Component{
                           <label className="formLable">State</label><span className="asterix">*</span>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                             <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                              <option disabled="disabled" selected={true} value="--Select State--">--Select State--</option> 
+                              <option disabled="disabled" value = "" value="--Select State--">--Select State--</option> 
                               <option value="all" >All</option>
                               {
                                 this.state.listofStates ?
@@ -446,7 +446,7 @@ class VillageBulkUpload extends Component{
                           <label className="formLable">District</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                             <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.districtChange.bind(this)} >
-                              <option disabled="disabled" selected={true} value="--Select District--" >--Select District--</option>
+                              <option disabled="disabled" value = "" value="--Select District--" >--Select District--</option>
                               <option value="all" >All</option>
                               {
                                 this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
@@ -465,7 +465,7 @@ class VillageBulkUpload extends Component{
                           <label className="formLable">Block</label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                             <select className="custom-select form-control inputBox"  value={this.state.block}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                              <option disabled="disabled" selected={true} value="--Select Block--" >--Select Block--</option>
+                              <option disabled="disabled" value = "" value="--Select Block--" >--Select Block--</option>
                               <option value="all" >All</option>
                               {
                                 this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 

@@ -623,7 +623,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12  NOpadding-left text-left formLable">Select Action</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding inputBox-main form-control" id="userListDropdownId" ref="userListDropdown" name="userListDropdown" onChange={this.adminUserActions.bind(this)}>
-													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="-" name="userListDDOption" disabled="disabled" selected="true">-- Select --</option>	
+													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="-" name="userListDDOption" disabled="disabled" value = "">-- Select --</option>	
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="block_selected" name="userListDDOption">Block Selected</option>	
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="active_selected" name="userListDDOption">Active Selected</option>
 													<option className="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-limit='37' value="cancel_selected" name="userListDDOption">Delete Selected Acccounts</option>	
@@ -640,7 +640,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left formLable">Select Role</label>
 												<select className="col-lg-12 col-md-12 col-sm-12 col-xs-12  noPadding inputBox-main  form-control" ref="roleListDropdown" name="roleListDropdown" onChange={this.selectedRole.bind(this)} >
-													<option name="roleListDDOption" disabled="disabled" selected="true">-- Select --</option>
+													<option name="roleListDDOption" disabled="disabled" value = "">-- Select --</option>
 													<option value="all" name="roleListDDOption">Show All</option>		
 													
 													{ adminRolesListDataList.map( (rolesData,index)=>{
@@ -652,7 +652,7 @@ render(){
 											<div className="form-group col-lg-4 col-md-4 col-sm-6 col-xs-6">
 												<label className="col-lg-12 col-md-12 col-xs-12 col-sm-12 NOpadding-left text-left formLable">Select Status</label>
 												<select className=" col-col-lg-12  col-md-12 col-sm-12 col-xs-12 noPadding inputBox-main  form-control " ref="blockActive"  name="blockActive" onChange={this.selectedStatus.bind(this)}>
-													<option disabled="disabled" selected="true">-- Select --</option>	
+													<option disabled="disabled" value = "">-- Select --</option>	
 													<option value="all"	>Show All</option>	
 													<option value="Blocked">Blocked</option>	
 													<option value="Active">Active </option>	

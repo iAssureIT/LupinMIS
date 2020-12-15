@@ -231,11 +231,10 @@ class SectorwiseReport extends Component{
             // $(".fullpageloader").show();
             axios.get('/api/reports/sectorwise_report/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/'+beneficiaryType)
             .then((response)=>{
-                console.log("resp",response);
+                // console.log("resp",response);
                 // $(".fullpageloader").hide();
                 var tableData = response.data.map((a, i)=>{
                     return {
-
                         _id                         : a._id,           
                         projectCategoryType         : a.projectCategoryType ? a.projectCategoryType : "-",
                         projectName                 : a.projectName === "all" ? "-" :a.projectName,        

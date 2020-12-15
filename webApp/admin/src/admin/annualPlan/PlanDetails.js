@@ -1168,7 +1168,7 @@ class PlanDetails extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.selectMonth.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select Plan --</option>
+                          <option disabled="disabled" value = "">-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
                           <option key={index}  value={data} >{data}</option>
                           )}
@@ -1182,7 +1182,7 @@ class PlanDetails extends Component{
                        <label className="formLable">Year</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select Year --</option>
+                          <option disabled="disabled" value = "">-- Select Year --</option>
                           {/* console.log('year render', this.state.year,this.state.month)*/}
                           {/*
                             this.state.years.map((data, i)=>{
@@ -1236,7 +1236,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Sector</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sectorName" >
                                   <select className="custom-select form-control inputBox" ref="sectorName" name="sectorName" value={this.state.sectorName} onChange={this.selectSector.bind(this)}>
-                                    <option disabled="disabled" selected="true">-- Select --</option>
+                                    <option disabled="disabled" value = "">-- Select --</option>
                                     {
                                       this.state.availableSectors && this.state.availableSectors.length >0 ?
                                       this.state.availableSectors.map((data, index)=>{
@@ -1255,7 +1255,7 @@ class PlanDetails extends Component{
                                 <label className="formLable">Activity</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activityName" >
                                   <select className="custom-select form-control inputBox"ref="activityName" name="activityName" value={this.state.activityName} onChange={this.selectActivity.bind(this)} >
-                                    <option disabled="disabled" selected="true">-- Select --</option>
+                                    <option disabled="disabled" value = "">-- Select --</option>
                                     {
                                     this.state.availableActivity && this.state.availableActivity.length >0 ?
                                     this.state.availableActivity.map((data, index)=>{

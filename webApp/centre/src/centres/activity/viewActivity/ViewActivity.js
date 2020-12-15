@@ -159,12 +159,13 @@ class ViewActivity extends Component{
       propsdata : inputGetData
     })
 
-    if(inputGetData){
+    if(inputGetData.year){
       // console.log("getData inputGetData = ",inputGetData);
       $(".fullpageloader").show();
       // axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
       axios.post('/api/activityReport/filterlist',inputGetData)
       .then((response)=>{
+        // console.log("response",response)
         $(".fullpageloader").hide();
         var newTableData = response.data.data.map((a, i)=>{
           return {
@@ -314,11 +315,11 @@ class ViewActivity extends Component{
     this.getAvailableSectors();
     const center_ID = localStorage.getItem("center_ID");
     const centerName = localStorage.getItem("centerName");
-    this.year();
     this.setState({
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+      this.year();
       var inputGetData = {
         "sector_ID"      :  this.state.sector_ID,
         "activity_ID"    :  this.state.activity_ID,
@@ -537,18 +538,20 @@ class ViewActivity extends Component{
         secondYear :secondYear,
         year       :financialYear
       },()=>{
-        var inputGetData = {
-          "sector_ID"      :  this.state.sector_ID,
-          "activity_ID"    :  this.state.activity_ID,
-          "subactivity_ID" :  this.state.subactivity_ID,
-          "typeofactivity" :  this.state.typeofactivity,
-          "startRange"     :  this.state.startRange,
-          "limitRange"     :  this.state.limitRange,
-          "center_ID"      :  this.state.center_ID,
-          "year"           :  this.state.year,
+        if(this.state.year){
+          var inputGetData = {
+            "sector_ID"      :  this.state.sector_ID,
+            "activity_ID"    :  this.state.activity_ID,
+            "subactivity_ID" :  this.state.subactivity_ID,
+            "typeofactivity" :  this.state.typeofactivity,
+            "startRange"     :  this.state.startRange,
+            "limitRange"     :  this.state.limitRange,
+            "center_ID"      :  this.state.center_ID,
+            "year"           :  this.state.year,
+          }
+          this.getData(inputGetData);
+          this.getDownloadData(this.state.year);
         }
-        this.getData(inputGetData);
-        this.getDownloadData(this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -642,7 +645,7 @@ class ViewActivity extends Component{
                       <label className="formLable">Activity<span className="asterix">*</span></label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                         <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select --</option>
+                          <option disabled="disabled" value = "">-- Select --</option>
                           <option value="all" >All</option>
                           {
                             this.state.availableActivity && this.state.availableActivity.length >0 ?
@@ -663,7 +666,7 @@ class ViewActivity extends Component{
                       <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                         <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select --</option>
+                          <option disabled="disabled" value = "">-- Select --</option>
                           <option value="all" >All</option>
                           {
                             this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
@@ -684,7 +687,7 @@ class ViewActivity extends Component{
                         <label className="formLable">Activity Type<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                           <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
+                            <option disabled="disabled" value = "">-- Select --</option>
                           {/*  <option data-id="commonlevel">Common Level Activity</option>*/}
                             <option value="all">All</option>
                             <option data-id="familylevel">Family Level Activity</option>

@@ -273,7 +273,7 @@ class SectorwisePlan extends Component{
           if (month==="All"){
             axios.get('/api/reports/sector_annualPlan/'+year+'/'+center_ID+'/'+projectCategoryType+'/'+projectName)
               .then((response)=>{
-                console.log("resp",response);
+                // console.log("resp",response);
                 // $(".fullpageloader").hide();
                 var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
@@ -422,7 +422,7 @@ class SectorwisePlan extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" selected="true">-- Select Plan --</option>
+                          <option disabled="disabled" value = "">-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
                           <option key={index}  value={data} >{data}</option>
                           )}

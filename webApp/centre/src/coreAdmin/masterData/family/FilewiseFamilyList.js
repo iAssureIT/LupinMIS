@@ -53,7 +53,7 @@ class FilewiseFamilyList extends Component{
       // console.log('tableData', data)
       axios.post('/api/families/get/files', data)
       .then((response)=>{
-        console.log(response);
+        // console.log(response);
         var tableData = response.data.map((a, i)=>{
           return {
             fileName    : a.fileName !== null ? a.fileName : "Manual", 

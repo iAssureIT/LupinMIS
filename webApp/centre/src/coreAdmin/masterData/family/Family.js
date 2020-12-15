@@ -692,7 +692,7 @@ class Family extends Component{
     }
     axios.post('/api/families/get/family/list',inputGetAllData)
       .then((response)=>{
-        console.log('response',response)
+        // console.log('response',response)
         var downloadData = response.data.map((a, i)=>{
           return {
             _id                   : a._id,
@@ -1178,6 +1178,7 @@ class Family extends Component{
     var displayBlock = {
       display: this.state.shown ? "block" : "none"
     }
+    // console.log("shown",this.state.shown)
     return (
       <div className="container-fluid">
         <Loader type="fullpageloader" />
@@ -1235,7 +1236,7 @@ class Family extends Component{
                               <label className="formLable">Gender</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="FHGenderErr" >
                                 <select className="custom-select form-control inputBox" ref="FHGender" name="FHGender" value={this.state.FHGender} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option  value="-"  >-- Select --</option>
                                   <option>Female</option>
                                   <option>Male</option>
                                   <option>Transgender</option>
@@ -1274,7 +1275,7 @@ class Family extends Component{
                               <label className="formLable">Caste</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
                                 <select className="custom-select form-control inputBox" ref="caste" name="caste" value={this.state.caste} onChange={this.handleChange.bind(this)}>
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option  value="-"  >-- Select --</option>
                                   <option>General</option>
                                   <option>SC</option>
                                   <option>ST</option>
@@ -1289,7 +1290,7 @@ class Family extends Component{
                               <label className="formLable">Land holding Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                                 <select className="custom-select form-control inputBox"ref="landCategory" name="landCategory" value={this.state.landCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option  value="-"  >-- Select --</option>
                                   <option>Big Farmer</option>
                                   <option>Landless</option>
                                   <option>Marginal Farmer</option>
@@ -1302,7 +1303,7 @@ class Family extends Component{
                               <label className="formLable">Income Category </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                                 <select className="custom-select form-control inputBox" ref="incomeCategory" name="incomeCategory" value={this.state.incomeCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option  value="-"  >-- Select --</option>
                                   <option>APL</option>
                                   <option>BPL</option>
                                 </select>
@@ -1313,7 +1314,7 @@ class Family extends Component{
                               <label className="formLable">Special Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategory" name="specialCategory" value={this.state.specialCategory} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option  value="-"  >-- Select --</option>
                                   <option>Normal</option>
                                   <option>Differently Abled</option>
                                   <option>Veerangana</option>
@@ -1326,7 +1327,7 @@ class Family extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox"ref="district" name="district" value={this.state.district} onChange={this.districtChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value = ""  >-- Select --</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                     this.state.listofDistrict.map((data, index)=>{
@@ -1346,7 +1347,7 @@ class Family extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="block" name="block" value={this.state.block?this.state.block:""} onChange={this.selectBlock.bind(this)} >
-                                  <option selected='true'  disabled="disabled" >-- Select --</option>
+                                  <option value = ""   >-- Select --</option>
                                   {
 
                                     this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
@@ -1367,7 +1368,7 @@ class Family extends Component{
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                               {/*console.log("this.state.village",this.state.village)*/}
                                 <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village?this.state.village:""} onChange={this.selectVillage.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value = ""  >-- Select --</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                     this.state.listofVillages.map((data, index)=>{
@@ -1404,7 +1405,7 @@ class Family extends Component{
                               <label className="formLable">Caste</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="casteErr" >
                                 <select className="custom-select form-control inputBox" ref="casteFilter" name="casteFilter" value={this.state.casteFilter} onChange={this.handleFilters.bind(this)}>
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option  value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   <option>General</option>
                                   <option>SC</option>
@@ -1419,7 +1420,7 @@ class Family extends Component{
                               <label className="formLable">Land holding Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="landCategory" >
                                 <select className="custom-select form-control inputBox"ref="landCategoryFilter" name="landCategoryFilter" value={this.state.landCategoryFilter} onChange={this.handleFilters.bind(this)}  >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option  value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   <option>Big Farmer</option>
                                   <option>Landless</option>
@@ -1432,7 +1433,7 @@ class Family extends Component{
                               <label className="formLable">Income Category </label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="incomeCategory" >
                                 <select className="custom-select form-control inputBox" ref="incomeCategoryFilter" name="incomeCategoryFilter" value={this.state.incomeCategoryFilter} onChange={this.handleFilters.bind(this)}  >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option  value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   <option>APL</option>
                                   <option>BPL</option>
@@ -1443,7 +1444,7 @@ class Family extends Component{
                               <label className="formLable">Special Category</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="specialCategory" >
                                 <select className="custom-select form-control inputBox" ref="specialCategoryFilter" name="specialCategoryFilter" value={this.state.specialCategoryFilter} onChange={this.handleFilters.bind(this)}  >
-                                  <option selected='true' value="" disabled="disabled" >-- Select --</option>
+                                  <option  value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   <option>Normal</option>
                                   <option>Differently Abled</option>
@@ -1456,7 +1457,7 @@ class Family extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtFilterChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value = ""  >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
@@ -1476,7 +1477,7 @@ class Family extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectFilterBlock.bind(this)} >
-                                  <option selected='true'  disabled="disabled" >-- Select --</option>
+                                  <option value = ""   >-- Select --</option>
                                   <option value="all">All</option>
                                   {
 
@@ -1496,7 +1497,7 @@ class Family extends Component{
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                                 <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectFilterVillage.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value = ""  >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 

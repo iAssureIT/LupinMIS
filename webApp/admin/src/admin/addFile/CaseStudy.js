@@ -101,7 +101,7 @@ class CaseStudy extends Component{
     axios.get('/api/caseStudies/list/all')
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("response",response);
+        // console.log("response",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                  : a._id,

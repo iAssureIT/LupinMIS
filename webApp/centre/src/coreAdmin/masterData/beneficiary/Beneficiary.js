@@ -416,7 +416,7 @@ class Beneficiary extends Component{
       this.setState({
         dataCount : response.data.dataCount
       },()=>{
-        console.log('dataCount', this.state.dataCount);
+        // console.log('dataCount', this.state.dataCount);
       })
     })
     .catch(function(error){
@@ -482,7 +482,7 @@ class Beneficiary extends Component{
     }
     axios.post('/api/beneficiaries/get/beneficiary/list', inputGetAllData)
     .then((res)=>{
-      console.log('res',res);
+      // console.log('res',res);
       var downloadData = res.data.map((a, i)=>{
         return {
           _id                       : a._id,
@@ -504,7 +504,7 @@ class Beneficiary extends Component{
       this.setState({
         downloadData : downloadData
       },()=>{
-        console.log("this.state.downloadData",this.state.downloadData)
+        // console.log("this.state.downloadData",this.state.downloadData)
       })    
     })
     .catch(function(error){
@@ -942,7 +942,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
                                 <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option value=""  >-- Select --</option>
                                   <option>Self</option>
                                   <option>Wife</option>
                                   <option>Husband</option>
@@ -963,7 +963,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Gender</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
                                 <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
-                                  <option selected='true' value="-" disabled="disabled" >-- Select --</option>
+                                  <option value="">-- Select --</option>
                                   <option>Female</option>
                                   <option>Male</option>
                                   <option>Transgender</option>
@@ -1020,7 +1020,7 @@ class Beneficiary extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtFilterChange.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="" disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
@@ -1040,7 +1040,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectFilterBlock.bind(this)} >
-                                  <option selected='true'  disabled="disabled" >-- Select --</option>
+                                  <option value=""  disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
 
@@ -1060,7 +1060,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                                 <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectFilterVillage.bind(this)}  >
-                                  <option selected='true' disabled="disabled" >-- Select --</option>
+                                  <option value="" disabled="disabled" >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 

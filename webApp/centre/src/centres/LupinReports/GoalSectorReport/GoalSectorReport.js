@@ -210,7 +210,7 @@ class GoalSectorReport extends Component{
       axios.get('/api/reports/goal/'+startDate+'/'+endDate+'/'+center_ID+'/'+goalType+"/"+goalName+"/"+beneficiaryType+"/"+projectCategoryType+"/"+projectName+"/"+selectedDistrict)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("resp",response);
+        // console.log("resp",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                         : a._id,           
@@ -529,7 +529,7 @@ class GoalSectorReport extends Component{
                       <label className="formLable">Framework</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalType" >
                         <select className="custom-select form-control inputBox" ref="goalType" name="goalType" value={this.state.goalType} onChange={this.selectType.bind(this)}>
-                          <option selected={true} disabled="disabled">-- Select --</option>
+                          <option value = "" disabled="disabled">-- Select --</option>
                           {
                             this.state.listofTypes ?
                             this.state.listofTypes.map((data, index)=>{
@@ -547,7 +547,7 @@ class GoalSectorReport extends Component{
                       <label className="formLable">Goal / Objective</label><span className="asterix">*</span>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="goalName" >
                         <select className="custom-select form-control inputBox" ref="goalName" name="goalName" value={this.state.goalName} onChange={this.handleChange.bind(this)}>
-                          <option selected={true} disabled="disabled">-- Select --</option>
+                          <option value = "" disabled="disabled">-- Select --</option>
                           <option value="all" >All</option>
                           {
                             this.state.listofGoalNames ?

@@ -405,7 +405,7 @@ class ActivitywisePlan extends Component{
       if(center_ID && sector_ID && projectCategoryType && projectName && beneficiaryType){ 
         var startDate = year.substring(3, 7)+"-04-01";
         var endDate = year.substring(10, 15)+"-03-31";   
-        console.log(month); 
+        // console.log(month); 
         if (month==="All"){    
           if(center_ID==="all"){
             if(sector_ID==="all"){
@@ -423,7 +423,7 @@ class ActivitywisePlan extends Component{
           $(".fullpageloader").show();
           axios.get(url)
             .then((response)=>{
-              console.log('response',response);
+              // console.log('response',response);
               $(".fullpageloader").hide();
               var tableData = response.data.map((a, i)=>{
                 return {
@@ -474,7 +474,7 @@ class ActivitywisePlan extends Component{
           axios.get(url)
             .then((response)=>{
                 $(".fullpageloader").hide();
-                console.log("resp",response);
+                // console.log("resp",response);
                 var tableData = response.data.map((a, i)=>{
                   // console.log(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%",(((a.TotalBudget/value.TotalBudget)*100).toFixed(2)+"%") === "NAN%")
                   return {
@@ -602,7 +602,7 @@ class ActivitywisePlan extends Component{
                         <label className="formLable">Plan</label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                           <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                            <option disabled="disabled" selected="true">-- Select Plan --</option>
+                            <option disabled="disabled" >-- Select Plan --</option>
                             {
                               this.state.months.map((data,index) =>
                                 <option key={index}  value={data} >{data}</option>
@@ -650,7 +650,7 @@ class ActivitywisePlan extends Component{
                         <label className="formLable">Activity<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                           <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
+                            <option disabled="disabled">-- Select --</option>
                             <option value="all" >All</option>
                             {
                               this.state.availableActivity && this.state.availableActivity.length >0 ?
@@ -671,7 +671,7 @@ class ActivitywisePlan extends Component{
                         <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                           <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                            <option disabled="disabled" selected={true}>-- Select --</option>
+                            <option disabled="disabled">-- Select --</option>
                             <option value="all" >All</option>
                               {
                                 this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?

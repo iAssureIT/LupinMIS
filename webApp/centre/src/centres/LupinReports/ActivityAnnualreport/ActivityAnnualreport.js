@@ -449,7 +449,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                           <label className="formLable">Activity<span className="asterix">*</span></label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                             <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                              <option disabled="disabled" selected="true">-- Select --</option>
+                              <option disabled="disabled" value = "">-- Select --</option>
                               <option value="all" >All</option>
                               {
                                 this.state.availableActivity && this.state.availableActivity.length >0 ?
@@ -470,7 +470,7 @@ class ActivitywiseAnnualCompletionReport extends Component{
                           <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                           <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                             <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                              <option disabled="disabled" selected="true">-- Select --</option>
+                              <option disabled="disabled" value = "">-- Select --</option>
                               <option value="all" >All</option>
                                 {
                                   this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?

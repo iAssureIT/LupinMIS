@@ -1,6 +1,8 @@
 import React    from 'react';
 import axios    from 'axios';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import $        from 'jquery';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/js/modal.js';
 import './coreAdmin/css/root.css'
 import './App.css';
 import Layout   from './coreAdmin/Layout/Layout.js';

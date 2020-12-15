@@ -27,7 +27,7 @@
     });
     setTimeout(function(){
       $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 200+  'px'});
-      console.log("resize height----: " + $(".main-sidebar .sidebar").outerHeight());
+      // console.log("resize height----: " + $(".main-sidebar .sidebar").outerHeight());
     }, 500);
     // new ResizeSensor(jQuery('.main-sidebar .sidebar'), function(){
     //   $(".sidebar-mini .content-wrapper").css({'min-height': $(".main-sidebar .sidebar").outerHeight() + 50 + 'px'});

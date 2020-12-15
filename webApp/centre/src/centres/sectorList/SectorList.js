@@ -71,7 +71,7 @@ class SectorList extends Component{
     axios.post('/api/sectors/subactivity/list', data)
     .then((response)=>{
     $(".fullpageloader").hide();
-      console.log('response',response);
+      // console.log('response',response);
       function dynamicSort(property) {
         var sortOrder = 1;
         if(property[0] === "-") {

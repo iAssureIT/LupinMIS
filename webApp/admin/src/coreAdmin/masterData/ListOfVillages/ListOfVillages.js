@@ -40,7 +40,7 @@ class ListOfVillages extends Component{
         url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/'+center_ID+'/'+district+'/'+block,
       }).then((response)=> {
       $(".fullpageloader").hide();
-        console.log("response ==>",response);
+        // console.log("response ==>",response);
         function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;

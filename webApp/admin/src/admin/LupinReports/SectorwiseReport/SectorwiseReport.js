@@ -260,7 +260,7 @@ class SectorwiseReport extends Component{
             }
             axios.get(url)
             .then((response)=>{
-                console.log("resp",response);
+                // console.log("resp",response);
                 $(".fullpageloader").hide();
                 var tableData = response.data.map((a, i)=>{
                     return {
@@ -482,13 +482,13 @@ class SectorwiseReport extends Component{
                                     <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">From</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
+                                            <input type="date"  onChange={this.handleFromChange} onBlur={this.onBlurEventFrom} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} className="custom-select form-control inputBox" placeholder=""  />
                                         </div>
                                     </div>
                                     <div className=" col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                                         <label className="formLable">To</label><span className="asterix"></span>
                                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
-                                            <input onChange={this.handleToChange} onBlur={this.onBlurEventTo}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
+                                            <input type="date"  onChange={this.handleToChange} onBlur={this.onBlurEventTo}  name="endDate" ref="endDate" id="endDate" value={this.state.endDate} className="custom-select form-control inputBox" placeholder=""   />
                                         </div>
                                     </div>  
                                     {/*<div className="col-lg-3 col-md-4 col-sm-12 col-xs-12">
