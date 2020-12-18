@@ -146,7 +146,7 @@ class CategorywiseReport extends Component{
             })
         }
         var availableDistInCenter= removeDuplicates(response.data[0].villagesCovered, "district");
-        // console.log('availableDistInCenter ==========',availableDistInCenter);
+        // console.log('availableDistInCenter ============',availableDistInCenter);
         this.setState({
           availableDistInCenter  : availableDistInCenter,
           address          : response.data[0].address.stateCode+'|'+response.data[0].address.district,
@@ -190,7 +190,7 @@ class CategorywiseReport extends Component{
       // url: 'http://locationapi.iassureit.com/api/blocks/get/list/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/blocks/get/list/IN/'+stateCode+'/'+selectedDistrict,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofBlocks : response.data
         },()=>{
@@ -219,7 +219,7 @@ class CategorywiseReport extends Component{
       // url: 'http://locationapi.iassureit.com/api/cities/get/list/'+block+'/'+selectedDistrict+'/'+stateCode+'/IN',
       url: 'http://locationapi.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+block,
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofVillages : response.data
         },()=>{
@@ -310,14 +310,14 @@ class CategorywiseReport extends Component{
           var lastN = x.split('.')[0];
           var lastThree = lastN.substring(lastN.length-3);
           var otherNumbers = lastN.substring(0,lastN.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
           var lastThree = x.substring(x.length-3);
           var otherNumbers = x.substring(0,x.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);

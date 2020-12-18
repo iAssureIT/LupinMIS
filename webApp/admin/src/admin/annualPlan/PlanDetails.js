@@ -279,7 +279,7 @@ class PlanDetails extends Component{
       ["indirectCC-"+id] : 0,
       ["other-"+id] : 0,
     },()=>{
-      // console.log('totalBud=========',this.state.totalBud );
+      // console.log('totalBud==========',this.state.totalBud );
       if (parseInt(this.state[`noOfBeneficiaries-${id}`]) < parseInt(this.state[`noOfFamilies-${id}`]) ) {
         swal("No. of Families should not greater than No. of Beneficiaries");
         this.setState({
@@ -645,8 +645,8 @@ class PlanDetails extends Component{
       this.setState({
         // "year" : this.state.years[0]
       },()=>{
-        console.log('month =====', this.state.month, this.state.year)
-        console.log('month =====', this.state.years)
+        console.log('month ======', this.state.month, this.state.year)
+        console.log('month ======', this.state.years)
         this.getData(this.state.center_ID, this.state.month, this.state.year, this.state.startRange, this.state.limitRange);
       })
     });        
@@ -662,7 +662,7 @@ class PlanDetails extends Component{
         var lastN = x.split('.')[0];
         var lastThree = lastN.substring(lastN.length-3);
         var otherNumbers = lastN.substring(0,lastN.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
         // console.log("x",x,"lastN",lastN,"lastThree",lastThree,"otherNumbers",otherNumbers,"res",res)
@@ -670,7 +670,7 @@ class PlanDetails extends Component{
       }else{
         var lastThree = x.substring(x.length-3);
         var otherNumbers = x.substring(0,x.length-3);
-        if(otherNumbers != '')
+        if(otherNumbers !== '')
             lastThree = ',' + lastThree;
         var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
         // console.log("lastThree",lastThree,"otherNumbers",otherNumbers,"res",res);
@@ -702,7 +702,7 @@ class PlanDetails extends Component{
       this.setState({
         financialYear            :financialYear
       },()=>{
-        // console.log('this.state.financialYear========',this.state.financialYear);
+        // console.log('this.state.financialYear=========',this.state.financialYear);
         var financialYear = this.state.financialYear;
         var data = {
             center_ID  : center_ID,
@@ -996,7 +996,7 @@ class PlanDetails extends Component{
     })
   }
   getFileDetails(fileName){
-    var fileDetailUrl = this.state.month == "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
+    var fileDetailUrl = this.state.month === "Annual Plan" ? this.state.annualFileDetailUrl : this.state.monthlyFileDetailUrl;
     axios
     .get(fileDetailUrl+fileName)
     .then((response)=> {

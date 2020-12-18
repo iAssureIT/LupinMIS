@@ -159,7 +159,7 @@ class CompanyInformation extends Component{
  
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.get && nextProps.get.length != 0){
+    if(nextProps.get && nextProps.get.length !== 0){
 
      this.setState({
                 companyName             : this.state.companyName,
@@ -228,7 +228,7 @@ class CompanyInformation extends Component{
     }
   
   if($("#companyInformationForm").valid()){  
-    if(this.state.submitVal == true){
+    if(this.state.submitVal === true){
         axios.post('/api/companysettings',companyInfoFormValue)
         .then( (response)=> { 
           // handle success

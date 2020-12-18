@@ -71,7 +71,7 @@ export default class CenterWisePieChart extends Component {
     this.getData(this.props.year);
   }
   getCenterwiseData(year){
-    // console.log("year========",year);
+    // console.log("year=========",year);
     var centerData = {...this.state.data};
     var startDate = year.substring(3, 7)+"-04-01";
     var endDate = year.substring(10, 15)+"-03-31";
@@ -145,7 +145,7 @@ export default class CenterWisePieChart extends Component {
   }
   getData(year){
     if(year){
-      // console.log("year========",year);
+      // console.log("year=========",year);
       var centerData = {...this.state.data};
       var startDate = year.substring(3, 7)+"-04-01";
       var endDate = year.substring(10, 15)+"-03-31";
@@ -260,7 +260,7 @@ export default class CenterWisePieChart extends Component {
 
         <div className="bg-red">
           <div className="loadingImageContainer col-lg-4 col-lg-offset-4">
-            <img src="/images/loading.gif"/>
+            <img alt="loading" src="/images/loading.gif"/>
           </div>
         </div>
       */} 

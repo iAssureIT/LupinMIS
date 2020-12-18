@@ -254,7 +254,7 @@ const formValid = formerrors=>{
       method: 'get',
       url: '/api/roles/list',
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           adminRolesListData : response.data
         },()=>{
@@ -269,7 +269,7 @@ const formValid = formerrors=>{
       method: 'get',
       url: '/api/centers/list',
     }).then((response)=> {
-        // console.log('response ==========', response.data);
+        // console.log('response ============', response.data);
         this.setState({
           listofCenters : response.data
         },()=>{

@@ -1,5 +1,5 @@
 import React, { Component }       	from 'react';
-import {Route, withRouter} 			from 'react-router-dom';
+import {withRouter} 			from 'react-router-dom';
 import swal                     	from 'sweetalert';
 import axios 						from 'axios';
 import $ 							from 'jquery';
@@ -56,7 +56,7 @@ class IAssureTable extends Component {
 					for(let k=0; k<mergCol; k++){
 						if(props.twoLevelHeader.firstHeaderData[j].color){
 							var colorElem = {col:tableHeading[index], color:"color"};
-						// console.log(index," this.state.colorElem ========== ",colorElem);
+						// console.log(index," this.state.colorElem ============ ",colorElem);
 						}else{
 							var colorElem = {col:tableHeading[index], color:""};
 						// console.log(index," this.state.colorElem = ",colorElem);
@@ -612,7 +612,7 @@ class IAssureTable extends Component {
 			        	null
 			       	}
 			       	{ this.state.tableObjects.downloadApply === true ?
-		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length != 0 && !this.state.downloadData ?
+		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData ?
 		                <React.Fragment>
 		          
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
@@ -633,7 +633,7 @@ class IAssureTable extends Component {
 		            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
 		            {/*console.log("this.state.id",this.state.id)*/}
 		            { this.state.tableObjects.downloadApply === true ?
-		                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length != 0 ?
+		                this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length !== 0 ?
 		                <React.Fragment>
 		          
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">

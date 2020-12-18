@@ -30,10 +30,10 @@ class ResetPassword extends Component {
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "resetPassword"){
+        if (element.attr("name") === "resetPassword"){
           error.insertAfter("#resetPasswordErr");
         }
-        if (element.attr("name") == "resetPasswordConfirm"){
+        if (element.attr("name") === "resetPasswordConfirm"){
           error.insertAfter("#resetPasswordConfirmErr");
         }
       }
@@ -112,7 +112,7 @@ class ResetPassword extends Component {
             <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
                 <div className="col-lg-12 systemHeader   ">
                   <div className="col-lg-6 col-md-6 col-sm-6 ">
-                    <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                    <img alt="lupinImage" className="lupinImage" src="images/lupin.png" height="70px"/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
                     Admin <br/>Management Information System
@@ -122,7 +122,7 @@ class ResetPassword extends Component {
                 <div className="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-12 signupPadding signUpFormWrap " style={{ "marginTop": margint , "height": h}}>
                   <div className="divLoginInWrap">
                     {/*<div className="col-lg-4 col-lg-offset-4  ">
-                      <img className="logoImage" src="images/logo.png" height="70px"/>
+                      <img alt="logoImage" className="logoImage" src="images/logo.png" height="70px"/>
                     </div>    */}  
                     <h3 className="signInNameTitle"> <span className="bordbt">RESET PASSWORD</span></h3>
                     <div className="FormWrapper1 col-lg-12 col-md-12 col-sm-12 col-xs-12">

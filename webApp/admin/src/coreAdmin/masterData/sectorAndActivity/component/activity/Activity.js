@@ -201,7 +201,7 @@ class Activity extends Component{
       var editData = response.data[0];
       this.setState({
         "sector"        : editData.sector+'|'+editData._id,
-        "activityName"      : ((editData.activity.filter((a)=>{return a._id == activity_id ? a.activityName : ''}))[0]).activityName,
+        "activityName"      : ((editData.activity.filter((a)=>{return a._id === activity_id ? a.activityName : ''}))[0]).activityName,
       },()=>{
       });      
      

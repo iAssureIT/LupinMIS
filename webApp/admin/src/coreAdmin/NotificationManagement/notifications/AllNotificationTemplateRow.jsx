@@ -43,7 +43,7 @@ class AllNotificationTemplateRow extends Component{
 					title: "Template deleted successfully",
 					text: "Template deleted successfully",
 				});
-	    	if(response.data.message=="Master notification deleted")
+	    	if(response.data.message==="Master notification deleted")
 	    	{
 	    		this.props.deleteData("Notification",id);
     		}

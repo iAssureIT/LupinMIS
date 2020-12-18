@@ -707,7 +707,7 @@ export default class Dashboard extends Component{
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt1                                                                                                                           0">
                             <span className="info-box-number">{this.state.countAllCenter}</span>
                             <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.countAllCenter+"%"}}></div>
+                              <div className="progress-bar"style={{"width": this.state.countAllCenter+"%"}}></div>
                             </div>
                           </div>
                         </div>
@@ -730,7 +730,7 @@ export default class Dashboard extends Component{
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tableDistrictData.length}</span>
                             <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.tableDistrictData.length+"%"}}></div>
+                              <div className="progress-bar"style={{"width": this.state.tableDistrictData.length+"%"}}></div>
                             </div>
                           </div>
                         </div>
@@ -753,7 +753,7 @@ export default class Dashboard extends Component{
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tableBlockData.length}</span>
                             <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.tableBlockData.length+"%"}}></div>
+                              <div className="progress-bar"style={{"width": this.state.tableBlockData.length+"%"}}></div>
                             </div>
                           </div>
                         </div>
@@ -776,7 +776,7 @@ export default class Dashboard extends Component{
                           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.tablevillageData.length}</span>
                             <div className="progress">
-                              <div className="progress-bar" style={{"width": this.state.tablevillageData.length+"%"}}></div>
+                              <div className="progress-bar"style={{"width": this.state.tablevillageData.length+"%"}}></div>
                             </div>
                           </div>
                         </div>

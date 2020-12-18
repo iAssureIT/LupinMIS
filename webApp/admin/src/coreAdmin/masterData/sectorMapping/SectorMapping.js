@@ -49,7 +49,7 @@ class SectorMapping extends Component{
   
   isTextKey(evt){
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -131,7 +131,7 @@ class SectorMapping extends Component{
       });
     }else{   
       if($('#sectorMapping').valid()){
-      // if(this.refs.goalName.value == "" || this.refs.goalType.value ==""){
+      // if(this.refs.goalName.value === "" || this.refs.goalType.value ===""){
         //   if (this.validateFormReq() && this.validateForm()){
         //   }
         // }else{
@@ -278,13 +278,13 @@ class SectorMapping extends Component{
         url: '/api/sectorMappings/'+id,
       }).then((response)=> {
         var editData = response.data[0];
-        // console.log('editData=====',editData)
+        // console.log('editData======',editData)
         if(editData){
           axios({
             method: 'get',
             url: '/api/typeofgoals/'+editData.type_ID,
           }).then((response)=> {
-            // console.log('response==',response)
+            // console.log('response===',response)
             editData.sector.map((a, i)=>{
               this.setState({
                 [a.sector_ID +"|"+a.sectorName+"|"+a.activity_ID+"|"+a.activityName] : true
@@ -363,7 +363,7 @@ class SectorMapping extends Component{
     this.setState({
       [id] : value
     },()=>{
-      if(this.state[id] == true){
+      if(this.state[id] === true){
         selectedActivities.push({
           "sector_ID"      : id.split("|")[0],
           "sectorName"     : id.split("|")[1],

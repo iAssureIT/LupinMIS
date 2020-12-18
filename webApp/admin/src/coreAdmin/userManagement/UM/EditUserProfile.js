@@ -40,7 +40,7 @@ class EditUserProfile extends Component{
 						text: "User updated successfully",
 					});
 				 this.props.history.push('/umlistofusers');	
-				console.log('response --====================',response);
+				console.log('response --=======================',response);
 
 
 					var data = {
@@ -49,7 +49,7 @@ class EditUserProfile extends Component{
 					}
 					axios.post('/api/users/userslist', data)
 					.then( (res)=>{      
-						console.log("here  list response==============",res);
+						console.log("here  list response================",res);
 						var tableData = res.data.map((a, i)=>{
 							return {
 								_id 			: a._id,

@@ -129,7 +129,7 @@ class centerDetail extends Component{
   }
   isTextKey(evt)  {
    var charCode = (evt.which) ? evt.which : evt.keyCode;
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -404,7 +404,7 @@ class centerDetail extends Component{
         url: '/api/centers/'+id,
       }).then((response)=> {
         // $(".fullpageloader").hide();
-        console.log("edit response================",response)
+        console.log("edit response==================",response)
         if(response&&response.data[0]){ 
           var editData = response.data[0];
           editData.villagesCovered.map((data, i)=>{
@@ -436,7 +436,7 @@ class centerDetail extends Component{
             "villagesCovered"          : editData.villagesCovered,
             'stateCode'                : editData.address.stateCode
           },()=>{ 
-            // console.log("selectedVillages==================",this.state)
+            // console.log("selectedVillages=====================",this.state)
             function dynamicSort(property) {
               var sortOrder = 1;
               if(property[0] === "-") {
@@ -444,7 +444,7 @@ class centerDetail extends Component{
                   property = property.substr(1);
               }
               return function (a,b) {
-                if(sortOrder == -1){
+                if(sortOrder === -1){
                     return b[property].localeCompare(a[property]);
                 }else{
                     return a[property].localeCompare(b[property]);
@@ -569,7 +569,7 @@ class centerDetail extends Component{
             property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
           }else{
               return a[property].localeCompare(b[property]);
@@ -625,7 +625,7 @@ class centerDetail extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -678,7 +678,7 @@ class centerDetail extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -708,7 +708,7 @@ class centerDetail extends Component{
     if(document.getElementsByName("city-" + blocksCovered)){
       var checkboxes =  document.getElementsByName("city-" + blocksCovered) ? document.getElementsByName("city-" + blocksCovered) : [];
       var allSelectedCheckbox =checkboxes.length; 
-      console.log("===================",allCityCount,allSelectedCheckbox)
+      console.log("=====================",allCityCount,allSelectedCheckbox)
       if(document.getElementById(this.state.blocksCovered) !== null){
         if(allCityCount===allSelectedCheckbox){
           document.getElementById(this.state.blocksCovered).checked=true;
@@ -735,7 +735,7 @@ class centerDetail extends Component{
       if(document.getElementsByName("city-" + blocksCovered)){
         var checkboxes =  document.getElementsByName("city-" + blocksCovered) ? document.getElementsByName("city-" + blocksCovered) : [];
         var allSelectedCheckbox =checkboxes.length; 
-        console.log("===================",allCityCount,allSelectedCheckbox)
+        console.log("=====================",allCityCount,allSelectedCheckbox)
         if(document.getElementById(this.state.blocksCovered) !== null){
           if(allCityCount===allSelectedCheckbox){
             document.getElementById(this.state.blocksCovered).checked=true;
@@ -754,8 +754,8 @@ class centerDetail extends Component{
     event.preventDefault();
     var id = event.target.id;
     var selectedVillages = this.state.selectedVillages[id];
-    // console.log("selectedVillages=====",selectedVillages)
-    // console.log("id===================",id)
+    // console.log("selectedVillages======",selectedVillages)
+    // console.log("id=====================",id)
   }
   deleteVillage(event){
     event.preventDefault();
@@ -791,7 +791,7 @@ class centerDetail extends Component{
     // }).then((response)=> {
       axios.get('/api/villages/get/villagelist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID)
       .then((response)=>{
-        console.log('response ==========', response);
+        console.log('response ============', response);
         if(response&&response.data[0]){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -800,7 +800,7 @@ class centerDetail extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -824,7 +824,7 @@ class centerDetail extends Component{
                 var checkboxes =  document.getElementsByName("city-" + blocksCovered) ? document.getElementsByName("city-" + blocksCovered) : [];
                 var result = this.state.selectedVillages.filter(o => this.state.listofVillages.some(({block,village}) => o.block === block && o.village === village));
                 var allSelectedCheckbox =checkboxes.length; 
-                console.log("===================",allCityCount,allSelectedCheckbox)
+                console.log("=====================",allCityCount,allSelectedCheckbox)
                 if(document.getElementById(this.state.blocksCovered) !== null){
                   if(allCityCount===allSelectedCheckbox){
                     document.getElementById(this.state.blocksCovered).checked=true;
@@ -848,15 +848,15 @@ class centerDetail extends Component{
               if(document.getElementsByName("city-" + blocksCovered)){
                 var checkboxes =  document.getElementsByName("city-" + blocksCovered) ? document.getElementsByName("city-" + blocksCovered) : [];
                 var allSelectedCheckbox =checkboxes.length; 
-                console.log("===================",checkboxes);
-                console.log("===================",allCityCount,allSelectedCheckbox)
+                console.log("=====================",checkboxes);
+                console.log("=====================",allCityCount,allSelectedCheckbox)
                 if(document.getElementById(this.state.blocksCovered) !== null){
                   if(allCityCount===allSelectedCheckbox){
                     document.getElementById(this.state.blocksCovered).checked=true;
                     this.setState({
                       ["blockVillages-"+this.state.blocksCovered] : this.state["blockVillages-"+this.state.blocksCovered] ? true : true
                     },()=>{
-                        console.log("===================",this.state["blockVillages-"+this.state.blocksCovered])
+                        console.log("=====================",this.state["blockVillages-"+this.state.blocksCovered])
                     })
                   }else{
                     document.getElementById(this.state.blocksCovered).checked=false;
@@ -888,7 +888,7 @@ class centerDetail extends Component{
             property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
           }else{
               return a[property].localeCompare(b[property]);
@@ -954,7 +954,7 @@ class centerDetail extends Component{
           property = property.substr(1);
       }
       return function (a,b) {
-        if(sortOrder == -1){
+        if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
         }else{
             return a[property].localeCompare(b[property]);
@@ -964,7 +964,7 @@ class centerDetail extends Component{
     var selectAllID = event.target.id;
     var checkedValue = event.target.checked
     console.log("selectAllID",selectAllID,checkedValue)
-    console.log('["blockVillages-"+selectAllID]==================',this.state["blockVillages-"+selectAllID])
+    console.log('["blockVillages-"+selectAllID]=====================',this.state["blockVillages-"+selectAllID])
     this.setState({
       ["blockVillages-"+selectAllID] :this.state["blockVillages-"+selectAllID] ? false :true
     },()=>{
@@ -977,14 +977,14 @@ class centerDetail extends Component{
           var id = checkboxes[i].id;
           if(checkboxes[i].checked!==true){
                      
-              console.log("this.state[id]",this.state[id]+"==========",i)
+              console.log("this.state[id]",this.state[id]+"============",i)
               // if(this.state[id] === true){
                 selectedVillages.push({
                   district  : this.refs.districtCovered.value,
                   block     : id.split('|')[1],
                   village   : id.split('|')[0]
                 });
-                console.log("selectedVillages ===============> ", selectedVillages);
+                console.log("selectedVillages =================> ", selectedVillages);
                 this.setState({
                   selectedVillages : selectedVillages, 
                   [id]             : true,
@@ -1270,9 +1270,9 @@ class centerDetail extends Component{
                                           </div>
                                         </div>      
                                         {
-                                          console.log("===================",this.state["blockVillages-"+this.state.blocksCovered])
+                                          console.log("=====================",this.state["blockVillages-"+this.state.blocksCovered])
                                         }  
-                                        <label className="centerDetaillistItem"><b>{"Select All=="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"=="+this.state["blockVillages-"+this.state.blocksCovered]}</b></label>
+                                        <label className="centerDetaillistItem"><b>{"Select All==="+this.state.selectedVillages.length+"="+this.state.blocksCovered+"==="+this.state["blockVillages-"+this.state.blocksCovered]}</b></label>
                                          {"pppppppppp"+this.state["blockVillages-"+this.state.blocksCovered]}                      
                                     
                                       </div>
@@ -1530,7 +1530,7 @@ class centerDetail extends Component{
   }
   isTextKey(evt)  {
    var charCode = (evt.which) ? evt.which : evt.keyCode;
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -1837,7 +1837,7 @@ class centerDetail extends Component{
                   property = property.substr(1);
               }
               return function (a,b) {
-                if(sortOrder == -1){
+                if(sortOrder === -1){
                     return b[property].localeCompare(a[property]);
                 }else{
                     return a[property].localeCompare(b[property]);
@@ -1956,7 +1956,7 @@ class centerDetail extends Component{
             property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
           }else{
               return a[property].localeCompare(b[property]);
@@ -2007,7 +2007,7 @@ class centerDetail extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -2054,7 +2054,7 @@ class centerDetail extends Component{
               property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
                 return b[property].localeCompare(a[property]);
             }else{
                 return a[property].localeCompare(b[property]);
@@ -2100,7 +2100,7 @@ class centerDetail extends Component{
       // url: 'http://locations2.iassureit.com/api/cities/get/list/IN/'+stateCode+'/'+selectedDistrict+'/'+blocksCovered,
       url: 'http://locations2.iassureit.com/api/cities/get/citieslist/'+countryID+'/'+stateID+'/'+districtID+'/'+blockID,
     }).then((response)=> {
-        console.log('response ==========', response);
+        console.log('response ============', response);
         if(response&&response.data[0]){
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -2109,7 +2109,7 @@ class centerDetail extends Component{
                 property = property.substr(1);
             }
             return function (a,b) {
-              if(sortOrder == -1){
+              if(sortOrder === -1){
                   return b[property].localeCompare(a[property]);
               }else{
                   return a[property].localeCompare(b[property]);
@@ -2156,7 +2156,7 @@ class centerDetail extends Component{
             property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
           }else{
               return a[property].localeCompare(b[property]);

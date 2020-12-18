@@ -51,7 +51,7 @@ class OfficeEmpList extends Component {
 		{
 			searchText : selectOffice,
 		}
-		if(selectOffice && selectOffice.length != 0) {
+		if(selectOffice && selectOffice.length !== 0) {
 			axios
 		      .post('/api/users/officesearchValue',formValues)
 		      .then(
@@ -104,7 +104,7 @@ class OfficeEmpList extends Component {
                                                                     <select className="form-control" value={this.state.officeid} onChange={this.selectOffice.bind(this)} ref ="office" id="office" name="office" data-text="office">
                                                                         <option  hidden> --select-- </option>
 
-                                                                           { this.state.allresult != null && this.state.allresult.companyLocationsInfo !=null ?
+                                                                           { this.state.allresult !== null && this.state.allresult.companyLocationsInfo !==null ?
                                                                           this.state.allresult.companyLocationsInfo.map( (locData, index)=>{
                                                                            return( 
 
@@ -125,8 +125,8 @@ class OfficeEmpList extends Component {
 
 										</div>
 											{
-												this.state.oneOffice != null ?
-												this.state.alldata != null ?
+												this.state.oneOffice !== null ?
+												this.state.alldata !== null ?
 												
 
 													<div className="table-responsive topmr40 col-lg-12 col-md-12 col-sm-12 col-xs-12">

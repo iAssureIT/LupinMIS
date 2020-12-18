@@ -122,7 +122,7 @@ export default class SourcewiseBarChart1 extends Component{
     var token = this.state.token;
     if(startDate, endDate, center_ID, token){
     console.log("token",token);
-    console.log("url=========",'/api/report/source/'+startDate+'/'+endDate+'/'+center_ID, token);
+    console.log("url==========",'/api/report/source/'+startDate+'/'+endDate+'/'+center_ID, token);
         axios({
           method  : 'get',
           url     : 'http://localhost:3054/api/report/source/'+startDate+'/'+endDate+'/'+center_ID,

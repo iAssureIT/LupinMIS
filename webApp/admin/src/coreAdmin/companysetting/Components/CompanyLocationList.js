@@ -33,7 +33,7 @@
 
 
 // 		let locationArray =[];
-// 		if(this.state.allPosts!=null){
+// 		if(this.state.allPosts!==null){
 
 		
 // 		 locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -138,7 +138,7 @@
 // 													</tr>
 // 												</thead>
 // 												<tbody>
-// 												{ this.state.allLoc != null ?
+// 												{ this.state.allLoc !== null ?
 // 													this.state.allLoc[0].map( (locData, index)=>{
 // 													/*console.log('locData of 0 here',locData);*/
 // 												   return( 

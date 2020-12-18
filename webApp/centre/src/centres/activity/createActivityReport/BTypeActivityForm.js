@@ -586,7 +586,6 @@ class ActivityTypeB extends Component{
 
     this.getAvailableSectors();
     this.getAvailableProjectName();
-    this.getAvailableCenter(this.state.center_ID);
   }
   getAvailableVillages(center_ID, district, block){
     axios({
@@ -964,6 +963,7 @@ class ActivityTypeB extends Component{
       centerName   : centerName,
       editId       : editId
     },()=>{
+      this.getAvailableCenter(this.state.center_ID);
     })
     if(this.state.editId){      
       this.edit(this.state.editId);

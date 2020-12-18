@@ -84,7 +84,7 @@ class UMListOfUsers extends Component {
 					centerName 	    : a.centerName,
 				}
 			})
-        	// console.log('res============', res.data);
+        	// console.log('res==============', res.data);
           	this.setState({
               completeDataCount : res.data.length,
               tableData 		: tableData,          
@@ -155,7 +155,7 @@ class UMListOfUsers extends Component {
 		            this.refs.userListDropdown.value = '-'
 		            this.getData(this.state.startRange,this.state.limitRange)
 		            checkedUsersList = [];
-		            if(this.state.activeswal == true)
+		            if(this.state.activeswal === true)
 		            {
 		             swal("abc","Account activated successfully");
 		            }
@@ -250,7 +250,7 @@ class UMListOfUsers extends Component {
 					this.refs.userListDropdown.value = '-'
 					this.getData(this.state.startRange,this.state.limitRange)
 					checkedUsersList = []	
-					if(this.state.blockswal == true)
+					if(this.state.blockswal === true)
 				   	{
 				   		swal("abc","Account blocked successfully",);
 				   	}	
@@ -428,7 +428,7 @@ class UMListOfUsers extends Component {
 						searchText : selectedValue,
 					}
 
-					if(selectedValue == "all"){
+					if(selectedValue === "all"){
 
 						var data = {
 								"startRange"        : this.state.startRange,
@@ -496,7 +496,7 @@ class UMListOfUsers extends Component {
 						searchText : selectedValue,
 					}
 
-					if(selectedValue == "all"){
+					if(selectedValue === "all"){
 
 							var data = {
 								"startRange"        : this.state.startRange,
@@ -578,7 +578,7 @@ class UMListOfUsers extends Component {
 		  method: 'get',
 		  url: '/api/roles/list',
 		}).then((response)=> {
-		    // console.log('response ==========', response.data);
+		    // console.log('response ============', response.data);
 		    this.setState({
 		      adminRolesListData : response.data
 		    },()=>{

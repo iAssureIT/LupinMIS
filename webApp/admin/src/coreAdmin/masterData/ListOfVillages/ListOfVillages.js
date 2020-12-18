@@ -40,7 +40,7 @@ class ListOfVillages extends Component{
         url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/'+center_ID+'/'+district+'/'+block,
       }).then((response)=> {
       $(".fullpageloader").hide();
-        // console.log("response ==>",response);
+        // console.log("response ===>",response);
         function removeDuplicates(data, param){
           return data.filter(function(item, pos, array){
               return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
@@ -53,7 +53,7 @@ class ListOfVillages extends Component{
             property = property.substr(1);
           }
           return function (a,b) {
-            if(sortOrder == -1){
+            if(sortOrder === -1){
               return b[property].localeCompare(a[property]);
             }else{
               return a[property].localeCompare(b[property]);
@@ -172,7 +172,7 @@ class ListOfVillages extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ if(district===mapItem.district.split('|')[0]){return mapItem[param]} }).indexOf(item[param]) === pos;

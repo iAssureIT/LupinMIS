@@ -281,7 +281,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages',
     }).then((response)=> {
-      // console.log("response ==>",response.data);
+      // console.log("response ===>",response.data);
       if (response.data && response.data[0]) {
         this.setState({
           CenterNames              : response.data[0].centerName.sort(),
@@ -398,7 +398,7 @@ export default class Dashboard extends Component{
       $(".fullpageloader").show();
       axios.get('/api/reports/center_wise_Achievements/'+startDate+'/'+endDate)
       .then((response)=>{
-        // console.log('response=====',response);
+        // console.log('response======',response);
         $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
@@ -539,7 +539,7 @@ export default class Dashboard extends Component{
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages_list/all/all/all',
     }).then((response)=> {
-      // console.log("response ==>",response.data);
+      // console.log("response ===>",response.data);
       function removeDuplicates(data, param){
         return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
@@ -552,7 +552,7 @@ export default class Dashboard extends Component{
           property = property.substr(1);
         }
         return function (a,b) {
-          if(sortOrder == -1){
+          if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
           }else{
             return a[property].localeCompare(b[property]);

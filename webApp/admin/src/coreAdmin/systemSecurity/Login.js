@@ -36,10 +36,10 @@ class Login extends Component {
         }
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "loginusername"){
+        if (element.attr("name") === "loginusername"){
           error.insertAfter("#loginusernameErr");
         }
-        if (element.attr("name") == "loginpassword"){
+        if (element.attr("name") === "loginpassword"){
           error.insertAfter("#loginpasswordErr");
         }
       }
@@ -69,7 +69,7 @@ class Login extends Component {
         if(axios.defaults.headers.common.Authorization){
           this.props.history.push("/dashboard");
           window.location.reload();
-          if(localStorage==null){ 
+          if(localStorage===null){ 
             swal("Invalid Email or Password","Please Enter valid email and password");
           }else{
             this.setState({
@@ -130,7 +130,7 @@ class Login extends Component {
               <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
                 <div className="col-lg-12 systemHeader   ">
                   <div className="col-lg-6 col-md-6 col-sm-6 ">
-                    <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                    <img alt="lupinImage" className="lupinImage" src="images/lupin.png" height="70px"/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
                     Admin <br/>Management Information System

@@ -142,10 +142,10 @@ class UsereditModal extends Component{
 				axios.patch('/api/masternotifications/'+editId, formValues)
 				.then((response)=> {					
 					
-					console.log('response --==',response);
+					console.log('response --===',response);
 				})
 				.catch(function (error) {
-				console.log('error============',error);
+				console.log('error==============',error);
 				})
 				.finally(function () {
 				// always executed

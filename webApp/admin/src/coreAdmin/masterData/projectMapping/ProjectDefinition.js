@@ -319,7 +319,7 @@ class ProjectMapping extends Component{
                           // console.log("data*********",data);
                         }else{
                           data.checked="N";
-                          // console.log("data======",data.checked);
+                          // console.log("data=======",data.checked);
                         }
                         // console.log("checkChecked",checkChecked);
                         // console.log("availableSectors[i].activity[j].subActivity",availableSectors[i].activity[j].subActivity);

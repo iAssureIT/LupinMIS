@@ -28,7 +28,7 @@ export default class systemHeader extends Component{
         <div>
           <div className="col-lg-12 logoHead1">
             <a href="/admin/dashboard">
-                 <img src="/images/SEAS.png"/>
+                 <img alt="icon" src="/images/SEAS.png"/>
               </a>
           </div>
           <div className="col-lg-12 container-fluid logoHead2">

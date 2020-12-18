@@ -31,11 +31,11 @@ class AssignPermissionToModules extends Component {
 			if(err){
 				console.log(err);
 			}else{
-				if(res==true){
+				if(res===true){
 		          this.setState({
 		             facilityPermission : res,
 		          });
-		        }else if(res==false){
+		        }else if(res===false){
 		          this.setState({
 		             facilityPermission : res,
 		          });
@@ -96,7 +96,7 @@ class AssignPermissionToModules extends Component {
 		if(accessPermissions){
 			accessPermissions.map((allAcceessPermission,index)=>{
 				allAcceessPermission.moduleFacilityPermission.map((moduleFacilities, facIndex)=>{
-						if(moduleFacilities.rolepermissionId!='')
+						if(moduleFacilities.rolepermissionId!=='')
 						$('.'+moduleFacilities.rolepermissionId).attr('checked',true);
 					
 				});
@@ -109,7 +109,7 @@ class AssignPermissionToModules extends Component {
 			// if(accessPermissions){
 			// 	accessPermissions.map((allAcceessPermission,index)=>{
 			// 		allAcceessPermission.moduleFacilityPermission.map((moduleFacilities, facIndex)=>{
-			// 			if(moduleFacilities.rolepermissionId!=''){
+			// 			if(moduleFacilities.rolepermissionId!==''){
 			// 				$('.'+moduleFacilities.rolepermissionId).attr('checked',true);
 			// 			}
 			// 		});
@@ -147,7 +147,7 @@ class AssignPermissionToModules extends Component {
 
 
 	render(){
-		/*if(this.state.facilityPermission != 'waitingforResult' && this.state.facilityPermission == true){
+		/*if(this.state.facilityPermission !== 'waitingforResult' && this.state.facilityPermission === true){
 			$('.sidebar').css({display:'block',background: '#222d32'});*/
 		return(
 			<div className = "container-fluid ">
@@ -223,7 +223,7 @@ class AssignPermissionToModules extends Component {
 																    			{/*{allAMData.facilities.map((facility, indexx)=>{
 															    					return*/}
 															    						<table className="nestedTable nestedTable-AMTable" /*key={indexx}*/>
-															    							{/*{index == 0  ?*/}
+															    							{/*{index === 0  ?*/}
 															     							<tbody>
 																     							<tr /* key={indexx}*/ >
 
@@ -236,7 +236,7 @@ class AssignPermissionToModules extends Component {
 									 								                    			</td>
 																     							</tr>
 															     						{/*	: 
-																     							index == 1 ? 
+																     							index === 1 ? 
 																	     							<tr key={indexx}>
 																	     								<div className="checkbox AMCheckbox checkbox-success">
 											 								                        		<input type="checkbox" className={allAMData._id+'-'+index+'-'+indexx} data-id={allAMData._id} id={facility.facilityName} onClick={this.getAMcheckboxId.bind(this)}/>
@@ -275,9 +275,9 @@ class AssignPermissionToModules extends Component {
 				</div>
 			</div>
 		);
-		/*}else if (this.state.facilityPermission == false ){
+		/*}else if (this.state.facilityPermission === false ){
 			  	FlowRouter.go('/noAccesss')
-		  }else if(this.state.facilityPermission == "waitingforResult"){
+		  }else if(this.state.facilityPermission === "waitingforResult"){
 		  	return(<div className="col-lg-12 col-md-12 col-sm-12 waitingResLoadingWrap">
 			   <img className="loaderImageSize1" src="/images/loading1.gif" alt="loading"/>
 			</div>);

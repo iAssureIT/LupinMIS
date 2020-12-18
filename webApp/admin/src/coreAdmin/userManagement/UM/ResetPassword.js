@@ -51,13 +51,13 @@ componentDidMount() {
         }
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "newpassword"){
+        if (element.attr("name") === "newpassword"){
           error.insertAfter("#newpasswordErr");
         }
-        if (element.attr("name") == "oldpassword"){
+        if (element.attr("name") === "oldpassword"){
           error.insertAfter("#oldpasswordErr");
         }
-        if (element.attr("name") == "confirmPassword"){
+        if (element.attr("name") === "confirmPassword"){
           error.insertAfter("#confirmPasswordErr");
         }
       }
@@ -71,7 +71,7 @@ oldpasswordChange = (oldpassword,emailId,newpassword,confirmPassword,user_id,val
 		if(response.data.status === "verified"){
 			this.setState({btnLoading: false})
 			if (this.validInput()) {
-				if(newpassword == confirmPassword){
+				if(newpassword === confirmPassword){
 					var body = {
 					pwd : newpassword,
 					userID : user_id,
@@ -95,7 +95,7 @@ oldpasswordChange = (oldpassword,emailId,newpassword,confirmPassword,user_id,val
 		}
 	})
 	.catch(error => {
-		if (error.response.status == 401) {
+		if (error.response.status === 401) {
 			console.log("ERROR in Responce");
 			this.setState({invalidpassword:true})
 		}
@@ -131,7 +131,7 @@ changepassword(event) {
 
 							axios.patch('/api/users/patch/one/resetpwd/'+user_id,body)
 							.then((response)=>{
-								console.log("In response==>>>",response);
+								console.log("In response===>>>",response);
 								swal(" ", "Your Password has been changed");
 								this.setState({
 									oldpassword:"",
@@ -169,7 +169,7 @@ changepassword(event) {
 				}
 			})
 			.catch(error => {
-				if (error.response.status == 401) {
+				if (error.response.status === 401) {
 					console.log("ERROR in Responce");
 					swal("Invalid Password","Please Enter correct password");
 					this.setState({invalidpassword:true})

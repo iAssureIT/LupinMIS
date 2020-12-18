@@ -236,14 +236,14 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
           var lastN = x.split('.')[0];
           var lastThree = lastN.substring(lastN.length-3);
           var otherNumbers = lastN.substring(0,lastN.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
           var lastThree = x.substring(x.length-3);
           var otherNumbers = x.substring(0,x.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);
@@ -262,7 +262,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
               .then((response)=>{
                 console.log("resp",response);
                 $(".fullpageloader").hide();
-                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 // console.log('value',value.annualPlan_TotalBudget_L);
                 var tableData = response.data.map((a, i)=>{
                 // console.log('a',a.annualPlan_TotalBudget_L);
@@ -300,7 +300,7 @@ class SectorwiseAnnualPlanSummaryReport extends Component{
             axios.get('/api/reports/sector_annual_plans/'+startDate+'/'+endDate+'/'+center_ID+'/'+projectCategoryType+'/'+projectName+'/all')
               .then((response)=>{
                 console.log("resp",response);
-                var value = response.data.filter((a)=>{return a.name == "Total"})[0];
+                var value = response.data.filter((a)=>{return a.name === "Total"})[0];
                 var tableData = response.data.map((a, i)=>{
                   return {
                     _id                                      : a._id,     

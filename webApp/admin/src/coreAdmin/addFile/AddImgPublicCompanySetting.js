@@ -191,7 +191,7 @@ class AddFile extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 <div className="clr_k ">
                   <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon move_hand_icon">
-                    <img src="/images/Upload-Icon.png"/>
+                    <img alt="upload" src="/images/Upload-Icon.png"/>
                   </div>
                   <div  className= "col-lg-offset-2 col-lg-10 col-md-10 col-sm-10 col-xs-10 below_text">
                    <b className="text_k11"></b>

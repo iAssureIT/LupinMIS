@@ -8,7 +8,7 @@ import './IAssureTable.css';
 
 // import '../systemSecurity/SignUp.css';
 /*import { BrowserRouter as Router,Link,Route,Switch } from 'react-router-dom';*/
-import { Route , withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 /*import UsereditModal   from '../userManagement/UM/UsereditModal.jsx';*/
 
@@ -62,10 +62,10 @@ class IAssureTableUM extends Component {
 	    //     }
 	    //   },
 	    //   errorPlacement: function(error, element) {
-	    //     if (element.attr("name") == "loginusername"){
+	    //     if (element.attr("name") === "loginusername"){
 	    //       error.insertAfter("#loginusernameErr");
 	    //     }
-	    //     if (element.attr("name") == "loginpassword"){
+	    //     if (element.attr("name") === "loginpassword"){
 	    //       error.insertAfter("#loginpasswordErr");
 	    //     }
 	    //   }
@@ -330,7 +330,7 @@ class IAssureTableUM extends Component {
 		this.setState({
 			dataLength : dataLen,
 		},()=>{
-			// console.log('completeDataCount======:::', this.state.completeDataCount);
+			// console.log('completeDataCount=======:::', this.state.completeDataCount);
 			// $('li').removeClass('activeQueDataCircle');
 			// $(".queDataCircle:first").addClass('activeQueDataCircle');
 			const maxRowsPerPage = this.state.limitRange;
@@ -788,7 +788,7 @@ class IAssureTableUM extends Component {
         this.setState({
     	  allid : allid
         },()=>{
-    	  // console.log("here id=======================",this.state.allid);
+    	  // console.log("here id==========================",this.state.allid);
     	  this.props.selectedUser(this.state.allid);
         })
       }else{
@@ -800,7 +800,7 @@ class IAssureTableUM extends Component {
         this.setState({
     	  allid : []
         },()=>{
-    	 // console.log("here id=======================",this.state.allid);
+    	 // console.log("here id==========================",this.state.allid);
     	 this.props.selectedUser(this.state.allid);
         })
       }
@@ -832,7 +832,7 @@ class IAssureTableUM extends Component {
 				})
 			}else{
         		$('.allSelector').prop('checked',false);
-				var indexVal = selectedUser.findIndex(x=>x == data)
+				var indexVal = selectedUser.findIndex(x=>x === data)
 				// console.log('indexVal',indexVal)
 				selectedUser.splice(indexVal,1)
 				this.setState({

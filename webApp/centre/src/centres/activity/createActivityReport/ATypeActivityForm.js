@@ -1022,7 +1022,9 @@ class ActivityTypeA extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
-    });    
+      this.getAvailableCenter(this.state.center_ID);
+    });
+    
     if(this.state.editId){      
       this.edit(this.state.editId);
     }
@@ -1206,6 +1208,7 @@ class ActivityTypeA extends Component{
         method: 'get',
         url: '/api/centers/'+center_ID,
         }).then((response)=> {
+          console.log("response",response)
           if(response.data){
             function removeDuplicates(data, param){
               return data.filter(function(item, pos, array){
@@ -1479,7 +1482,6 @@ class ActivityTypeA extends Component{
 
     this.getAvailableSectors();
     this.getAvailableProjectName();
-    this.getAvailableCenter(this.state.center_ID);
   }  
   year() {
     let financeYear;
@@ -1638,7 +1640,7 @@ class ActivityTypeA extends Component{
                                     <label className="formLable">District<span className="asterix">*</span></label>
                                     <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                       <select className="custom-select form-control inputBox" ref="district" name="district" value={this.state.district} onChange={this.distChange.bind(this)} >
-                                        <option disabled="disabled" value = "">-- Select --</option>
+                                        <option  value = "">-- Select --</option>
                                         {
                                           this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                           this.state.listofDistrict.map((data, index)=>{
@@ -1658,7 +1660,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Block<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                                     <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                       {
                                         this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                         this.state.listofBlocks.map((data, index)=>{
@@ -1677,7 +1679,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Village<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                                     <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                       {
                                         this.state.listofVillages && this.state.listofVillages.length > 0  ? 
                                         this.state.listofVillages.map((data, index)=>{
@@ -1707,7 +1709,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Sector<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                                     <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                       {
                                         this.state.availableSectors && this.state.availableSectors.length >0 ?
                                         this.state.availableSectors.map((data, index)=>{
@@ -1726,7 +1728,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Activity<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="activity" >
                                     <select className="custom-select form-control inputBox" ref="activity" name="activity" value={this.state.activity}  onChange={this.selectActivity.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                       {
                                         this.state.availableActivity && this.state.availableActivity.length >0 ?
                                         this.state.availableActivity.map((data, index)=>{
@@ -1747,7 +1749,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Sub-Activity<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="subactivity" >
                                     <select className="custom-select form-control inputBox" ref="subactivity" name="subactivity"  value={this.state.subactivity} onChange={this.selectSubActivity.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                         {
                                           this.state.availableSubActivity && this.state.availableSubActivity.length >0 ?
                                           this.state.availableSubActivity.map((data, index)=>{
@@ -1782,7 +1784,7 @@ class ActivityTypeA extends Component{
                                   <label className="formLable">Activity Type<span className="asterix">*</span></label>
                                   <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeofactivity" >
                                     <select className="custom-select form-control inputBox" ref="typeofactivity" name="typeofactivity" value={this.state.typeofactivity} onChange={this.handleChange.bind(this)} >
-                                      <option disabled="disabled" value = "">-- Select --</option>
+                                      <option  value = "">-- Select --</option>
                                       <option>Common Level Activity</option>
                                        <option>Family Level Activity</option>
                                     </select>

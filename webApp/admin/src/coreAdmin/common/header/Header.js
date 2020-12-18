@@ -53,7 +53,7 @@ export default class Header extends Component{
     event.preventDefault()
     var currentWidth =  document.getElementById("mySidenav").style.width;
     // console.log("currentWidth",currentWidth);
-    if(currentWidth == "230px")
+    if(currentWidth === "230px")
     {
      document.getElementById("mySidenav").style.width = "0"; 
    }else{
@@ -128,7 +128,7 @@ export default class Header extends Component{
                           <div className=" " > 
                             <p className="pull-right fntC" style={{"cursor":"pointer"}} title="Close">X</p><br/>
                             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-left padd0 ">
-                              <img src="/images/person.png" height="50px" className=" marLeft "/>
+                              <img src="/images/person.png" alt="user" height="50px" className=" marLeft "/>
                             </div>
                             <div className="col-lg-8 col-md-6 col-sm-12 col-xs-12 pull-right  padd0 ">
                              <h5 className="fontB fs12 nomargin ">

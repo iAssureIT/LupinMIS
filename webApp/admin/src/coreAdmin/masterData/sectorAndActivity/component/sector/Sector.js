@@ -155,10 +155,10 @@ class Sector extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "sector"){
+        if (element.attr("name") === "sector"){
           error.insertAfter("#sectorError");
         }
-        if (element.attr("name") == "sectorShortName"){
+        if (element.attr("name") === "sectorShortName"){
           error.insertAfter("#sectorShortNameErr");
         }
       }

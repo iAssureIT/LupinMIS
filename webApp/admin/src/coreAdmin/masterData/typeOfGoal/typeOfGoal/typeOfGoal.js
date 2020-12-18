@@ -140,7 +140,7 @@ class typeOfGoal extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofGoalRegx"){
+        if (element.attr("name") === "typeofGoalRegx"){
           error.insertAfter("#typeofGoalErr");
         }
       }

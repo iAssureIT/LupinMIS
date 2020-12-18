@@ -73,7 +73,7 @@ class CompanyTaxDetails extends Component{
         //         taxtype   :"",
         //         Effective :"",
         //       });
-        if(response.status == 200)
+        if(response.status === 200)
         {
         console.log("this is response===>>>",response);
         swal("Good job!", "Tax Information Added Successfully!", "success")

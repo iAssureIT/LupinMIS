@@ -57,7 +57,7 @@
 
 
 // 																		{  usersData.profile ?
-// 																			usersData.profile.status == "Active" ?
+// 																			usersData.profile.status === "Active" ?
 // 																				<div className="activeStat" title="Active user"></div>
 
 // 																			:
@@ -133,7 +133,7 @@
 
 
 
-// 										{this.state.showMore == true ?
+// 										{this.state.showMore === true ?
 // 											<button onClick={this.showMore.bind(this)} className="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-5 col-sm-4 col-sm-offset-3 col-xs-4 col-xs-offset-3 btn showMore marginTop17">Show More</button>
 // 											:
 // 											null

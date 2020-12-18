@@ -45,7 +45,7 @@ export default class AllSMSTemplateRow extends Component{
 										text: "Template deleted successfully",
 									});
 	    	console.log('delete response',response);
-	    	if(response.data.message=="Master notification deleted")
+	    	if(response.data.message==="Master notification deleted")
 	    	{
 	    	this.props.deleteData("SMS",id);
     		}

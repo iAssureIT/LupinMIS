@@ -23,7 +23,7 @@ import './SignUp.css';
           }
         },
         errorPlacement: function(error, element) {
-          if (element.attr("name") == "emailotp"){
+          if (element.attr("name") === "emailotp"){
             error.insertAfter("#emailotpErr");
           }
         }
@@ -85,7 +85,7 @@ import './SignUp.css';
       //   }
       // }
       // var emailotp = this.refs.emailotp.value;
-      // if(mailotp == emailotp){
+      // if(mailotp === emailotp){
       //   Meteor.call('createUserByAdminSetEmailToTrue',newID,
       //   function(error,result){
       //     if(error){
@@ -113,7 +113,7 @@ import './SignUp.css';
       //       var curUrl = location.pathname;
       //       var urlArray = curUrl.split('/');
       //       var isFirstOTPurl = urlArray[1];
-      //       if(isFirstOTPurl != 'otpFirstVarification'){
+      //       if(isFirstOTPurl !== 'otpFirstVarification'){
       //       FlowRouter.go('/resetPassword/'+newID);
       //       }else{
               
@@ -139,7 +139,7 @@ import './SignUp.css';
 
     inputEffect(event){
       event.preventDefault();
-      if($(event.target).val() != ""){
+      if($(event.target).val() !== ""){
         $(event.target).addClass("has-content");
       }else{
         $(event.target).removeClass("has-content");
@@ -224,7 +224,7 @@ import './SignUp.css';
 
 
   render(){
-    // if(location.pathname=='/forgotOTPVarification/'+FlowRouter.getParam("mailId")){
+    // if(location.pathname==='/forgotOTPVarification/'+FlowRouter.getParam("mailId")){
     //    var mobileEmail = 'Email Id';
     //    var resendOtp ='';
     // }else{
@@ -264,7 +264,7 @@ import './SignUp.css';
           <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
             <div className="col-lg-12 systemHeader   ">
               <div className="col-lg-6 col-md-6 col-sm-6 ">
-                <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                <img alt="lupinImage" className="lupinImage" src="images/lupin.png" height="70px"/>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
                 Admin <br/>Management Information System

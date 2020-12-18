@@ -181,7 +181,7 @@ class EditNotificationModal extends Component{
 					this.setState({
 						shown : false,
 					});
-				console.log('error============',error);
+				console.log('error==============',error);
 				})
 			}
 		}else{
@@ -198,9 +198,9 @@ class EditNotificationModal extends Component{
 	  this.setState({
 	  	[name]: event.target.value,
 	  });
-		// if(this.refs.templateType.value  == 'Notification' || this.refs.templateType.value  == 'SMS' ){
+		// if(this.refs.templateType.value  === 'Notification' || this.refs.templateType.value  === 'SMS' ){
 		// 	$('.subjectRow').css({'display':'none'});
-		// }else if(this.refs.templateType.value  == 'Email'){
+		// }else if(this.refs.templateType.value  === 'Email'){
 		// 	$('.subjectRow').css({'display':'block'});
 		// }
 	}
@@ -232,7 +232,7 @@ class EditNotificationModal extends Component{
 		if(this.props.emailNot){
 	        return (
 	        	<div>
-	        		{this.state.shown == true ? 
+	        		{this.state.shown === true ? 
 					<div className="modal fade modalHide" id={"editNotifyModal-"+this.props.emailNot} role="dialog">
 					  	<div className="modal-dialog modal-lg" role="document">
 					    	<div className="modal-content modalContent col-lg-12 NOpadding">

@@ -24,7 +24,7 @@ import monthwiseCharts                            from '../dashboard/chart1/mont
 import Header                                     from '../common/header/Header.js'
 import Footer                                     from '../common/footer/Footer.js'
 import Dashboard                                  from '../dashboard/Dashboard.js'
-import DashboardNew                               from '../dashboard/DashboardNew.js'
+// import DashboardNew                               from '../dashboard/DashboardNew.js'
 import Leftsidebar                                from '../common/leftSidebar/Leftsidebar.js'
 import Rightsidebar                               from '../common/rightSidebar/Rightsidebar.js'
 import UMListOfUsers                              from '../userManagement/UM/UMListOfUsers.js';
@@ -158,7 +158,7 @@ class Layout extends Component{
                           <Route path="/CenterwiseBudget"                                                       exact component={CenterwiseBudget}  />
                           <Route path="/Chart1"                                                                 exact component={Chart1}  />
                           <Route path="/"                                                                       exact component={Dashboard}  />
-                          <Route path="/DashboardNew"                                                           exact component={DashboardNew}  />
+                          {/*<Route path="/DashboardNew"                                                           exact component={DashboardNew}  />*/}
                           <Route path="/dashboard"                                                              exact component={Dashboard}  />
                           <Route path="/umlistofusers"                                                          exact component={UMListOfUsers}  />
                           <Route path="/umroleslist"                                                            exact component={UMRolesList}  />

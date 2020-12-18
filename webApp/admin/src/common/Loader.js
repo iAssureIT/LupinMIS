@@ -12,14 +12,14 @@ export default class Loader extends Component {
       for (var i = 0; i < this.props.productLoaderNo; i++) {
         tempdata.push(i);
       }
-      if (this.props.type == "fullpageloader" ) {
+      if (this.props.type === "fullpageloader" ) {
         return(
           <div>
             <div className="fullpageloader">Loading&#8230;</div>
           </div>
         );
       }
-      else if(this.props.type == "collageloader"){
+      else if(this.props.type === "collageloader"){
         return(
         <div  className="productLoader">
           {
@@ -51,7 +51,7 @@ export default class Loader extends Component {
         </div>
       )
       }
-      else if(this.props.type == "carouselloader"){
+      else if(this.props.type === "carouselloader"){
 
         return (
           <div  className="productLoader">

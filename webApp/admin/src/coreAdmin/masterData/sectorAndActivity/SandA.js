@@ -41,7 +41,7 @@ class SandA extends Component{
     // this.setState({
     //   tabtype : editId.subactivityId ? 'subactivity' : (editId.activityId ? "activity" : "sector" )
     // },()=>{
-    //   console.log(' tabtype ======================', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
+    //   console.log(' tabtype =========================', this.state.tabtype, _.has(editId , 'sectorId', 'activityId', "subactivityId"));
     // });
   }
   // componentWillUnmount(){

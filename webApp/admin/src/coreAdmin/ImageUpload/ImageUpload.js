@@ -82,7 +82,7 @@ class ImageUpload extends Component{
       if (newFile) {
       console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
-        if(ext=="jpg" || ext=="png" || ext=="jpeg" || ext=="JPG" || ext=="PNG" || ext=="JPEG"){
+        if(ext==="jpg" || ext==="png" || ext==="jpeg" || ext==="JPG" || ext==="PNG" || ext==="JPEG"){
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -129,8 +129,8 @@ class ImageUpload extends Component{
       // console.log("config--------------->",this.state.config);
         var ext = newFile.name.split('.').pop();
 
-        if(ext=="DOC" || ext=="DOCX" || ext=="PDF" || ext=="XLS" || ext=="XLSX"  || ext=="PPT" || ext=="PPTX" || ext=="TXT"||
-          ext=="doc" || ext=="docx" || ext=="pdf" || ext=="xls" || ext=="xlsx" || ext=="ppt" || ext=="pptx" || ext=="txt"){
+        if(ext==="DOC" || ext==="DOCX" || ext==="PDF" || ext==="XLS" || ext==="XLSX"  || ext==="PPT" || ext==="PPTX" || ext==="TXT"||
+          ext==="doc" || ext==="docx" || ext==="pdf" || ext==="xls" || ext==="xlsx" || ext==="ppt" || ext==="pptx" || ext==="txt"){
           if (newFile) {
             S3FileUpload
               .uploadFile(newFile,this.state.config)
@@ -179,7 +179,7 @@ class ImageUpload extends Component{
     var filePath = e.target.getAttribute('data-id');
     var data = filePath.split("/");
     var imageName = data[4];
-    // console.log("imageName==",imageName);
+    // console.log("imageName===",imageName);
     if(index){
       swal({
         title: "Are you sure you want to delete this image?",
@@ -222,7 +222,7 @@ class ImageUpload extends Component{
                 method: configData.deleteMethod,
                 url   : configData.apiLink+id
             }).then((response)=> {
-                if(response.data=='workspace deleted'){
+                if(response.data==='workspace deleted'){
                   swal("Workspace deleted successfully");
                   this.props.history.push(configData.pageURL);
                   window.location.reload();
@@ -257,7 +257,7 @@ class ImageUpload extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 <div className="clr_k ">
                   <div className="col-lg-offset-1 col-lg-2 col-md-12 col-sm-12 col-xs-12 hand_icon">
-                    <img src="/images/Upload-Icon.png"/>
+                    <img alt="icon" src="/images/Upload-Icon.png"/>
                   </div>
                   <div  className= "col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center below_text">
                    <b className="text_k11"></b>
@@ -269,7 +269,7 @@ class ImageUpload extends Component{
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 imgdetails">{this.state.fileType=== "Image" ? "(Max size: 1 Mb, Format: JPEG, PNG)" : "(Max size: 1 Mb, Format: DOC, PDF, XLS)"} </div>
             </div>
             {
-              this.state.fileArray==null?
+              this.state.fileArray===null?
               null
               :
               this.state.fileArray.map((data,index)=>{
@@ -284,7 +284,7 @@ class ImageUpload extends Component{
                         </div>
                         <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                           <div className="imgcss" >
-                            <img className="img-responsive imgheight" src={data.imgPath}/>
+                            <img alt="icon" className="img-responsive imgheight" src={data.imgPath}/>
                           </div>
                         </div>
                       </div>
@@ -315,16 +315,16 @@ class ImageUpload extends Component{
                                   <div>
                                   {/*
                                    ( this.state.ext==="XLS" || "XLSX"||"xls" || "xlsx") ?
-                                    <img className="fileExt" src="/images/exel2.png"/> : ""
+                                    <img alt="icon" className="fileExt" src="/images/exel2.png"/> : ""
                                  
                                    ( this.state.ext==="PPT" || "PPTX" || "ppt" || "pptx") ?
-                                    <img className="fileExt" src="/images/powerpoint.jpeg"/> :""
+                                    <img alt="icon" className="fileExt" src="/images/powerpoint.jpeg"/> :""
                                 
                                     (this.state.ext==="pdf" || "PDF") ?
-                                    <img className="fileExt" src="/images/pdf.png"/> :""
+                                    <img alt="icon" className="fileExt" src="/images/pdf.png"/> :""
                                 
                                     (this.state.ext==="doc" || "docx" || "DOC" || "DOCX"|| "txt" || "TXT") ?
-                                    <img className="fileExt" src="/images/docs.png"/> : ""
+                                    <img alt="icon" className="fileExt" src="/images/docs.png"/> : ""
                                   */}
                                 
                                   </div>

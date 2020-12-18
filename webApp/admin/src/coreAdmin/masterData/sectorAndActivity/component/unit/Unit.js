@@ -143,7 +143,7 @@ class Unit extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "unit"){
+        if (element.attr("name") === "unit"){
           error.insertAfter("#unit");
         }
       }

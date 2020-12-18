@@ -136,7 +136,7 @@ class typeOfCenter extends Component{
        
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofCenter"){
+        if (element.attr("name") === "typeofCenter"){
           error.insertAfter("#typeOfCenterError");
         }
         
@@ -161,7 +161,7 @@ class typeOfCenter extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofCenter"){
+        if (element.attr("name") === "typeofCenter"){
           error.insertAfter("#typeofCenterErr");
         }
       }

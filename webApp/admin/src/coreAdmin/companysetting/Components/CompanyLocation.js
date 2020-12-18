@@ -191,7 +191,7 @@ class CompanyLocation extends Component{
 
 
         let locationArray =[];
-        if(this.state.allPosts!=null){
+        if(this.state.allPosts!==null){
 
         
          locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -268,15 +268,15 @@ class CompanyLocation extends Component{
     console.log("companyLocationFormValue ____________________",companyLocationFormValue);
     console.log("this.state.formerrors",formValid(this.state.formerrors));
 
-  if(this.state.companycontact!="" && this.state.companyCountry!="" && this.state.companyState!= "" 
-    && this.state.companyDist!= "" && this.state.taluka != ""       && this.state.companyCity!= ""
-    && this.state.companyPincode != "" && this.state.companyArea != ""
-     && this.state.companybuildingblock != "" && this.state.companyLocation != "" ){
+  if(this.state.companycontact!=="" && this.state.companyCountry!=="" && this.state.companyState!== "" 
+    && this.state.companyDist!== "" && this.state.taluka !== ""       && this.state.companyCity!== ""
+    && this.state.companyPincode !== "" && this.state.companyArea !== ""
+     && this.state.companybuildingblock !== "" && this.state.companyLocation !== "" ){
       console.log("submitVal state",this.state.submitVal);
 
 
 
-      if(this.state.submitVal == true)
+      if(this.state.submitVal === true)
       {
 
         if(this.state.companyLocation  === 'Head Office' || this.state.companyLocation  === 'Sales Agent Office' )
@@ -318,7 +318,7 @@ class CompanyLocation extends Component{
                               allPosts : postsdata,
                             });
                           let locationArray =[];
-                          if(this.state.allPosts!=null){
+                          if(this.state.allPosts!==null){
                            locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
                           }else{
                              locationArray = "no data";
@@ -346,7 +346,7 @@ class CompanyLocation extends Component{
       }else if(this.state.companyLocation  === 'Field Agent Office'){
             
 
-            if(this.state.pincodeArea == "")
+            if(this.state.pincodeArea === "")
             {
               $('.subjectRowError').css({'display':'block'});
             }else{
@@ -385,7 +385,7 @@ class CompanyLocation extends Component{
                               allPosts : postsdata,
                             });
                           let locationArray =[];
-                          if(this.state.allPosts!=null){
+                          if(this.state.allPosts!==null){
                            locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
                           }else{
                              locationArray = "no data";
@@ -460,7 +460,7 @@ class CompanyLocation extends Component{
 
 
                       let locationArray =[];
-                      if(this.state.allPosts!=null){
+                      if(this.state.allPosts!==null){
 
                       
                        locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -492,7 +492,7 @@ class CompanyLocation extends Component{
         }else if(this.state.companyLocation  === 'Field Agent Office'){
             
 
-            if(this.state.pincodeArea == "")
+            if(this.state.pincodeArea === "")
             {
               $('.subjectRowError').css({'display':'block'});
             }else{
@@ -540,7 +540,7 @@ class CompanyLocation extends Component{
 
 
                       let locationArray =[];
-                      if(this.state.allPosts!=null){
+                      if(this.state.allPosts!==null){
 
                       
                        locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -699,7 +699,7 @@ selectType(event){
 
 
                 let locationArray =[];
-                if(this.state.allPosts!=null){
+                if(this.state.allPosts!==null){
 
                 
                  locationArray = this.state.allPosts.map(function(item) { return item.companyLocationsInfo });
@@ -1088,7 +1088,7 @@ selectType(event){
                           </tr>
                         </thead>
                         <tbody>
-                        { this.state.allLoc != null ?
+                        { this.state.allLoc !== null ?
                           this.state.allLoc[0].map( (locData, index)=>{
                           /*console.log('locData of 0 here',locData);*/
                            return( 

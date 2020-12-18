@@ -312,7 +312,7 @@ class GeographicalReport extends Component{
         method: 'get',
         url: '/api/centers/'+this.state.center_ID,
         }).then((response)=> {
-        // console.log('availableblockInCenter ==========',response);
+        // console.log('availableblockInCenter ============',response);
         function removeDuplicates(data, param, district){
           return data.filter(function(item, pos, array){
             return array.map(function(mapItem){ 
@@ -441,14 +441,14 @@ class GeographicalReport extends Component{
           var lastN = x.split('.')[0];
           var lastThree = lastN.substring(lastN.length-3);
           var otherNumbers = lastN.substring(0,lastN.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree+"."+pointN;
           return(res);
         }else{
           var lastThree = x.substring(x.length-3);
           var otherNumbers = x.substring(0,x.length-3);
-          if(otherNumbers != '')
+          if(otherNumbers !== '')
               lastThree = ',' + lastThree;
           var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
           return(res);

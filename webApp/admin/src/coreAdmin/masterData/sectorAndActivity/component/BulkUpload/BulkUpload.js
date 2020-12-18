@@ -89,7 +89,7 @@ class BulkUpload extends Component{
   isTextKey(evt)
   {
    var charCode = (evt.which) ? evt.which : evt.keyCode
-   if (charCode!=189 && charCode > 32 && (charCode < 65 || charCode > 90) )
+   if (charCode!==189 && charCode > 32 && (charCode < 65 || charCode > 90) )
    {
     evt.preventDefault();
       return false;
@@ -240,7 +240,7 @@ class BulkUpload extends Component{
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 bulkUploadForm">
                   <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 bulkImage">
                     <a >
-                      <img src="/images/download.png"  className="csvimgBulk" title="Click to download file"/>
+                      <img alt="download" src="/images/download.png"  className="csvimgBulk" title="Click to download file"/>
                     </a>
                   </div>
                   <div className="csvUpld col-lg-10 col-md-10 col-sm-10 col-xs-10">

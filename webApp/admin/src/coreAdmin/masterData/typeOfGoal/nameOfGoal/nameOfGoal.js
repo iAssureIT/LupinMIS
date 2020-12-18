@@ -170,10 +170,10 @@ class nameOfGoal extends Component{
         },
       },
       errorPlacement: function(error, element) {
-        if (element.attr("name") == "typeofGoalErr"){
+        if (element.attr("name") === "typeofGoalErr"){
           error.insertAfter("#typeofGoalErr");
         }
-        if (element.attr("name") == "goalNameErr"){
+        if (element.attr("name") === "goalNameErr"){
           error.insertAfter("#goalNameErr");
         }
       }
@@ -189,15 +189,15 @@ class nameOfGoal extends Component{
         url: '/api/typeofgoals/'+id,
       }).then((response)=> {
         var editData = response.data[0];  
-        // console.log("editData==",editData,goal_id);  
-        // console.log("editData==",(editData.goal.filter((a)=>{return a._id == goal_id ? a.goalName : ''}))[0]);  
-        // console.log("editData==",editData.typeofGoal+'|'+editData._id);  
+        // console.log("editData===",editData,goal_id);  
+        // console.log("editData===",(editData.goal.filter((a)=>{return a._id === goal_id ? a.goalName : ''}))[0]);  
+        // console.log("editData===",editData.typeofGoal+'|'+editData._id);  
                   
         if(editData){ 
          this.setState({
           "typeofGoal"        : editData ? editData.typeofGoal+'|'+editData._id: "",
-          "goalName"          : editData.goal.find((a)=>{return a._id == goal_id }).goalName,
-          // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"=="+ activity_id)})),
+          "goalName"          : editData.goal.find((a)=>{return a._id === goal_id }).goalName,
+          // "activityName"      :_.first(editData.activity.map((a, i)=>{console.log( a._id +"==="+ activity_id)})),
         },()=>{
           // console.log('this.state', this.state.typeofGoal, this.state.goalName )
         });         
@@ -219,7 +219,7 @@ class nameOfGoal extends Component{
     axios.post('/api/typeofgoals/goalName/list',data)
     .then((response)=>{
       $(".fullpageloader").hide();
-       // console.log('tableData==================', response);
+       // console.log('tableData=====================', response);
       var tableData = response.data.map((a, i)=>{
           return {
             _id           : a._id,

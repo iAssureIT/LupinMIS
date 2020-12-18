@@ -29,7 +29,7 @@ class ForgotPassword extends Component {
           }
         },
         errorPlacement: function(error, element) {
-          if (element.attr("name") == "enterEmail"){
+          if (element.attr("name") === "enterEmail"){
             error.insertAfter("#enterEmailErr");
           }
         }
@@ -164,7 +164,7 @@ class ForgotPassword extends Component {
 
     inputEffect(event){
       event.preventDefault();
-      if($(event.target).val() != ""){
+      if($(event.target).val() !== ""){
         $(event.target).addClass("has-content");
       }else{
         $(event.target).removeClass("has-content");
@@ -200,7 +200,7 @@ class ForgotPassword extends Component {
           <div id="scrollcont" className={backImage} style={{"height": winHeight}}>
             <div className="col-lg-12 systemHeader   ">
               <div className="col-lg-6 col-md-6 col-sm-6 ">
-                <img className="lupinImage" src="images/lupin.png" height="70px"/>
+                <img className="lupinImage"  alt="lupinImage" src="images/lupin.png" height="70px"/>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 text-center logoName">
                 Admin <br/>Management Information System

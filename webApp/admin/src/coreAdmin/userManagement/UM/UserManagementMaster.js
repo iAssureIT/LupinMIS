@@ -11,7 +11,7 @@ if (Meteor.isServer) {
 
   Meteor.publish("UsersCountbyRole",function(roleName){
     //console.log("roleName",roleName,);
-    if(roleName=="All"){
+    if(roleName==="All"){
       Counts.publish(this, 'UsersCountbyRole',Meteor.users.find());
     }else{
       Counts.publish(this, 'UsersCountbyRole',Meteor.users.find());
@@ -137,7 +137,7 @@ Meteor.methods({
     var addRoles = [role];
     for (var i=0; i<checkedUsersList.length; i++) {
       var userId = checkedUsersList[i];
-      if(checkedUsersList[i] != null){
+      if(checkedUsersList[i] !== null){
         Roles.addUsersToRoles(userId, addRoles);
       }
       
@@ -163,35 +163,35 @@ Meteor.methods({
      if(Roles.userIsInRole(Meteor.userId(), ['Admin','admin','superAdmin'])){
       // if(roleSetVar || activeBlockSetVar ){
              if(!firstname){
-           if(roleSetVar=="all" && activeBlockSetVar=="all"){
+           if(roleSetVar==="all" && activeBlockSetVar==="all"){
               // // console.log("in // console0");
               userData.userDataLength = Meteor.users.find({"roles":{ $nin: ["superAdmin"] }}).count();
               userData.userList = Meteor.users.find({"roles":{ $nin: ["superAdmin"] }},
                                       {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
               return userData;
            
-            }else if(roleSetVar  && activeBlockSetVar=="all" ){
+            }else if(roleSetVar  && activeBlockSetVar==="all" ){
               // console.log("in // console3");
               userData.userDataLength = Meteor.users.find({"roles":{ $in: [roleSetVar] }}).count();
               // console.log('userData.userDataLength',userData.userDataLength);
               userData.userList = Meteor.users.find({"roles":{ $in: [roleSetVar] }},
                                        {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
               return userData;
-            }else if(roleSetVar && activeBlockSetVar=="all" ){
+            }else if(roleSetVar && activeBlockSetVar==="all" ){
               /*var temp = Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.department": departmentname},
                                       {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
-              // console.log("in // console1 temp==",temp);*/
+              // console.log("in // console1 temp===",temp);*/
               userData.userDataLength = Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.department": departmentname}).count();
               userData.userList = Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.department": departmentname},
                                       {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
               return userData;
-            }else if(roleSetVar=="all" && activeBlockSetVar=="all"){
+            }else if(roleSetVar==="all" && activeBlockSetVar==="all"){
               // // console.log("in // console all role");
               userData.userDataLength = Meteor.users.find({"roles":{ $nin: ["superAdmin",'admin','Admin'] },"profile.department": departmentname}).count();
               userData.userList = Meteor.users.find({"roles":{ $nin: ["superAdmin",'admin','Admin'] },"profile.department": departmentname},
                                        {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
               return userData;
-            }else if(roleSetVar=="all" && activeBlockSetVar ){
+            }else if(roleSetVar==="all" && activeBlockSetVar ){
               // // console.log("in // console all - all ");
               userData.userDataLength = Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.status": activeBlockSetVar}).count();
               userData.userList =  Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.status": activeBlockSetVar},
@@ -209,7 +209,7 @@ Meteor.methods({
               userData.userList = Meteor.users.find({"roles":{ $nin: ["superAdmin"] },"profile.status": activeBlockSetVar,"profile.department": departmentname},
                                       {sort:{'createdAt':-1}, skip:startRange, limit: limitRange}).fetch();
               return userData;
-            }else if(roleSetVar=="all" && activeBlockSetVar ){
+            }else if(roleSetVar==="all" && activeBlockSetVar ){
               // // console.log("in // console2");
               userData.userDataLength = Meteor.users.find({"roles":{ $nin: ["superAdmin",'admin','Admin'] },"profile.status": activeBlockSetVar,
                                         "profile.department": departmentname}).fetch();
@@ -229,7 +229,7 @@ Meteor.methods({
               return userData;
             }
         }else{
-            if(roleSetVar=='all'){
+            if(roleSetVar==='all'){
               userData.userDataLength = Meteor.users.find({$and:[
                                           {$or:[{"profile.firstname":firstname},{"profile.lastname":firstname},{"profile.mobNumber":firstname},{"roles[0]":firstname},{"emailId":firstname}]},
                                           {"roles":{ $nin: ["superAdmin"] }}]}).count();
@@ -260,19 +260,19 @@ Meteor.methods({
          /*if(Roles.userIsInRole(Meteor.userId(), ['Admin','admin','superAdmin'])){
             if(roleSetVar || activeBlockSetVar || departmentname){
               // console.log("in // console1");
-            if((roleSetVar == "all" && !activeBlockSetVar && !departmentname)       ||
-               (roleSetVar == "all" && activeBlockSetVar == 'all' && departmentname== 'all') ||
-               (!roleSetVar && activeBlockSetVar == 'all' && departmentname == 'all')         ||
-               (roleSetVar == 'all' && activeBlockSetVar == 'all' && departmentname == 'all') || 
-               (departmentname == 'all' && !activeBlockSetVar && !roleSetVar) ||
-               (roleSetVar == 'all' && activeBlockSetVar == 'all' && departmentname == 'all')) 
+            if((roleSetVar === "all" && !activeBlockSetVar && !departmentname)       ||
+               (roleSetVar === "all" && activeBlockSetVar === 'all' && departmentname=== 'all') ||
+               (!roleSetVar && activeBlockSetVar === 'all' && departmentname === 'all')         ||
+               (roleSetVar === 'all' && activeBlockSetVar === 'all' && departmentname === 'all') || 
+               (departmentname === 'all' && !activeBlockSetVar && !roleSetVar) ||
+               (roleSetVar === 'all' && activeBlockSetVar === 'all' && departmentname === 'all')) 
 
             {
               // console.log("in // console2");
 
               return Meteor.users.find({"roles":{ $nin: ["superAdmin"] } }).fetch();
-            }else if((roleSetVar == "all" && activeBlockSetVar && departmentname) ||
-                     (roleSetVar == "all" && activeBlockSetVar && departmentname)   ||
+            }else if((roleSetVar === "all" && activeBlockSetVar && departmentname) ||
+                     (roleSetVar === "all" && activeBlockSetVar && departmentname)   ||
                      (!roleSetVar && activeBlockSetVar  && !departmentname) ||
                      (!roleSetVar && !activeBlockSetVar &&  departmentname) ||
                      (roleSetVar && !activeBlockSetVar  && !departmentname) ||
@@ -282,7 +282,7 @@ Meteor.methods({
               // console.log("in // console3");
 
               return Meteor.users.find({"profile.status": activeBlockSetVar,"roles":{ $nin: ["superAdmin"] } }).fetch();
-            }else if((roleSetVar && activeBlockSetVar == 'all' && departmentname) ||
+            }else if((roleSetVar && activeBlockSetVar === 'all' && departmentname) ||
                      (roleSetVar && !activeBlockSetVar && !departmentname) ||
                      (roleSetVar && !activeBlockSetVar && !departmentname) ||
                      (roleSetVar && !activeBlockSetVar && !departmentname))
@@ -310,10 +310,10 @@ Meteor.methods({
     },
 
     'getCountFunction':function(roleSetVar,activeBlockSetVar){
-       if((roleSetVar == "all" && !activeBlockSetVar)       || 
-          (roleSetVar == "all" && activeBlockSetVar == '-') || 
-          (!roleSetVar && activeBlockSetVar == '-')         ||
-          (roleSetVar == '-' && activeBlockSetVar == '-')){
+       if((roleSetVar === "all" && !activeBlockSetVar)       || 
+          (roleSetVar === "all" && activeBlockSetVar === '-') || 
+          (!roleSetVar && activeBlockSetVar === '-')         ||
+          (roleSetVar === '-' && activeBlockSetVar === '-')){
           var questionMasterDataCount = Meteor.users.find({"roles":{$nin:["superAdmin",'admin','Admin']}}).count();
         return questionMasterDataCount;
       }else{
