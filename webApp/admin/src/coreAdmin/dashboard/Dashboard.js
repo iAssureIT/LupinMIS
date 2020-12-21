@@ -17,7 +17,6 @@ export default class Dashboard extends Component{
     this.state = {
       "center_sector"                : [],
       "month"                        : [],
-      "piechartcolor"                : [],
       "sector"                       : [],
       "annualPlanReach"              : [],
       "annualPlanFamilyUpgradation"  : [],
@@ -149,33 +148,80 @@ export default class Dashboard extends Component{
   componentDidMount(){
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
     this.year();
-    // this.currentFromDate();
-    // this.currentToDate();
-    this.getAvailableCentersData();
     this.getCentersData();
     this.getAvailableCenters();
     this.getcenter();
     this.getCountOfSubactivities();
+    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
     this.cumulative_Plan_Data(this.state.year);
+    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
     this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
     this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
   }
-  componentWillReceiveProps(nextProps){
-    this.year();
-    this.currentFromDate();
-    this.currentToDate();
-    this.getAvailableCentersData();
-    this.getCentersData();
-    this.getAvailableCenters();
-    this.cumulative_Plan_Data(this.state.year);
-    this.getCountOfSubactivities();
-    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-    this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+  
+  year() {
+    let financeYear;
+    let today = moment();
+    // console.log('today',today);
+    if(today.month() >= 3){
+      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    else{
+      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
+    }
+    this.setState({
+        financeYear :financeYear
+    },()=>{
+      // console.log('financeYear',this.state.financeYear);
+      var firstYear     = this.state.financeYear.split('-')[0];
+      var secondYear    = this.state.financeYear.split('-')[1];
+      var financialYear = "FY "+firstYear+" - "+secondYear;
+      var startDate     = financialYear.substring(3, 7)+"-04-01";
+      var endDate       = financialYear.substring(10, 15)+"-03-31";
+      /*"FY 2019 - 2020",*/
+      this.setState({
+        firstYear  :firstYear,
+        secondYear :secondYear,
+        startDate  :startDate,
+        endDate    :endDate,
+        year       :financialYear
+      },()=>{
+        this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+        this.cumulative_Plan_Data(this.state.year);
+        this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+        this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+        var upcomingFirstYear =parseInt(this.state.firstYear)+3
+        var upcomingSecondYear=parseInt(this.state.secondYear)+3
+        var years = [];
+        for (var i = 2017; i < upcomingFirstYear; i++) {
+          for (var j = 2018; j < upcomingSecondYear; j++) {
+            if (j-i===1){
+              var financeYear = "FY "+i+" - "+j;
+              years.push(financeYear);
+              this.setState({
+                years  :years,
+              },()=>{
+              // console.log('years',this.state.years);
+              // console.log('year',this.state.year);
+              })              
+            }
+          }
+        }
+      })
+    })
   }
+  // componentWillReceiveProps(nextProps){
+  //   this.year();
+  //   this.getCentersData();
+  //   this.getAvailableCenters();
+  //   this.cumulative_Plan_Data(this.state.year);
+  //   this.getCountOfSubactivities();
+  //   this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+  //   this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+  //   this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+  //   this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+  // }
   getcenter(){
     axios({
       method: 'get',
@@ -210,10 +256,14 @@ export default class Dashboard extends Component{
       url: '/api/centers/list',
     }).then((response)=> {
       // console.log('response',response);
-      this.setState({
-          availableCenters : response.data,
-      },()=>{
-      })
+      if(response&&response.data&&response.data.length>0){
+        var centerNames = response.data.map((o,i)=>{return o.centerName})
+        this.setState({
+          CenterNames              : centerNames.sort(),
+          countAllCenter           : response.data.length,
+          availableCenters         : response.data,
+        })
+      }
     }).catch(function (error) {
       console.log("error = ",error);
     });
@@ -252,22 +302,7 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   } 
-  getRandomColor(){
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  getRandomColor_sector(){
-    var letters = '01234ABCDEF56789';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
+
   closeModal(){
     $('#dataShow').css({"display": "none"});
     $('#dataShow').removeClass('in');  
@@ -275,28 +310,6 @@ export default class Dashboard extends Component{
   closeLocationModal(){
     $('#locationShow').css({"display": "none"});
     $('#locationShow').removeClass('in');  
-  }
-  getAvailableCentersData(){
-    axios({
-      method: 'get',
-      url: '/api/reportDashboard/list_count_center_district_blocks_villages',
-    }).then((response)=> {
-      // console.log("response ===>",response.data);
-      if (response.data && response.data[0]) {
-        this.setState({
-          CenterNames              : response.data[0].centerName.sort(),
-          villagesCoveredInCenter  : response.data[0].villagesCovered.map((o,i)=>{return o}),
-          countAllCenter           : response.data[0].countCenter,
-          countDistrict            : response.data[0].countDistrict,
-          countBlocks              : response.data[0].countBlocks,
-          villagesCovered          : response.data[0].countVillages,
-          blocksCovered            : response.data[0].blocksCovered.map((o,i)=>{return o}),
-          districtsCovered         : response.data[0].districtsCovered.map((o,i)=>{return o}),
-        })
-      }
-    }).catch(function (error) {
-      console.log('error', error);
-    });
   }
   getFinancialData(startDate, endDate, center_ID){
     if(startDate && endDate && center_ID){
@@ -480,41 +493,7 @@ export default class Dashboard extends Component{
       this.refs.endDate.value="";
     }
   }
-  currentFromDate(){
-    var today;
-    if(this.state.startDate){
-      today = this.state.startDate;
-    }else {
-      today = (new Date());
-      var nextDate = today.getDate() - 30;
-      today.setDate(nextDate);
-      // var newDate = today.toLocaleString();
-      today =  moment(today).format('YYYY-MM-DD');
-    }
-    this.setState({
-      startDate :today
-    },()=>{
-      this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    });
-    return today;
-  }
-  currentToDate(){
-    if(this.state.endDate){
-      var today = this.state.endDate;
-    }else {
-      var today =  moment(new Date()).format('YYYY-MM-DD');
-    }
-    this.setState({
-      endDate :today
-    },()=>{
-      this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    });
-    return today;
-  }
+
   dataShow(id){
     // console.log('id',id);
     if(id === "Districts"){
@@ -615,58 +594,6 @@ export default class Dashboard extends Component{
     },()=>{
       $('#locationShow').css({"display": "block"});
       $('#locationShow').addClass('in');  
-    })
-  }
-  year() {
-    let financeYear;
-    let today = moment();
-    // console.log('today',today);
-    if(today.month() >= 3){
-      financeYear = today.format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    else{
-      financeYear = today.subtract(1, 'years').format('YYYY') + '-' + today.add(1, 'years').format('YYYY')
-    }
-    this.setState({
-        financeYear :financeYear
-    },()=>{
-      // console.log('financeYear',this.state.financeYear);
-      var firstYear     = this.state.financeYear.split('-')[0];
-      var secondYear    = this.state.financeYear.split('-')[1];
-      var financialYear = "FY "+firstYear+" - "+secondYear;
-      var startDate     = financialYear.substring(3, 7)+"-04-01";
-      var endDate       = financialYear.substring(10, 15)+"-03-31";
-      /*"FY 2019 - 2020",*/
-      this.setState({
-        firstYear  :firstYear,
-        secondYear :secondYear,
-        startDate  :startDate,
-        endDate    :endDate,
-        year       :financialYear
-      },()=>{
-        this.cumulative_Plan_Data(this.state.year);
-        this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-        this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-        this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-        this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-        var upcomingFirstYear =parseInt(this.state.firstYear)+3
-        var upcomingSecondYear=parseInt(this.state.secondYear)+3
-        var years = [];
-        for (var i = 2017; i < upcomingFirstYear; i++) {
-          for (var j = 2018; j < upcomingSecondYear; j++) {
-            if (j-i===1){
-              var financeYear = "FY "+i+" - "+j;
-              years.push(financeYear);
-              this.setState({
-                years  :years,
-              },()=>{
-              // console.log('years',this.state.years);
-              // console.log('year',this.state.year);
-              })              
-            }
-          }
-        }
-      })
     })
   }
   render(){

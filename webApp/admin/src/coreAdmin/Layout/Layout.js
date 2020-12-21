@@ -165,10 +165,7 @@ class Layout extends Component{
                           <Route path="/edituserprofile/:id"                                                    exact component={EditUserProfile}  />
                           <Route path="/ViewTemplates"                                                          exact component={ViewTemplates}  />
                           <Route path="/companysetting"                                                         exact component={OrganizationSetting}  />
-                          {/*Access Management*/}
-                          <Route path="/admin/AddModuleFacility"                                                exact strict component={ AddModuleFacility } />
-                          <Route path="/admin/AssignPermissionToModule"                                         exact strict component={ AssignPermissionToModules } />
-                           {/*Master Data*/}
+                          {/*Master Data*/}
                           <Route path="/type-center"                                                            exact strict component={ Type_Center } />
                           <Route path="/type-center/"                                                           exact strict component={ Type_Center } />
                           <Route path="/type-center/:typeofCenterId"                                            exact strict component={ Type_Center } />
