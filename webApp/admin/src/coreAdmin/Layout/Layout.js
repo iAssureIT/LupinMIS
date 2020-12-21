@@ -39,8 +39,6 @@ import ViewTemplates                              from '../NotificationManagemen
 
 /**************************/
 
-import AddModuleFacility                          from '../accessManagement/AddModuleFacility.js';
-import AssignPermissionToModules                  from '../accessManagement/AssignPermissionToModules.js';
 
 import SectorAndActivity                          from '../../coreAdmin/masterData/sectorAndActivity/SectorAndActivity.js';
 
