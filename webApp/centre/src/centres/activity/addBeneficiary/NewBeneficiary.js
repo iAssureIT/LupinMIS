@@ -359,7 +359,7 @@ class NewBeneficiary extends Component{
                                 <label className="formLable">Block<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="block" >
                                   <select className="custom-select form-control inputBox" ref="block" name="block"  value={this.state.block} onChange={this.selectBlock.bind(this)} >
-                                    <option disabled="disabled" value = "">-- Select --</option>
+                                    <option  value = "">-- Select --</option>
                                     <option value="all">All</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
@@ -378,7 +378,7 @@ class NewBeneficiary extends Component{
                                 <label className="formLable">Village<span className="asterix">*</span></label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="village" >
                                   <select className="custom-select form-control inputBox" ref="village" name="village" value={this.state.village} onChange={this.selectVillage.bind(this)} >
-                                    <option disabled="disabled" value = "">-- Select --</option>
+                                    <option  value = "">-- Select --</option>
                                     <option value="all">All</option>
                                     {
                                       this.state.listofVillages && this.state.listofVillages.length > 0  ? 

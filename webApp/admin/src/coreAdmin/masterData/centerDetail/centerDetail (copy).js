@@ -1066,7 +1066,7 @@ class centerDetail extends Component{
                                 <label className="formLable">Center Type</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
                                   <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
-                                    <option   disabled="disabled"  value="--Select Center--">--Select Center--</option>
+                                    <option     value="--Select Center--">--Select Center--</option>
                                     {
                                       this.state.listofTypes ?
                                       this.state.listofTypes.map((data, index)=>{
@@ -1103,7 +1103,7 @@ class centerDetail extends Component{
                                 <label className="formLable">State</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                                   <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                                    <option disabled="disabled"  value="--Select State--">--Select State--</option> 
+                                    <option   value="--Select State--">--Select State--</option> 
                                     {
                                       this.state.listofStates ?
                                       this.state.listofStates.map((data, index)=>{
@@ -1122,7 +1122,7 @@ class centerDetail extends Component{
                                 <label className="formLable">District</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                   <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.handleChange.bind(this)} >
-                                    <option disabled="disabled"  value="--Select District--" >--Select District--</option>
+                                    <option   value="--Select District--" >--Select District--</option>
                                     {
                                       this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                       this.state.listofDistrict.map((data, index)=>{
@@ -1210,7 +1210,7 @@ class centerDetail extends Component{
                                 <label className="formLable">District Covered</label>{/*this.state.districtCovered*/}
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
-                                    <option disabled="disabled"  value="--Select District--" >--Select District--</option>
+                                    <option   value="--Select District--" >--Select District--</option>
                                     {
                                       this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                       this.state.listofDistrict.map((data, index)=>{
@@ -1229,7 +1229,7 @@ class centerDetail extends Component{
                                 <label className="formLable">Block Covered</label>{/*this.state.blocksCoveredValue*/}
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.blocksCoveredValue}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                                    <option disabled="disabled"  value="--Select Block--" >--Select Block--</option>
+                                    <option   value="--Select Block--" >--Select Block--</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{
@@ -2254,7 +2254,7 @@ class centerDetail extends Component{
                                 <label className="formLable">Center Type</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="typeOfCenter" >
                                   <select className="custom-select form-control inputBox" value={this.state.typeOfCenter} ref="typeOfCenter" name="typeOfCenter" onChange={this.selectType.bind(this)} >
-                                    <option   disabled="disabled"  value="--Select Center--">--Select Center--</option>
+                                    <option     value="--Select Center--">--Select Center--</option>
                                     {
                                       this.state.listofTypes ?
                                       this.state.listofTypes.map((data, index)=>{
@@ -2291,7 +2291,7 @@ class centerDetail extends Component{
                                 <label className="formLable">State</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="state" >
                                   <select className="custom-select form-control inputBox" value={this.state.state}  ref="state" name="state"  onChange={this.selectState.bind(this)} >
-                                    <option disabled="disabled"  value="--Select State--">--Select State--</option> 
+                                    <option   value="--Select State--">--Select State--</option> 
                                     {
                                       this.state.listofStates ?
                                       this.state.listofStates.map((data, index)=>{
@@ -2310,7 +2310,7 @@ class centerDetail extends Component{
                                 <label className="formLable">District</label><span className="asterix">*</span>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="district" >
                                   <select className="custom-select form-control inputBox"  value={this.state.district}  ref="district" name="district" onChange={this.handleChange.bind(this)} >
-                                    <option disabled="disabled"  value="--Select District--" >--Select District--</option>
+                                    <option   value="--Select District--" >--Select District--</option>
                                     {
                                       this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
                                       this.state.listofDistrict.map((data, index)=>{
@@ -2398,7 +2398,7 @@ class centerDetail extends Component{
                                 <label className="formLable">District Covered</label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.districtCovered}  ref="districtCovered" name="districtCovered" onChange={this.districtCoveredChange.bind(this)} >
-                                    <option disabled="disabled"  value="--Select District--" >--Select District--</option>
+                                    <option   value="--Select District--" >--Select District--</option>
                                     {
                                       this.state.listofDistrict  && this.state.listofDistrict.length > 0 ? 
                                       this.state.listofDistrict.map((data, index)=>{
@@ -2417,7 +2417,7 @@ class centerDetail extends Component{
                                 <label className="formLable">Block Covered</label>
                                 <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blocksCovered" >
                                   <select className="custom-select form-control inputBox"  value={this.state.blocksCoveredValue}  ref="blocksCovered" name="blocksCovered"  onChange={this.selectBlock.bind(this)} >
-                                    <option disabled="disabled"  value="--Select Block--" >--Select Block--</option>
+                                    <option   value="--Select Block--" >--Select Block--</option>
                                     {
                                       this.state.listofBlocks && this.state.listofBlocks.length > 0  ? 
                                       this.state.listofBlocks.map((data, index)=>{

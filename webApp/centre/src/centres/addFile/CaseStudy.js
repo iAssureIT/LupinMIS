@@ -393,7 +393,7 @@ class CaseStudy extends Component{
                             <label className="formLable">Sector </label><span className="asterix">*</span>
                             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="sector" >
                               <select className="custom-select form-control inputBox" ref="sector" name="sector" value={this.state.sector} onChange={this.selectSector.bind(this)} >
-                                <option disabled="disabled" value = "" >-- Select --</option>
+                                <option  value = "" >-- Select --</option>
                                 {
                                   this.state.availableSectors && this.state.availableSectors.length >0 ?
                                   this.state.availableSectors.map((data, index)=>{

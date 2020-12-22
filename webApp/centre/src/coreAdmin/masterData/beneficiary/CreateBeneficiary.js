@@ -490,7 +490,7 @@ class Beneficiary extends Component{
             <label className="formLable">Relation with Family Head</label><span className="asterix">*</span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="relationErr" >
               <select className="custom-select form-control inputBox" ref="relation" name="relation" value={this.state.relation} onChange={this.handleChange.bind(this)}  >
-                <option value = "" disabled="disabled" >-- Select --</option>
+                <option value = ""  >-- Select --</option>
                 <option>Self</option>
                 <option>Wife</option>
                 <option>Husband</option>
@@ -511,7 +511,7 @@ class Beneficiary extends Component{
             <label className="formLable">Gender</label><span className="asterix"></span>
             <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main " id="genderOfbeneficiaryErr" >
               <select className="custom-select form-control inputBox" ref="genderOfbeneficiary" name="genderOfbeneficiary" value={this.state.genderOfbeneficiary} onChange={this.handleChange.bind(this)}  >
-                <option value = "" value="" disabled="disabled" >-- Select --</option>
+                <option value = "" value=""  >-- Select --</option>
                 <option>Female</option>
                 <option>Male</option>
                 <option>Transgender</option>

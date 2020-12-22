@@ -476,7 +476,7 @@ class SectorwisePlan extends Component{
                       <label className="formLable">Plan</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="month" >
                         <select className="custom-select form-control inputBox" ref="month" name="month" value={this.state.month}  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" value = "">-- Select Plan --</option>
+                          <option  value = "">-- Select Plan --</option>
                          {this.state.months.map((data,index) =>
                           <option key={index}  value={data} >{data}</option>
                           )}

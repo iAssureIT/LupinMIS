@@ -1330,6 +1330,8 @@ class ActivityTypeB extends Component{
         availableSubActivity : [],
         sector_ID            : "",
         activity_ID          : "",
+      },()=>{
+        this.getAvailableSectors();
       })
     }  
   }
@@ -1534,7 +1536,7 @@ class ActivityTypeB extends Component{
                                 {this.state.type===true ?
 
                                  <div className=" switch" onClick={this.handleToggle.bind(this)} >
-                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  defaultChecked />
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
                                     <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
@@ -1544,7 +1546,7 @@ class ActivityTypeB extends Component{
                                    <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
-                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" defaultChecked  />
+                                    <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />
                                     <label htmlFor="month" className="formLable switch-label switch-label-on">Project Fund</label>
                                     <span className="switch-selection" ></span>
                                   </div>

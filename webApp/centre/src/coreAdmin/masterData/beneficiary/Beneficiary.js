@@ -1020,7 +1020,7 @@ class Beneficiary extends Component{
                               <label className="formLable">District</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="districtErr" >
                                 <select className="custom-select form-control inputBox" ref="districtFilter" name="districtFilter" value={this.state.districtFilter} onChange={this.districtFilterChange.bind(this)}  >
-                                  <option value="" disabled="disabled" >-- Select --</option>
+                                  <option value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofDistrict && this.state.listofDistrict.length > 0 ? 
@@ -1040,7 +1040,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Block</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="blockErr" >
                                 <select className="custom-select form-control inputBox" ref="blockFilter" name="blockFilter" value={this.state.blockFilter?this.state.blockFilter:""} onChange={this.selectFilterBlock.bind(this)} >
-                                  <option value=""  disabled="disabled" >-- Select --</option>
+                                  <option value=""   >-- Select --</option>
                                   <option value="all">All</option>
                                   {
 
@@ -1060,7 +1060,7 @@ class Beneficiary extends Component{
                               <label className="formLable">Village</label><span className="asterix">*</span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="villageErr" >
                                 <select className="custom-select form-control inputBox" ref="villageFilter" name="villageFilter" value={this.state.villageFilter?this.state.villageFilter:""} onChange={this.selectFilterVillage.bind(this)}  >
-                                  <option value="" disabled="disabled" >-- Select --</option>
+                                  <option value=""  >-- Select --</option>
                                   <option value="all">All</option>
                                   {
                                     this.state.listofVillages && this.state.listofVillages.length > 0  ? 

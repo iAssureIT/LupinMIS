@@ -345,7 +345,7 @@ class AnnualPlanDetails extends Component{
                       <label className="formLable">Year</label>
                       <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
                         <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year }  onChange={this.handleChange.bind(this)} >
-                          <option disabled="disabled" value = "">-- Select Year --</option>
+                          <option  value = "">-- Select Year --</option>
                           {
                             ( this.state.years )
                             ? 
