@@ -14,7 +14,7 @@ const ProjectMapping    = require('../models/projectMappings.js');
 const TypeOfGoal        = require('../models/typeofgoals.js');
 
 exports.activitywise_report = (req,res,next)=>{
-// router.get('/activitywise_report/:startDate/:endDate/:center_ID/:sector_ID/:projectCategoryType/:projectName/:uidstatus/:activity_ID/:subactivity_ID' ,  Reports2Controller.activitywise_report);
+	// router.get('/activitywise_report/:startDate/:endDate/:center_ID/:sector_ID/:projectCategoryType/:projectName/:uidstatus/:activity_ID/:subactivity_ID' ,  Reports2Controller.activitywise_report);
 	// console.log('activitywise_report req.params',req.params);
 	var selector = {"date": {$gte : req.params.startDate, $lte : req.params.endDate} };
 	if(req.params.center_ID !== 'all'){
@@ -384,51 +384,80 @@ exports.sectorwise_report = (req,res,next)=>{
 				var benCounts = await getBeneficiaryCount(benData)
 
 				// console.log("benCountsSector.................",benCounts);
-	            totalReach            += benCounts.reachCount ? benCounts.reachCount : 0;
-	            totalFamilyUpgradation+= benCounts.upgradedfamilyCount ? benCounts.upgradedfamilyCount : 0;
-	            totalTotal            += data[i].total       ?  data[i].total    : 0;
-	            totalLHWRF            += data[i].LHWRF       ?  data[i].LHWRF    : 0;
-	            totalNABARD           += data[i].NABARD      ?  data[i].NABARD    : 0;
-	            totalbankLoan         += data[i].bankLoan    ?  data[i].bankLoan    : 0;
-	            totaldirectCC         += data[i].directCC    ?  data[i].directCC    : 0;
-	            totalindirectCC       += data[i].indirectCC  ?  data[i].indirectCC    : 0;
-	            totalgovtscheme       += data[i].govtscheme  ?  data[i].govtscheme    : 0;
-	            totalother            += data[i].other       ?  data[i].other    : 0;
+	            // totalReach            += benCounts.reachCount ? benCounts.reachCount : 0;
+	            // totalFamilyUpgradation+= benCounts.upgradedfamilyCount ? benCounts.upgradedfamilyCount : 0;
+	            // totalTotal            += data[i].total       ?  data[i].total    : 0;
+	            // totalLHWRF            += data[i].LHWRF       ?  data[i].LHWRF    : 0;
+	            // totalNABARD           += data[i].NABARD      ?  data[i].NABARD    : 0;
+	            // totalbankLoan         += data[i].bankLoan    ?  data[i].bankLoan    : 0;
+	            // totaldirectCC         += data[i].directCC    ?  data[i].directCC    : 0;
+	            // totalindirectCC       += data[i].indirectCC  ?  data[i].indirectCC    : 0;
+	            // totalgovtscheme       += data[i].govtscheme  ?  data[i].govtscheme    : 0;
+	            // totalother            += data[i].other       ?  data[i].other    : 0;
 	            // console.log('totalTotal',totalTotal);
 	            var activitydetails =  {              
 	                "projectCategoryType"    : data[i].projectCategoryType,
 	                "projectName"            : data[i].projectName,
 	                "sectorName"             : data[i].sectorName,
-	                "total"                  : data[i].total         ? (data[i].total/100000).toFixed(2) : 0,
-	                "LHWRF"                  : data[i].LHWRF         ? (data[i].LHWRF/100000).toFixed(2) : 0,
-	                "NABARD"                 : data[i].NABARD        ? (data[i].NABARD/100000).toFixed(2) : 0,
-	                "bankLoan"               : data[i].bankLoan      ? (data[i].bankLoan/100000).toFixed(2) : 0,
-	                "directCC"               : data[i].directCC      ? (data[i].directCC/100000).toFixed(2) : 0,
-	                "indirectCC"             : data[i].indirectCC    ? (data[i].indirectCC/100000).toFixed(2) : 0,
-	                "govtscheme"             : data[i].govtscheme    ? (data[i].govtscheme/100000).toFixed(2) : 0,
-	                "other"                  : data[i].other         ? (data[i].other/100000).toFixed(2) : 0,
+	                "total"                  : data[i].total         ? (data[i].total/100000) : 0,
+	                "LHWRF"                  : data[i].LHWRF         ? (data[i].LHWRF/100000) : 0,
+	                "NABARD"                 : data[i].NABARD        ? (data[i].NABARD/100000) : 0,
+	                "bankLoan"               : data[i].bankLoan      ? (data[i].bankLoan/100000) : 0,
+	                "directCC"               : data[i].directCC      ? (data[i].directCC/100000) : 0,
+	                "indirectCC"             : data[i].indirectCC    ? (data[i].indirectCC/100000) : 0,
+	                "govtscheme"             : data[i].govtscheme    ? (data[i].govtscheme/100000) : 0,
+	                "other"                  : data[i].other         ? (data[i].other/100000) : 0,
 	                "reach"                  : benCounts.reachCount  ? benCounts.reachCount : 0,
 	            	"familyUpgradation"      : benCounts.upgradedfamilyCount ? benCounts.upgradedfamilyCount : 0,
 	            }
+
+	            totalReach            += benCounts.reachCount ? benCounts.reachCount : 0;
+	            totalFamilyUpgradation+= benCounts.upgradedfamilyCount ? benCounts.upgradedfamilyCount : 0;
+	            // totalTotal            += data[i].total       ? data[i].total    : 0;
+	            totalTotal            += activitydetails.total       ?  (activitydetails.total)    : 0;
+	            totalLHWRF            += activitydetails.LHWRF       ?  activitydetails.LHWRF    : 0;
+	            totalNABARD           += activitydetails.NABARD      ?  activitydetails.NABARD    : 0;
+	            totalbankLoan         += activitydetails.bankLoan    ?  activitydetails.bankLoan    : 0;
+	            totaldirectCC         += activitydetails.directCC    ?  activitydetails.directCC    : 0;
+	            totalindirectCC       += activitydetails.indirectCC  ?  activitydetails.indirectCC    : 0;
+	            totalgovtscheme       += activitydetails.govtscheme  ?  activitydetails.govtscheme    : 0;
+	            totalother            += activitydetails.other       ?  activitydetails.other    : 0;
 				// console.log('activitydetails',activitydetails);
-	        	activitydata.push(activitydetails);      
+	        	activitydata.push(
+	        		{      
+		                "projectCategoryType"    : activitydetails.projectCategoryType,
+		                "projectName"            : activitydetails.projectName,
+		                "sectorName"             : activitydetails.sectorName,
+		                "total"                  : (activitydetails.total).toFixed(2),
+		                "LHWRF"                  : (activitydetails.LHWRF).toFixed(2),
+		                "NABARD"                 : (activitydetails.NABARD).toFixed(2),
+		                "bankLoan"               : (activitydetails.bankLoan).toFixed(2),
+		                "directCC"               : (activitydetails.directCC).toFixed(2),
+		                "indirectCC"             : (activitydetails.indirectCC).toFixed(2),
+		                "govtscheme"             : (activitydetails.govtscheme).toFixed(2),
+		                "other"                  : (activitydetails.other).toFixed(2),
+		                "reach"                  : (activitydetails.reach),
+		                "familyUpgradation"      : (activitydetails.familyUpgradation),
+		            },      
+		        );      
 	        }
 	        if(i >= data.length && data.length > 0){
 	            activitydata.push( 
+		                
 		            {              
 		                "projectCategoryType"    : "-",
 		                "projectName"            : "-",
 		                "sectorName"             : "<b>Total</b>",
-		                "total"                  : "<b>"+(totalTotal/100000).toFixed(2)+"</b>",
-		                "LHWRF"                  : "<b>"+(totalLHWRF/100000).toFixed(2)+"</b>",
-		                "NABARD"                 : "<b>"+(totalNABARD/100000).toFixed(2)+"</b>",
-		                "bankLoan"               : "<b>"+(totalbankLoan/100000).toFixed(2)+"</b>",
-		                "directCC"               : "<b>"+(totaldirectCC/100000).toFixed(2)+"</b>",
-		                "indirectCC"             : "<b>"+(totalindirectCC/100000).toFixed(2)+"</b>",
-		                "govtscheme"             : "<b>"+(totalgovtscheme/100000).toFixed(2)+"</b>",
-		                "other"                  : "<b>"+(totalother/100000).toFixed(2)+"</b>",
-		                "reach"                  : "<b>" + totalReach + "</b>",
-		                "familyUpgradation"      : "<b>" + totalFamilyUpgradation + "</b>",
+		                "total"                  : "<b>"+ (totalTotal).toFixed(2) +"</b>",
+		                "LHWRF"                  : "<b>"+ (totalLHWRF).toFixed(2) +"</b>",
+		                "NABARD"                 : "<b>"+ (totalNABARD).toFixed(2) +"</b>",
+		                "bankLoan"               : "<b>"+ (totalbankLoan).toFixed(2) +"</b>",
+		                "directCC"               : "<b>"+ (totaldirectCC).toFixed(2) +"</b>",
+		                "indirectCC"             : "<b>"+ (totalindirectCC).toFixed(2) +"</b>",
+		                "govtscheme"             : "<b>"+ (totalgovtscheme).toFixed(2) +"</b>",
+		                "other"                  : "<b>"+ (totalother).toFixed(2) +"</b>",
+		                "reach"                  : "<b>" + (totalReach) + "</b>",
+		                "familyUpgradation"      : "<b>" + (totalFamilyUpgradation) + "</b>",
 		            },           
 		            {              
 		                "projectCategoryType"    : "-",
