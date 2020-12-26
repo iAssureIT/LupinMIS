@@ -10,3 +10,6 @@ webApp/centre/.env
 
 /webApp/centre/node_modules
 /webApp/centre/.env
+
+/api/nodemon.js
+/api/node_modules

@@ -702,7 +702,7 @@ class ActivityTypeA extends Component{
             editData.listofBeneficiaries.map((a, i)=>{
               axios.get('/api/beneficiaries/'+a.beneficiary_ID)
               .then((response)=>{
-                // console.log('response',response)
+                console.log('response',response)
                 bentableData.push({
                   _id                       : a._id,
                   beneficiary_ID            : a.beneficiary_ID,

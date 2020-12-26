@@ -119,9 +119,15 @@ class IAssureTable extends Component {
 	edit(event) {
 		event.preventDefault();
 		$("html,body").scrollTop(0);
-		var tableObjects = this.props.tableObjects;
+		var tableObjects     = this.props.tableObjects;
 		var id = event.target.id;
-		this.props.history.push(tableObjects.editUrl + "/" + id);
+		if(this.props.viewTable){
+    		var editActivityUrl  = event.target.getAttribute('data-editUrl');
+    		console.log("editActivityUrl",editActivityUrl)
+			this.props.history.push(editActivityUrl + "/" + id);
+		}else{
+			this.props.history.push(tableObjects.editUrl + "/" + id);
+		}
 	}
     delete(e){
 	  	e.preventDefault();
@@ -835,6 +841,17 @@ class IAssureTable extends Component {
 																	     	</React.Fragment>
 																			: 
 																		null}
+
+																		{/*this.props.tableObjects.editUrl ?
+																		:null*/}
+																		<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} data-editUrl = {value.typeofactivity === "Family Level Activity" ? "/a-type-activity-form" : "/b-type-activity-form" } onClick={this.edit.bind(this)}></i>
+																		&nbsp; &nbsp; 
+																		{this.props.editId && this.props.editId === value._id
+																			? 
+																				null 
+																			:
+																				<i className={"fa fa-trash redFont "+value._id} id={value._id+'-Delete'} data-toggle="modal" title="Delete" data-target={"#showDeleteModal-"+value._id }></i>
+																		}
 																	</span>
 																</td>
 																:

@@ -191,6 +191,7 @@ class ViewActivity extends Component{
             indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
             other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
             remark                     : a.remark,
+            typeofactivity             : a.typeofactivity,
           }
         })
         var newDownloadData = response.data.data.map((a, i)=>{
