@@ -1136,7 +1136,8 @@ class BeneficiaryCoverageReport extends Component{
                                                           <td rowSpan={sectorLength} className="textAlignCenter"> 
                                                             <div className="colSr">{i+1}</div>
                                                           </td>
-                                                          <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>
+                                                          <td rowSpan={sectorLength} className=""><div className=" col1">{(value._id.surnameOfBeneficiary ? value._id.surnameOfBeneficiary : "") + " " +( value._id.firstNameOfBeneficiary ?  value._id.firstNameOfBeneficiary : " ") + " " + (value._id.middleNameOfBeneficiary ? value._id.middleNameOfBeneficiary : "")}</div>
+                                                          {/* <td rowSpan={sectorLength} className=""><div className=" col1">{value._id.name_beneficiary}</div>*/}
                                                           </td>
                                                           <td rowSpan={sectorLength} className=""><div className=" col2">{value._id.beneficiaryID}</div>
                                                           </td>
