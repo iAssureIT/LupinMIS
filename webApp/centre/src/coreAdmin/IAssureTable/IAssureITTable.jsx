@@ -893,10 +893,13 @@ class IAssureTable extends Component {
 																	     	</React.Fragment>
 																			: 
 																		null}
-																		{this.props.tableObjects.editUrl ?
-																		<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null}&nbsp; &nbsp; 
-																	{/*	{this.props.editId ? <i className="fa fa-pencil" title="Edit" id={value._id} onClick={this.edit.bind(this)}></i> : null }&nbsp; &nbsp; */}
-																		{/*console.log('value._id',value._id)*/}
+															{/*console.log('value',value)*/}
+																		
+																		<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} data-editurl = {value.typeofactivity === "Family Level Activity" ? "/a-type-activity-form" : "/b-type-activity-form" } onClick={this.edit.bind(this)}></i>
+																		&nbsp; &nbsp; 
+																		{/*this.props.tableObjects.editUrl ?
+																		<i className="fa fa-pencil" title="Edit" id={value._id.split("-").join("/")} onClick={this.edit.bind(this)}></i>:null*/}&nbsp; &nbsp; 
+																	
 																		{this.props.editId && this.props.editId === value._id
 																			? 
 																				null 

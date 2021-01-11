@@ -694,7 +694,7 @@ class ActivityTypeA extends Component{
         method: 'get',
         url: '/api/activityReport/'+id,
       }).then((response)=> {
-        // console.log("editData=================",response);
+        console.log("editData=================",response);
         var editData = response.data[0];
         if(editData){
           var bentableData = []
@@ -781,8 +781,8 @@ class ActivityTypeA extends Component{
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
-            this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getAvailableBlocks(this.state.center_ID, this.state.district);
+            this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getBeneficiaries(this.state.selectedBeneficiaries);
           });
         }
@@ -853,6 +853,7 @@ class ActivityTypeA extends Component{
                 indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
                 other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
                 remark                     : a.remark,
+                typeofactivity             : a.typeofactivity,
               }
             })
             if(inputGetData.appendArray){

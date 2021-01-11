@@ -717,9 +717,8 @@ class ActivityTypeB extends Component{
             this.getAvailableCenter(this.state.center_ID);
             this.getAvailableActivity(this.state.sectorId);
             this.getAvailableSubActivity(this.state.sectorId, this.state.activityId)
-            this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getAvailableBlocks(this.state.center_ID, this.state.district);
-            this.getAvailableCenter(this.state.center_ID);
+            this.getAvailableVillages(this.state.center_ID, this.state.district, this.state.block);
             this.getBeneficiaries(this.state.selectedBeneficiaries);
           });
         }
@@ -792,6 +791,7 @@ class ActivityTypeB extends Component{
             indirectCC                 : this.addCommas(a.indirectCC),
             other                      : this.addCommas(a.other),
             remark                     : a.remark,
+            typeofactivity             : a.typeofactivity,
           }
         })
      
