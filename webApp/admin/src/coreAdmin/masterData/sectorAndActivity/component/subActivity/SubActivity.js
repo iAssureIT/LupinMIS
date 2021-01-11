@@ -22,7 +22,8 @@ class SubActivity extends Component{
       "unit"                :"-- Select --",
       "familyUpgradation"   :"No",
       "user_ID"             :"",
-      "unitList"           :"",
+      "unitList"            :"",
+      "type"                : true,      
       "shown"               : true,
       fields                : {},
       errors                : {},
@@ -148,6 +149,7 @@ class SubActivity extends Component{
       "subActivityName"       :"",      
       "unit"                  :"-- Select --",
       "availableActivity"     :[],
+      "type"                   : true,
     });
     axios.patch('/api/sectors/subactivity',subActivityValues)
       .then((response)=>{
@@ -176,6 +178,7 @@ class SubActivity extends Component{
       "unit"                 : this.state.unit,
       "familyUpgradation"    : this.state.familyUpgradation,
     };
+    console.log(subActivityValues)
     axios.patch('/api/sectors/subactivity/update',subActivityValues)
       .then((response)=>{
         this.setState({
@@ -184,7 +187,8 @@ class SubActivity extends Component{
           "subActivityName"       :"",      
           "unit"                  :"-- Select --",
           "availableActivity"     :[],
-          editId : ''
+          "type"                  : true,
+          "editId"                : ''
         },()=>{
          this.props.history.push('/sector-and-activity');
           this.getData(this.state.startRange, this.state.limitRange);
@@ -308,6 +312,10 @@ class SubActivity extends Component{
           "subActivityName"       : subActivityName,
           "unit"                  : unit,
           "familyUpgradation"     : familyUpgradation,
+          "type"                  : familyUpgradation==="No" ? true : false,
+        },()=>{
+          console.log("this.state",this.state)
+
         });
       }
         let fields = this.state.fields;
@@ -390,6 +398,25 @@ class SubActivity extends Component{
       })
     }
   }
+
+  handleToggle(event) {  
+    event.preventDefault();
+    if (this.state.type===true){
+      this.setState({
+        type: false,
+        familyUpgradation  :"Yes",
+      },()=>{
+        console.log('this.state.familyUpgradation',this.state.familyUpgradation,this.state.type)
+      })
+    }else{
+      this.setState({
+        type: true,
+        familyUpgradation : "No",
+      },()=>{
+        console.log('this.state.familyUpgradation',this.state.familyUpgradation,this.state.type)
+      })
+    }  
+  }
   // componentWillUnmount(){
   //   this.setState({
   //     "sector"              :"",
@@ -471,7 +498,7 @@ class SubActivity extends Component{
                   <div className=" col-lg-12 col-sm-12 col-xs-12 formLable valid_box ">
                  <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div className="form-group valid_box" >
-                      <label className="pghdr">Unit<span className="asterix">*</span></label>
+                      <label className="pghdr formLable">Unit<span className="asterix">*</span></label>
                         <div className="input-group inputBox-main nameParts" id="unitError">
                           <select className="custom-select form-control inputBox" ref="unit" name="unit" value={this.state.unit} onChange={this.handleChange.bind(this)} >
                             <option   value = "" >-- Select --</option>
@@ -493,16 +520,40 @@ class SubActivity extends Component{
                     </div>
 
                 
-                    <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
-                      <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
-                       <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
-                          <input id="d" type="checkbox"/>
-                          <label className="formLable" htmlFor="d">
-                          <div className="can-toggle__switch" data-checked="Yes"  data-unchecked="No" ></div>
-                            <div className="can-toggle__label-text"></div>
-                          </label>
-                        </div>
-                    </div>
+                    {/*<div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
+                                          <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
+                                           <div className="can-toggle genderbtn demo-rebrand-2 " onChange={this.getToggleValue.bind(this)}>
+                                              <input id="d" type="checkbox"/>
+                                              <label className="formLable" htmlFor="d">
+                                              <div className="can-toggle__switch" data-checked="Yes"  data-unchecked="No" ></div>
+                                                <div className="can-toggle__label-text"></div>
+                                              </label>
+                                            </div>
+                                        </div>*/}
+
+                            <div className=" col-lg-4 col-md-4 col-sm-6 col-xs-12 " >
+                              <div className="" id="familyUpgradation" >
+                                <label className="formLable">Family Upgradation</label><span className="asterix">*</span>
+                                {this.state.type===true ?
+
+                                 <div className=" switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.familyUpgradation} id="week"  checked />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">No</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.familyUpgradation} id="month"  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Yes</label>
+                                    <span className="switch-selection"></span>
+                                  </div>
+                                  :
+                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
+                                    <input type="radio" className="switch-input" name="view" value={this.state.familyUpgradation} id="week"   />
+                                    <label htmlFor="week" className="formLable switch-label switch-label-off">No</label>
+                                    <input type="radio" className="switch-input" name="view" value={this.state.familyUpgradation} id="month" checked  />
+                                    <label htmlFor="month" className="formLable switch-label switch-label-on">Yes</label>
+                                    <span className="switch-selection" ></span>
+                                  </div>
+                                }
+                              </div>
+                            </div>
                   </div> 
                 </div><br/>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
