@@ -754,7 +754,8 @@ exports.delete_file = (req,res,next)=>{
                                             // console.log('nextActivityDate========================',nextActivityDate.length);
                                             if(nextActivityDate.length>0){
                                                 BeneficiaryFamilies.updateOne(
-                                                    {_id : familyUpgradedinActivity[k]._id},
+                                                    // {_id : familyUpgradedinActivity[k]._id},
+                                                    {_id : familyId},
                                                     {$set : {
                                                             upgradedInActivity : nextActivityDate[0]._id 
                                                         }
