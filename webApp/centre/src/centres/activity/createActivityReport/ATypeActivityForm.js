@@ -1543,6 +1543,25 @@ class ActivityTypeA extends Component{
     })
   }
  
+  handleYearChange(event){
+    event.preventDefault();
+    this.setState({      
+      [event.target.name]: event.target.value
+    },()=>{        
+      var inputGetData = {
+        "sector_ID"      :  "all",
+        "activity_ID"    :  "all",
+        "subactivity_ID" :  "all",
+        "typeofactivity" : "Family Level Activity",
+        "startRange"     :  this.state.startRange,
+        "limitRange"     :  this.state.limitRange,
+        "center_ID"      :  this.state.center_ID,
+        "year"           :  this.state.year,
+      }
+      this.getData(inputGetData);
+    });
+
+  }
   render() {
     var hidden = {
       display: this.state.shown ? "none" : "block"
@@ -1963,7 +1982,7 @@ class ActivityTypeA extends Component{
                             <div className="col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                               <label className="formLable">Year</label><span className="asterix"></span>
                               <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="year" >
-                                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleChange.bind(this)} >
+                                <select className="custom-select form-control inputBox" ref="year" name="year" value={this.state.year}  onChange={this.handleYearChange.bind(this)} >
                                  <option className="hidden" >-- Select Year --</option>
                                  {
                                   this.state.years 
