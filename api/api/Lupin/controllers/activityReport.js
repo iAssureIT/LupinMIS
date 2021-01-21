@@ -135,16 +135,108 @@ function updateBeneficiary(beneficiary_ID, activity_id){
         });
     });
 }
+function upgradeFamilyBeforeUpdating(beneficiaryObject, activityReport_ID){
+    // console.log('beneficiaryObject',beneficiaryObject);
+    return new Promise((resolve,reject)=>{
+        BeneficiaryFamilies.findOne({ _id : beneficiaryObject.family_ID})
+        .exec()
+        .then(data =>{
+            if(data.isUpgraded === "Yes"){
+                BeneficiaryFamilies.findOne(
+                    { _id:beneficiaryObject.family_ID},  
+                )
+                .then(familydata =>{
+                    // console.log("activityReport_ID === familydata.upgradedInActivity ",activityReport_ID === familydata.upgradedInActivity ,activityReport_ID ,"===", familydata.upgradedInActivity )
+                    if(activityReport_ID === familydata.upgradedInActivity ){
+                        resolve(true);
+                    }else{
+                        resolve(false);
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+            }else{
+                BeneficiaryFamilies.updateOne(
+                    { _id:beneficiaryObject.family_ID},  
+                    {
+                        $set:{
+                            isUpgraded        : beneficiaryObject.isUpgraded,
+                        }
+                    }
+                )
+                .then(familydata =>{
+                    // console.log('familydata',familydata._id,familydata)
+                    resolve(beneficiaryObject.isUpgraded);
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+            }
+        })
+        .catch(err =>{
+            reject(err);
+        });                 
+    });
+}
+
+function upgradeBeneficiaryBeforeUpdating(beneficiaryObject, activityReport_ID){
+    // console.log('beneficiaryObject',beneficiaryObject);
+    return new Promise((resolve,reject)=>{
+        ListOfbeneficiary.findOne({ _id : beneficiaryObject.beneficiary_ID})
+        .exec()
+        .then(data =>{
+            if(data.isUpgraded == "Yes"){
+                ListOfbeneficiary.findOne(
+                    { _id : beneficiaryObject.beneficiary_ID},  
+                )
+                .then(bendata =>{
+                    // console.log("activityReport_ID === bendata.upgradedInActivity ",activityReport_ID === bendata.upgradedInActivity ,activityReport_ID ,"===", bendata.upgradedInActivity )
+                    if(activityReport_ID === bendata.upgradedInActivity ){
+                        resolve(true);
+                    }else{
+                        resolve(false);
+                    }
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+            }else{
+                ListOfbeneficiary.updateOne(
+                    { _id : beneficiaryObject.beneficiary_ID},  
+                    {
+                        $set:{
+                            isUpgraded        : beneficiaryObject.isUpgraded,
+                        }
+                    }
+                )
+                .exec()
+                .then(bendata=>{
+                    // console.log('bendata',bendata);
+                    resolve(beneficiaryObject.isUpgraded);
+                })
+                .catch(err =>{
+                    console.log(err);
+                });
+            }
+        })
+        .catch(err =>{
+            reject(err);
+        });                 
+    });
+}
+
 exports.update_activityReport = (req,res,next)=>{
     getData();
     async function getData(){
         var beneficiaries = req.body.listofBeneficiaries;
         for (var i = 0; i < beneficiaries.length; i++) {
-            var upgradefamily      = await upgradeFamily(beneficiaries[i]);
-            var upgradebeneficiary = await upgradeBeneficiary(beneficiaries[i]);
-            // console.log('upgradefamily',upgradefamily);
+            var upgradefamily      = await upgradeFamilyBeforeUpdating(beneficiaries[i], req.body.activityReport_ID);
+            var upgradebeneficiary = await upgradeBeneficiaryBeforeUpdating(beneficiaries[i], req.body.activityReport_ID);
+            console.log('upgradefamily',upgradefamily);
             // console.log('upgradebeneficiary',upgradebeneficiary);
-            beneficiaries[i].isUpgraded = upgradefamily == false ? "No" : upgradefamily;
+            beneficiaries[i].isUpgraded = upgradefamily === true ? "Yes" : "No";
+            console.log('beneficiaries[i].isUpgraded',beneficiaries[i].isUpgraded)
         }
         ActivityReport.updateOne(
                 { _id:req.body.activityReport_ID},  
@@ -191,15 +283,35 @@ exports.update_activityReport = (req,res,next)=>{
             )
             .exec()
             .then(data=>{
-                if(data.nModified == 1){
+
+                getActivityData();
+                async function getActivityData(){
+                    var activity_id = data._id
+                    // console.log('activity_id',activity_id);
+                    var beneficiaries = req.body.listofBeneficiaries;
+                    for (var i = 0; i < beneficiaries.length; i++) {                            
+                        // console.log('upgradefamily1',upgradefamily);
+                        // console.log('upgradebeneficiary1',upgradebeneficiary);
+                        if(upgradefamily === true){
+                            var updatefamily       =  await updateFamilywithActivityID(beneficiaries[i].family_ID,activity_id);
+                        }
+                        if(upgradebeneficiary === true){
+                            var updatebeneficiary  = await updateBeneficiary(beneficiaries[i].beneficiary_ID,activity_id);
+                        }
+                        // console.log('updatefamily',updatefamily);
+                        // console.log('updatebeneficiary',updatebeneficiary);
+                    }
+                    if(data.nModified == 1){
+                            res.status(200).json({
+                                "message": "Activity Report Details updated Successfully."
+                            });
+                    }else{
                         res.status(200).json({
-                            "message": "Activity Report Details updated Successfully."
+                            "message": "Activity Report Details not modified"
                         });
-                }else{
-                    res.status(200).json({
-                        "message": "Activity Report Details not modified"
-                    });
+                    }
                 }
+            
             })
             .catch(err =>{
                 console.log(err);
@@ -209,13 +321,14 @@ exports.update_activityReport = (req,res,next)=>{
             });
     }
 };
+
 function upgradeFamily(beneficiaryObject){
     // console.log('beneficiaryObject',beneficiaryObject);
     return new Promise((resolve,reject)=>{
         BeneficiaryFamilies.findOne({ _id : beneficiaryObject.family_ID})
         .exec()
         .then(data =>{
-            if(data.isUpgraded == "Yes"){
+            if(data.isUpgraded === "Yes"){
                 // console.log("data.isUpgraded", data.isUpgraded);
                 resolve(false);
             }else{

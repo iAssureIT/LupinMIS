@@ -59,7 +59,7 @@ class ListOfBeneficiaries extends Component{
     }
   }
   listofBeneficiaries(selectedBeneficiaries){
-    // console.log(selectedBeneficiaries)
+    console.log(selectedBeneficiaries)
     var tableData = selectedBeneficiaries.map((a, i)=>{
       return {
         _id                       : a._id,
@@ -79,7 +79,7 @@ class ListOfBeneficiaries extends Component{
       tableData : tableData,
       // selectedBeneficiaries : selectedBeneficiaries.length
     },()=>{
-      // console.log("tableData",this.state.tableData)
+      console.log("tableData",this.state.tableData)
     })
     this.props.getBeneficiaries(selectedBeneficiaries);
   }

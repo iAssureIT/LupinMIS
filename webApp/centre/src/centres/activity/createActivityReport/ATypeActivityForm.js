@@ -249,17 +249,17 @@ class ActivityTypeA extends Component{
       this.setState({      
         [event.target.name]: event.target.value
       },()=>{        
-        var inputGetData = {
-          "sector_ID"      :  "all",
-          "activity_ID"    :  "all",
-          "subactivity_ID" :  "all",
-          "typeofactivity" : "Family Level Activity",
-          "startRange"     :  this.state.startRange,
-          "limitRange"     :  this.state.limitRange,
-          "center_ID"      :  this.state.center_ID,
-          "year"           :  this.state.year,
-        }
-        this.getData(inputGetData);
+        // var inputGetData = {
+        //   "sector_ID"      :  "all",
+        //   "activity_ID"    :  "all",
+        //   "subactivity_ID" :  "all",
+        //   "typeofactivity" : "Family Level Activity",
+        //   "startRange"     :  this.state.startRange,
+        //   "limitRange"     :  this.state.limitRange,
+        //   "center_ID"      :  this.state.center_ID,
+        //   "year"           :  this.state.year,
+        // }
+        // this.getData(inputGetData);
       });
       if(event.currentTarget.name==='typeofactivity'){
         let dataID = $(event.currentTarget).find('option:selected').attr('data-id')
@@ -366,6 +366,7 @@ class ActivityTypeA extends Component{
   }
 
   getBeneficiaries(selectedBeneficiaries){
+    console.log("selectedBeneficiaries*******************",selectedBeneficiaries)
     this.setState({
       selectedBeneficiaries : selectedBeneficiaries
     })
@@ -526,6 +527,7 @@ class ActivityTypeA extends Component{
       total      : this.state.total,
     }
     beneficiariesData = this.state.selectedBeneficiaries.map(element=>{
+      console.log("element",element)
       element.originalUpgrade         = element.originalUpgrade;
       element.qtyPerBen               = this.refs.qtyPerBen.value;
       element.unitCost                = this.refs.unitCost.value;
@@ -573,6 +575,7 @@ class ActivityTypeA extends Component{
         "projectCategoryType"   : this.state.projectCategoryType,
         "type"                  : this.state.projectCategoryType=== "LHWRF Grant" ? true : false,
       };
+      console.log("activityValues",activityValues)
       if (parseFloat(this.state.total) === parseFloat(this.state.totalCostPerBen)) {
         if(beneficiariesData.length>0)  {
           axios.patch('/api/activityReport',activityValues)
@@ -698,7 +701,7 @@ class ActivityTypeA extends Component{
         var editData = response.data[0];
         if(editData){
           var bentableData = []
-          if(editData.listofBeneficiaries&&editData.listofBeneficiaries.length>0){
+          if(editData.listofBeneficiaries && editData.listofBeneficiaries.length>0){
             editData.listofBeneficiaries.map((a, i)=>{
               axios.get('/api/beneficiaries/'+a.beneficiary_ID)
               .then((response)=>{
@@ -731,6 +734,7 @@ class ActivityTypeA extends Component{
                     selectedBeneficiaries : bentableData
                   },()=>{
                     this.getBeneficiaries(this.state.selectedBeneficiaries);
+                    console.log(this.state.selectedBeneficiaries);
                   })
                 }
               })
@@ -828,6 +832,7 @@ class ActivityTypeA extends Component{
       $(".fullpageloader").show();
       axios.post('/api/activityReport/filterlist',inputGetData)
           .then((response)=>{
+            console.log("response==============",response)
             $(".fullpageloader").hide();
             var newTableData = response.data.data.map((a, i)=>{
               return {
@@ -835,7 +840,6 @@ class ActivityTypeA extends Component{
                 projectCategoryType        : a.projectCategoryType,
                 projectName                : a.projectName==='all'?'-':a.projectName,
                 date                       : moment(a.date).format('DD-MM-YYYY'),
-                // date                       : a.date,
                 place                      : a.place,
                 sectorName                 : a.sectorName,
                 activity                   : a.activity,
@@ -1209,7 +1213,7 @@ class ActivityTypeA extends Component{
         method: 'get',
         url: '/api/centers/'+center_ID,
         }).then((response)=> {
-          console.log("response",response)
+          // console.log("response",response)
           if(response.data){
             function removeDuplicates(data, param){
               return data.filter(function(item, pos, array){

@@ -44,6 +44,7 @@ class IAssureTable extends Component {
       // this.paginationFunction();
 	}
 	componentWillReceiveProps(nextProps) {
+		console.log('nextProps',nextProps)
         this.setState({
             tableData	    : nextProps.tableData,
             dataCount 		: nextProps.dataCount,
