@@ -16,6 +16,7 @@ class Family extends Component{
   constructor(props){
     super(props);
     this.state = {
+      "downloadFlag"         : false,
       "familyID"             :"",
       "nameOfFamilyHead"     :"",
       "uID"                  :"",
@@ -52,6 +53,8 @@ class Family extends Component{
         paginationApply       : false,
         searchApply           : true,
         downloadApply         : true,
+        downloadUrl           : "/api/families/get/all",
+        downloadMethod        : "post"
       },
       "tableHeading"          : {
         familyID              : "Family ID",
@@ -77,14 +80,14 @@ class Family extends Component{
         surnameOfFH           : "Surname",
         firstNameOfFH         : "FirstName",
         middleNameOfFH        : "MiddleName",
+        contactNumber         : "Contact Number",
+        uidNumber             : "UID Number",
+        caste                 : "Caste",
+        incomeCategory        : "Income Category",        
+        landCategory          : "Land holding Category",        
+        specialCategory       : "Special Category",        
         FHGender              : "Gender",
         FHYearOfBirth         : "Birth Year",
-        uidNumber             : "UID Number",
-        contactNumber         : "Contact Number",
-        caste                 : "Caste",
-        landCategory          : "Land holding Category",        
-        incomeCategory        : "Income Category",        
-        specialCategory       : "Special Category",        
         dist                  : "District",
         block                 : "Block",
         village               : "Village",
@@ -662,12 +665,12 @@ class Family extends Component{
         if(inputGetData.appendArray){
           this.setState({
             tableData    : this.state.tableData.concat(newTableData),
-            downloadData : this.state.downloadData.concat(newTableData)
+            // downloadData : this.state.downloadData.concat(newTableData)
           })              
         }else{
           this.setState({
             tableData    : newTableData,
-            downloadData : newTableData
+            // downloadData : newTableData
           })                            
         }
       })    
@@ -676,7 +679,7 @@ class Family extends Component{
       }); 
     }
   }
-  getDownloadData(){ 
+ /* getDownloadData(){ 
     var inputGetAllData = {
       "center_ID"       : this.state.center_ID,
       "caste"           : "all",
@@ -721,7 +724,7 @@ class Family extends Component{
       .catch(function(error){      
         console.log("error"+error);
       }); 
-  }
+  }*/
   camelCase(str){
     return str
     .toLowerCase()
@@ -1520,7 +1523,6 @@ class Family extends Component{
                           tableName            = "Family"
                           id                   = "Family"
                           downloadtableHeading ={this.state.downloadtableHeading}
-                          downloadData         ={this.state.downloadData}
                           tableHeading         ={this.state.tableHeading}
                           twoLevelHeader       ={this.state.twoLevelHeader} 
                           dataCount            ={this.state.dataCount}
@@ -1528,7 +1530,8 @@ class Family extends Component{
                           getData              ={this.getData.bind(this)}
                           tableObjects         ={this.state.tableObjects} 
                           filterData           ={this.state.propsdata}
-                          getDownloadData      ={this.getDownloadData.bind(this)}
+                          // downloadData         ={this.state.downloadData}
+                          // getDownloadData      ={this.getDownloadData.bind(this)}
                           getSearchText        ={this.getSearchText.bind(this)}
                         /> 
                       </div>

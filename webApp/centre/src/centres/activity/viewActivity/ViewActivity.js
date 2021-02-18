@@ -72,7 +72,7 @@ class ViewActivity extends Component{
         unitCost                   : "Unit Cost",
         qtyPerBen                  : "Quantity",
         totalCostPerBen            : "Total Cost",
-        numofBeneficiaries         : "Beneficiary",
+        numofBeneficiaries          : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
         bankLoan                   : "Bank",
@@ -99,7 +99,7 @@ class ViewActivity extends Component{
         unitCost                   : "Unit Cost",
         qtyPerBen                  : "Quantity",
         totalCostPerBen            : "Total Cost",
-        numofBeneficiaries         : "Beneficiary",
+        noOfBeneficiaries          : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
         bankLoan                   : "Bank",
@@ -117,6 +117,8 @@ class ViewActivity extends Component{
         paginationApply            : false,
         paginationapply            : true,
         searchApply                : false,
+        downloadUrl                : "/api/activityReport/filterlist",
+        downloadMethod             : "post"
         // editUrl                    : '/activity/'
       },
       "selectedBeneficiaries"      : [],
@@ -156,74 +158,44 @@ class ViewActivity extends Component{
   }
   getData(inputGetData){ 
     this.setState({
-      propsdata : inputGetData
+      propsdata          : inputGetData,
+      downloadGetAllData : inputGetData,
     })
-
     if(inputGetData.year){
       // console.log("getData inputGetData = ",inputGetData);
       $(".fullpageloader").show();
       // axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/'+sector_ID+'/'+activity_ID+'/'+subactivity_ID+'/'+typeofactivity)
       axios.post('/api/activityReport/filterlist',inputGetData)
       .then((response)=>{
-        // console.log("response",response)
         $(".fullpageloader").hide();
-        var newTableData = response.data.data.map((a, i)=>{
+        var newTableData = response.data.map((a, i)=>{
+        // console.log("a",a)
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
             projectName                : a.projectName==='all'?'-':a.projectName,
-            date                       : moment(a.date).format('DD-MM-YYYY'),
-            // date                       : a.date,
+            date                       : a.date,
             place                      : a.place,
             sectorName                 : a.sectorName,
             activity                   : a.activity,
             subactivityName            : a.subactivityName,
             unit                       : a.unit,
-            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : this.addCommas(a.unitCost),
+            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : this.addCommas(a.quantity),
+            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : this.addCommas(a.totalCost),
             numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : this.addCommas(a.LHWRF),
+            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : this.addCommas(a.NABARD),
+            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : this.addCommas(a.bankLoan),
+            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : this.addCommas(a.govtscheme),
+            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : this.addCommas(a.directCC),
+            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : this.addCommas(a.indirectCC),
+            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : this.addCommas(a.other),
             remark                     : a.remark,
             typeofactivity             : a.typeofactivity,
           }
         })
-        var newDownloadData = response.data.data.map((a, i)=>{
-          return {
-            _id                        : a._id,
-            projectCategoryType        : a.projectCategoryType,
-            projectName                : a.projectName==='all'?'-':a.projectName,
-            date                       : moment(a.date).format('DD-MM-YYYY'),
-            district                   : a.district,
-            block                      : a.block,
-            village                    : a.village,
-            location                   : a.location,
-            sectorName                 : a.sectorName,
-            activityName               : a.activityName,
-            typeofactivity             : a.typeofactivity,
-            subactivityName            : a.subactivityName,
-            unit                       : a.unit,
-            unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-            qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-            totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-            numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-            LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-            NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-            bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-            govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-            directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-            indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-            other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-            remark                     : a.remark,
-          }
-        })
-
+        // console.log("newTableData",newTableData)
         if(inputGetData.appendArray){
           this.setState({
             tableData    : this.state.tableData.concat(newTableData),
@@ -232,7 +204,6 @@ class ViewActivity extends Component{
         }else{
           this.setState({
             tableData    : newTableData,
-            // downloadData : newDownloadData
           })                            
         }
       })
@@ -254,62 +225,62 @@ class ViewActivity extends Component{
     }
   }
 
-  getDownloadData(year){ 
-    if(year){
-      var inputGetAllData = {
-        "sector_ID"      : "all",
-        "activity_ID"    : "all",
-        "subactivity_ID" : "all",
-        "typeofactivity" : "all",
-        "startRange"     : "all",
-        "limitRange"     : "all",
-        "year"           : year,
-        "center_ID"      : this.state.center_ID,
-      }
-      if(inputGetAllData){
-        axios.post('/api/activityReport/filterlist',inputGetAllData)
-            .then((response)=>{
-              // console.log('response',response)
-              var newDownloadData = response.data.data.map((a, i)=>{
-                return {
-                  _id                        : a._id,
-                  projectCategoryType        : a.projectCategoryType,
-                  projectName                : a.projectName==='all'?'-':a.projectName,
-                  date                       : moment(a.date).format('DD-MM-YYYY'),
-                  district                   : a.district,
-                  block                      : a.block,
-                  village                    : a.village,
-                  location                   : a.location,
-                  sectorName                 : a.sectorName,
-                  activityName               : a.activityName,
-                  typeofactivity             : a.typeofactivity,
-                  subactivityName            : a.subactivityName,
-                  unit                       : a.unit,
-                  unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                  qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                  totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                  numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                  LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                  NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                  bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                  govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                  directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                  indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                  other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-                  remark                     : a.remark,
-                }
-              })
+  // getDownloadData(year){ 
+  //   if(year){
+  //     var inputGetAllData = {
+  //       "sector_ID"      : "all",
+  //       "activity_ID"    : "all",
+  //       "subactivity_ID" : "all",
+  //       "typeofactivity" : "all",
+  //       "startRange"     : "all",
+  //       "limitRange"     : "all",
+  //       "year"           : year,
+  //       "center_ID"      : this.state.center_ID,
+  //     }
+  //     if(inputGetAllData){
+  //       axios.post('/api/activityReport/filterlist',inputGetAllData)
+  //           .then((response)=>{
+  //             // console.log('response',response)
+  //             var newDownloadData = response.data.map((a, i)=>{
+  //               return {
+  //                 _id                        : a._id,
+  //                 projectCategoryType        : a.projectCategoryType,
+  //                 projectName                : a.projectName==='all'?'-':a.projectName,
+  //                 date                       : moment(a.date).format('DD-MM-YYYY'),
+  //                 district                   : a.district,
+  //                 block                      : a.block,
+  //                 village                    : a.village,
+  //                 location                   : a.location,
+  //                 sectorName                 : a.sectorName,
+  //                 activityName               : a.activityName,
+  //                 typeofactivity             : a.typeofactivity,
+  //                 subactivityName            : a.subactivityName,
+  //                 unit                       : a.unit,
+  //                 unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+  //                 qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+  //                 totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+  //                 numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+  //                 LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+  //                 NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+  //                 bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+  //                 govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+  //                 directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+  //                 indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+  //                 other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+  //                 remark                     : a.remark,
+  //               }
+  //             })
 
-              this.setState({
-                downloadData : newDownloadData
-              })                            
-            })
-            .catch(function(error){      
-              console.log("error = ",error); 
-            });
-      }
-    }
-  }
+  //             this.setState({
+  //               downloadData : newDownloadData
+  //             })                            
+  //           })
+  //           .catch(function(error){      
+  //             console.log("error = ",error); 
+  //           });
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
     axios.defaults.headers.common['Authorization'] = 'Bearer '+ localStorage.getItem("token");
@@ -551,7 +522,6 @@ class ViewActivity extends Component{
             "year"           :  this.state.year,
           }
           this.getData(inputGetData);
-          this.getDownloadData(this.state.year);
         }
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
@@ -704,7 +674,8 @@ class ViewActivity extends Component{
                       id                   = "activityReport"
                       tableClass           = "activityReport"
                       downloadtableHeading ={this.state.downloadtableHeading}
-                      downloadData         ={this.state.downloadData}
+                      downloadGetAllData   ={this.state.downloadGetAllData}
+                      // downloadData         ={this.state.downloadData}
                       tableHeading         ={this.state.tableHeading}
                       twoLevelHeader       ={this.state.twoLevelHeader} 
                       dataCount            ={this.state.dataCount}
@@ -714,7 +685,7 @@ class ViewActivity extends Component{
                       filterData           ={this.state.propsdata}
                       viewTable            = {true}
                       viewLink             = "activityReportView"
-                      getDownloadData      ={this.getDownloadData.bind(this)}
+                      // getDownloadData      ={this.getDownloadData.bind(this)}
                     /> 
                   
                   </div> 

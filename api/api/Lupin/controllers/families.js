@@ -296,6 +296,53 @@ exports.list_beneficiaryFamilies = (req,res,next)=>{
             });
     }
 };
+exports.getAllFamilies = (req,res,next)=>{
+    var query = "1";
+    if(req.body.center_ID === 'all'){
+        query = {};
+    }else{
+        query = { "center_ID" : req.body.center_ID};
+    }
+    if(query != "1"){   
+        BeneficiaryFamilies.find(query)
+            .sort({"familyID":1})
+            .exec()
+            .then(data=>{
+                console.log("getAllFamilies",data.length);
+                var allData = data.map((x, i)=>{
+                    return {
+                        "_id"                   : x._id,
+                        "familyID"              : x.familyID,
+                        "nameOfFH"              : x.surnameOfFH+" "+x.firstNameOfFH+" "+x.middleNameOfFH,
+                        "surnameOfFH"           : x.surnameOfFH,
+                        "firstNameOfFH"         : x.firstNameOfFH,
+                        "middleNameOfFH"        : x.middleNameOfFH,
+                        "familyHead"            : x.familyHead,
+                        "contactNumber"         : x.contactNumber,
+                        "uidNumber"             : x.uidNumber,
+                        "caste"                 : x.caste,
+                        "incomeCategory"        : x.incomeCategory,
+                        "landCategory"          : x.landCategory,
+                        "specialCategory"       : x.specialCategory,
+                        "FHGender"              : x.FHGender,
+                        "FHYearOfBirth"         : x.FHYearOfBirth,
+                        "center"                : x.center,
+                        "state"                 : x.state,
+                        "dist"                  : x.dist,
+                        "block"                 : x.block,
+                        "village"               : x.village
+                    }
+                })
+                res.status(200).json(allData);
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    }
+};
 exports.list_beneficiaryFamilies_with_limits = (req,res,next)=>{
     var query = "1";
     if(req.params.center_ID === 'all'){
@@ -1220,7 +1267,7 @@ exports.family_search = (req,res,next)=>{
     }
 };
 
-exports.list_beneficiary_centerwise = (req,res,next) =>{
+exports.list_family_centerwise = (req,res,next) =>{
     var selector = {};
     selector["$and"] = [];
     if(req.body.center_ID != "all"){
@@ -1287,7 +1334,7 @@ exports.list_beneficiary_centerwise = (req,res,next) =>{
             .sort({"familyID":1})
             .exec()
             .then(data=>{
-                // console.log("family",data);
+                console.log("family",data.length);
                 var allData = data.map((x, i)=>{
                     return {
                         "_id"                   : x._id,

@@ -21,7 +21,8 @@ class IAssureTable extends Component {
 			"totalDataCount" 	    	: props && props.dataCount ? props.dataCount : 0,
 		    "tableData" 				: props && props.tableData ? props.tableData : [],
 		    "filterData" 				: props && props.filterData ? props.filterData : "",
-		    "downloadData" 				: props && props.downloadData && props.downloadData !== undefined ? props.downloadData : [],
+		    // "downloadData" 				: props && props.downloadData && props.downloadData !== undefined ? props.downloadData : [],
+		    "downloadData" 				:  [],
 		    "tableName" 				: props && props.tableName ? props.tableName : [],
 		    "tableHeading"				: props && props.tableHeading ? props.tableHeading : {},
 		    "twoLevelHeader" 			: props && props.twoLevelHeader ? props.twoLevelHeader : {},
@@ -40,10 +41,12 @@ class IAssureTable extends Component {
 		    "normalData" 				: true,
 		    "printhideArray"			: [],
 		    "prevData"      			: [],
+            "downloadFlag"              : false
 		}
 		
 		this.delete = this.delete.bind(this);
 		this.printTable = this.printTable.bind(this);
+		// this.getDwldData = this.getDwldData.bind(this);
 
 		var tableHeading = Object.keys(props.tableHeading);
 		var index = 0;
@@ -601,10 +604,50 @@ class IAssureTable extends Component {
 	    WindowObject.print();
 	    WindowObject.close();
     }
-    getDwldData(){
+    // getDwldData(){
+	   //  // this.props.getDownloadData() ? this.props.getDownloadData() : this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
+	   //  this.props.getDownloadData();
+    // }
+    getDwldDatas(){}
+    getDwldData(e){
 	    // this.props.getDownloadData() ? this.props.getDownloadData() : this.props.getData(this.state.filterData ? this.state.filterData : this.state.startRange, this.state.limitRange, this.state.center_ID);
-	    this.props.getDownloadData();
-    }
+	  	e.preventDefault();
+	  	var tableObjects =  this.props.tableObjects;
+	  	// console.log('tableObjects',tableObjects)
+	  	if(tableObjects.downloadMethod){
+	  		var method = tableObjects.downloadMethod;
+	  		// console.log('615 this.props.downloadGetAllData', this.props.downloadGetAllData)
+	  		var downloadGetAllData = this.props.downloadGetAllData ?  this.props.downloadGetAllData : ""
+	  		if(downloadGetAllData !== ""){
+	  			downloadGetAllData.startRange = "all"
+	  			downloadGetAllData.limitRange = "all"
+	  		}
+			var data = this.props.downloadGetAllData ? downloadGetAllData : {center_ID : this.state.center_ID}
+	  		console.log('615 data', data)
+	        axios.post(tableObjects.downloadUrl,data)
+			    .then((response)=> {
+			    	// console.log('response downloadData',response)
+			    	this.setState({
+				        downloadData : response.data,
+            			downloadFlag : true
+				    },()=>{
+				        // console.log("this.state.downloadData==========630==============",this.state.downloadData)
+				    	if (this.state.downloadData && this.state.downloadData.length > 0) {
+		                    if(this.state.downloadFlag){
+		                        $('#table-to-xls').trigger('click');
+		                        this.setState({
+		                            downloadFlag : false
+		                        })
+		                    }
+		                }
+				    })    
+			    }).catch(function (error) {
+			        console.log('error', error);
+			    });
+	  	}else{
+	    	// this.props.getDownloadData();
+	  	}
+    } 
 	render() {
         return (
 	       	<div id="tableComponent" className="col-lg-12 col-sm-12 col-md-12 col-xs-12">	
@@ -622,7 +665,7 @@ class IAssureTable extends Component {
 			        	null
 			       	}
 			       
-			       	{ this.state.tableObjects.downloadApply === true ?
+			       	{/* this.state.tableObjects.downloadApply === true ?
 		                this.state.tableData && this.state.id && this.state.tableName && this.state.tableData.length !== 0 && !this.state.downloadData ?
 		                <React.Fragment>
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
@@ -639,9 +682,9 @@ class IAssureTable extends Component {
 		                    : null
 		                
 		                : null
-		            }   
+		            */}   
 		            {/*console.log("this.state.downloadData",this.state.downloadData)*/}
-		            {/*console.log("this.state.id",this.state.id)*/}
+		            {/*console.log("this.state.tableData",this.state.tableData)*/}
 		            { this.state.tableObjects.downloadApply === true ?
 		                // this.state.downloadData && this.state.id && this.state.tableName && this.state.downloadData.length !== 0 ?
 		                this.state.id && this.state.tableName ?
@@ -649,25 +692,35 @@ class IAssureTable extends Component {
 		          
 		                    <div className="col-lg-1 col-md-1 col-xs-12 col-sm-12 NOpadding  pull-right ">
 		                        <button type="button" className="btn pull-left tableprintincon" title="Print Table" onClick={this.printTable}><i className="fa fa-print" aria-hidden="true"></i></button>
-		                           <ReactHTMLTableToExcel
-		                                id="table-to-xls"                           
-		                                className="download-table-xls-button fa fa-download tableicons pull-right"
-		                                table={this.state.id}
-		                                sheet="tablexls"
-		                                filename={this.state.tableName}
-		                                buttonText=""
-		                            />
-		                            <IAssureITTable 
-			                          tableName = {this.state.tableName}
-			                          id = {this.state.id}
-			                          displayTable = "displayTable"
-			                          data={this.props.propsdata}
-			                          getData={this.getDwldData.bind(this)}
-			                          tableHeading={this.props.downloadtableHeading}
-		                          	  twoLevelHeader={this.props.twoLevelHeader} 
-			                          tableData={this.state.downloadData}
-			                          tableObjects={this.state.tableObjects}                          
-			                        />
+		                        <div  className="download-table-xls-button tableicons pull-right fa fa-download" onClick={this.getDwldData.bind(this)} >
+		                    	</div>
+		                           	{
+			                			this.state.tableData && this.state.id && this.state.tableName &&  this.state.downloadData ?
+				                			<React.Fragment>
+					                           	<ReactHTMLTableToExcel
+					                                id="table-to-xls"                           
+					                                // className="tableDwldIcons download-table-xls-button fa fa-download"
+					                                className="noBorder"
+					                                table={this.state.id}
+					                                sheet="tablexls"
+					                                filename={this.state.tableName}
+					                                buttonText=""
+					                            />
+					                            <IAssureITTable 
+						                          tableName = {this.state.tableName}
+						                          id = {this.state.id}
+						                          displayTable = "displayTable"
+						                          data={this.props.propsdata}
+						                          getData={this.getDwldDatas.bind(this)}
+						                          tableHeading={this.props.downloadtableHeading}
+					                          	  twoLevelHeader={this.props.twoLevelHeader} 
+						                          tableData={this.state.downloadData}
+						                          tableObjects={this.state.tableObjects}                          
+						                        />
+				                			</React.Fragment>
+					                    :
+					                    null
+		                           	}
 		                    </div>
 		                </React.Fragment>
 		                    : null

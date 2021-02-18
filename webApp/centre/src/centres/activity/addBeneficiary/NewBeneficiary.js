@@ -77,7 +77,7 @@ class NewBeneficiary extends Component{
     console.log(center_ID, district, block, village)
       axios.get('/api/beneficiaries/get/beneficiary/list/'+center_ID+'/'+district+'/'+block+'/'+village)
       .then((response)=>{
-        console.log('bbbbbbbbbbbbbbbbbbbresponse', response.data);
+        // console.log('bbbbbbbbbbbbbbbbbbbresponse', response.data);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                       : a._id,

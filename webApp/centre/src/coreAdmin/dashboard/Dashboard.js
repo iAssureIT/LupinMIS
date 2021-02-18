@@ -157,11 +157,11 @@ export default class Dashboard extends Component{
     this.getAvailableCenters();
     this.getcenter();
     this.getCountOfSubactivities();
-    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-    this.cumulative_Plan_Data(this.state.year);
-    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    // this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+    // this.cumulative_Plan_Data(this.state.year);
+    // this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+    // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
   }
 
   year() {
@@ -203,21 +203,6 @@ export default class Dashboard extends Component{
       }
     })
   }
-  /*componentWillReceiveProps(nextProps){
-    this.year();
-    this.currentFromDate();
-    this.currentToDate();
-    this.getAvailableCentersData();
-    this.getCentersData();
-    this.getAvailableCenters();
-    this.cumulative_Plan_Data(this.state.year);
-    this.getCountOfSubactivities();
-    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
-    this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-  }*/
-
   getcenter(){
     axios({
       method: 'get',
@@ -237,7 +222,22 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   }
-  handleChange(event){
+  /*componentWillReceiveProps(nextProps){
+    this.year();
+    this.currentFromDate();
+    this.currentToDate();
+    this.getAvailableCentersData();
+    this.getCentersData();
+    this.getAvailableCenters();
+    this.cumulative_Plan_Data(this.state.year);
+    this.getCountOfSubactivities();
+    this.cumulative_Achievement_Data(this.state.year, this.state.center_ID);
+    this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+    this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+  }*/
+
+  /*  handleChange(event){
     event.preventDefault();
     this.setState({
       [event.target.name] : event.target.value
@@ -245,7 +245,7 @@ export default class Dashboard extends Component{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
     });
-  }  
+  }  */
   getAvailableCenters(){
     axios({
       method: 'get',
@@ -302,11 +302,11 @@ export default class Dashboard extends Component{
     $('#dataShow').css({"display": "none"});
     $('#dataShow').removeClass('in');  
   }
-  closeLocationModal(){
+  /*closeLocationModal(){
     $('#locationShow').css({"display": "none"});
     $('#locationShow').removeClass('in');  
-  }
- /* getAvailableCentersData(){
+  }*/
+  /* getAvailableCentersData(){
     axios({
       method: 'get',
       url: '/api/reportDashboard/list_count_center_district_blocks_villages',
@@ -336,13 +336,13 @@ export default class Dashboard extends Component{
         // console.log('response',response);
         $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
-            return {
-              _id               : a._id,
-              source            : a.source,
-              plan              : a.plan,
-              achievement       : a.achievement,
-            }
-          })
+          return {
+            _id               : a._id,
+            source            : a.source,
+            plan              : a.plan,
+            achievement       : a.achievement,
+          }
+        })
         this.setState({
           tableFinancialData : tableData
         })
@@ -588,9 +588,9 @@ export default class Dashboard extends Component{
       console.log('error', error);
     });
   }
-  locationShow(id){
-      var tableHeading;
-      var tableData;   
+/*  locationShow(id){
+    var tableHeading;
+    var tableData;   
     if(id === "Districts"){
       tableHeading = this.state.tableDistrictHeading;
       tableData    = this.state.tableDistrictData;
@@ -609,7 +609,7 @@ export default class Dashboard extends Component{
       $('#locationShow').css({"display": "block"});
       $('#locationShow').addClass('in');  
     })
-  }
+  }*/
   render(){
     return(
       <div className="container-fluid col-lg-12 col-md-12 col-xs-12 col-sm-12">
@@ -766,7 +766,7 @@ export default class Dashboard extends Component{
                         </div>
                       </div>
                     </div>       
-                    <div className="modal fade" id="locationShow" role="dialog">
+                    {/*<div className="modal fade" id="locationShow" role="dialog">
                       <div className="modal-dialog">                        
                         <div className="modal-content">
                           <div className="modal-header backColor">
@@ -819,7 +819,7 @@ export default class Dashboard extends Component{
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">

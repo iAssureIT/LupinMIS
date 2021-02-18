@@ -139,7 +139,9 @@ class ActivityTypeA extends Component{
         paginationapply            : true,
         downloadApply              : true,
         searchApply                : false,
-        editUrl                    : '/a-type-activity-form'
+        editUrl                    : '/a-type-activity-form',
+        downloadUrl                : "/api/activityReport/filterlist",
+        downloadMethod             : "post"
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
@@ -507,9 +509,6 @@ class ActivityTypeA extends Component{
       $("html,body").scrollTop(0)
     }
   }
-
-
-
   Update(event){
     event.preventDefault();
     var dateObj = new Date();
@@ -646,7 +645,6 @@ class ActivityTypeA extends Component{
       $("html,body").scrollTop(0)
     }
   }
-
   getAvailableVillages(center_ID, district, block){
     axios({
       method: 'get',
@@ -665,9 +663,6 @@ class ActivityTypeA extends Component{
       console.log("error = ",error);
     });
   }
-  
-
-
   getAvailableBlocks(center_ID, districtB){
     axios({
       method: 'get',
@@ -687,10 +682,6 @@ class ActivityTypeA extends Component{
       console.log("error = ",error);
     });
   }
-  
-
-
-
   edit(id){
     if(id){
       axios({
@@ -796,8 +787,6 @@ class ActivityTypeA extends Component{
       });
     }
   }
-
-
   addCommas(x) {
     x=x.toString();
     if(x.includes('%')){
@@ -825,21 +814,22 @@ class ActivityTypeA extends Component{
   
   getData(inputGetData){ 
     this.setState({
-      propsdata : inputGetData
+      propsdata          : inputGetData,
+      downloadGetAllData : inputGetData,
     })
     if(inputGetData){
       // console.log("getData inputGetData = ",inputGetData);
       $(".fullpageloader").show();
       axios.post('/api/activityReport/filterlist',inputGetData)
           .then((response)=>{
-            console.log("response==============",response)
+            // console.log("response==============",response)
             $(".fullpageloader").hide();
-            var newTableData = response.data.data.map((a, i)=>{
+            var newTableData = response.data.map((a, i)=>{
               return {
                 _id                        : a._id,
                 projectCategoryType        : a.projectCategoryType,
                 projectName                : a.projectName==='all'?'-':a.projectName,
-                date                       : moment(a.date).format('DD-MM-YYYY'),
+                date                       : a.date,
                 place                      : a.place,
                 sectorName                 : a.sectorName,
                 activity                   : a.activity,
@@ -886,62 +876,62 @@ class ActivityTypeA extends Component{
           });
     }
   }
-  getDownloadData(year){ 
-    if(year){
-      var inputGetAllData = {
-        "sector_ID"      : "all",
-        "activity_ID"    : "all",
-        "subactivity_ID" : "all",
-        "typeofactivity" : "Family Level Activity",
-        "startRange"     : "all",
-        "limitRange"     : "all",
-        "year"           : year,
-        "center_ID"      : this.state.center_ID,
-      }
-      if(inputGetAllData){
-        axios.post('/api/activityReport/filterlist',inputGetAllData)
-            .then((response)=>{
-              // console.log('response',response)
-              var newDownloadData = response.data.data.map((a, i)=>{
-                return {
-                  _id                        : a._id,
-                  projectCategoryType        : a.projectCategoryType,
-                  projectName                : a.projectName==='all'?'-':a.projectName,
-                  date                       : moment(a.date).format('DD-MM-YYYY'),
-                  district                   : a.district,
-                  block                      : a.block,
-                  village                    : a.village,
-                  location                   : a.location,
-                  sectorName                 : a.sectorName,
-                  activityName               : a.activityName,
-                  typeofactivity             : a.typeofactivity,
-                  subactivityName            : a.subactivityName,
-                  unit                       : a.unit,
-                  unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
-                  qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
-                  totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
-                  numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
-                  LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
-                  NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
-                  bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
-                  govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
-                  directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
-                  indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
-                  other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
-                  remark                     : a.remark,
-                }
-              })
+  // getDownloadData(year){ 
+  //   if(year){
+  //     var inputGetAllData = {
+  //       "sector_ID"      : "all",
+  //       "activity_ID"    : "all",
+  //       "subactivity_ID" : "all",
+  //       "typeofactivity" : "Family Level Activity",
+  //       "startRange"     : "all",
+  //       "limitRange"     : "all",
+  //       "year"           : year,
+  //       "center_ID"      : this.state.center_ID,
+  //     }
+  //     if(inputGetAllData){
+  //       axios.post('/api/activityReport/filterlist',inputGetAllData)
+  //         .then((response)=>{
+  //           // console.log('response',response)
+  //           var newDownloadData = response.data.map((a, i)=>{
+  //             return {
+  //               _id                        : a._id,
+  //               projectCategoryType        : a.projectCategoryType,
+  //               projectName                : a.projectName==='all'?'-':a.projectName,
+  //               date                       : moment(a.date).format('DD-MM-YYYY'),
+  //               district                   : a.district,
+  //               block                      : a.block,
+  //               village                    : a.village,
+  //               location                   : a.location,
+  //               sectorName                 : a.sectorName,
+  //               activityName               : a.activityName,
+  //               typeofactivity             : a.typeofactivity,
+  //               subactivityName            : a.subactivityName,
+  //               unit                       : a.unit,
+  //               unitCost                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].unitCost)                : 0,
+  //               qtyPerBen                  : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].qtyPerBen)               : 0,
+  //               totalCostPerBen            : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].totalCostPerBen)         : 0,
+  //               numofBeneficiaries         : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? this.addCommas(a.numofBeneficiaries) : this.addCommas(a.noOfBeneficiaries),
+  //               LHWRF                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.LHWRF)      : 0,
+  //               NABARD                     : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.NABARD)     : 0,
+  //               bankLoan                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.bankLoan)   : 0,
+  //               govtscheme                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.govtscheme) : 0,
+  //               directCC                   : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.directCC)   : 0,
+  //               indirectCC                 : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.indirectCC) : 0,
+  //               other                      : a.listofBeneficiaries.length > 0 ? this.addCommas(a.listofBeneficiaries[0].sourceofFund.other)      : 0,
+  //               remark                     : a.remark,
+  //             }
+  //           })
 
-              this.setState({
-                downloadData : newDownloadData
-              })                            
-            })
-            .catch(function(error){      
-              console.log("error = ",error); 
-            });
-      }
-    }
-  }
+  //           this.setState({
+  //             downloadData : newDownloadData
+  //           })                            
+  //         })
+  //         .catch(function(error){      
+  //           console.log("error = ",error); 
+  //         });
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
@@ -1524,7 +1514,6 @@ class ActivityTypeA extends Component{
           "year"           :  this.state.year,
         }
         this.getData(inputGetData);
-        this.getDownloadData(this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -2002,7 +1991,8 @@ class ActivityTypeA extends Component{
                             tableName            = "Family Level Activity Report"
                             id                   = "familyLevelActivityReport"
                             downloadtableHeading ={this.state.downloadtableHeading}
-                            downloadData         ={this.state.downloadData}
+                            // downloadData         ={this.state.downloadData}
+                            downloadGetAllData   ={this.state.downloadGetAllData}
                             tableHeading         ={this.state.tableHeading}
                             twoLevelHeader       ={this.state.twoLevelHeader} 
                             dataCount            ={this.state.dataCount}
@@ -2013,7 +2003,7 @@ class ActivityTypeA extends Component{
                             isDeleted            ={this.deleted.bind(this)}
                             viewTable            = {true}
                             viewLink             = "activityReportView"
-                            getDownloadData      ={this.getDownloadData.bind(this)}
+                            // getDownloadData      ={this.getDownloadData.bind(this)}
                           /> 
                         </div> 
                       </div>

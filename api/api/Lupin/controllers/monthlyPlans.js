@@ -522,10 +522,23 @@ exports.list_monthlyPlan_with_limits = (req,res,next)=>{
             query = {month:req.body.month,year:req.body.year, center_ID : req.body.center_ID}
         }
     }
+    /*Skip & limit*/
+    if(req.body.startRange !== "all"){
+        skip = parseInt(req.body.startRange);
+    }else{
+        skip = 0
+    }
+    if(req.body.limitRange !== "all"){
+        limit = parseInt(req.body.limitRange);
+    }else{
+        limit = 100000000
+    }
     // console.log("query",query);
     if(query != "1"){
         MonthlyPlan.find(query)
-        // .sort({"createdAt":-1})
+        .skip(skip)
+        .limit(limit)
+        .sort({"startDate":1})
         .exec()
         .then(data=>{
             if(data){
@@ -565,7 +578,7 @@ exports.list_monthlyPlan_with_limits = (req,res,next)=>{
                         "fileName"            : a.fileName,
                     }
                 })
-                res.status(200).json(alldata.slice(req.body.startRange, req.body.limitRange));
+                res.status(200).json(alldata);
             }
         })
         .catch(err =>{

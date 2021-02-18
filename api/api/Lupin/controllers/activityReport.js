@@ -1360,7 +1360,7 @@ exports.fetch_activityReport_withFilters = (req,res,next)=>{
     }
 };
 exports.post_activityReport_withFilters = (req,res,next)=>{
-    console.log('req.body==========',req.body.year);
+    // console.log('req.body==========',req.body.year);
     var query     = "1";
     var startDate = req.body.year.substring(3, 7)+"-04-01";
     var endDate   = req.body.year.substring(10, 15)+"-03-31";    
@@ -1405,7 +1405,7 @@ exports.post_activityReport_withFilters = (req,res,next)=>{
         ActivityReport.find(query)
             .skip(skip)
             .limit(limit)
-            .sort({"createdAt":-1})
+            .sort({"date":1})
             .then(data=>{
                 // console.log('dataaaa',data);
                 if(data){
@@ -1414,7 +1414,8 @@ exports.post_activityReport_withFilters = (req,res,next)=>{
                         return {
                             "_id"                   : a._id,
                             "centerName"            : a.centerName,
-                            "date"                  : a.date,
+                            "date"                  : moment(a.date).format('DD-MM-YYYY'),
+                            // "date"                  : a.date,
                             "district"              : a.district,
                             "block"                 : a.block,
                             "village"               : a.village,
@@ -1447,10 +1448,153 @@ exports.post_activityReport_withFilters = (req,res,next)=>{
                             "remark"                : '<div class="text-left wrapText">'+a.remark+'</div>',
                         }
                     })
-                    res.status(200).json({
-                                            "data":alldata,
-                                            "dataCount": alldata.length
-                                        });
+                    res.status(200).json(alldata);
+                                        //  res.status(200).json({
+                                        //     "data":alldata,
+                                        //     "dataCount": alldata.length
+                                        // });
+                    // console.log("2=========",new Date(),"alldata",alldata.length)
+                }
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    }
+};
+exports.post_activityReport_withFilters = (req,res,next)=>{
+    // console.log('req.body==========',req.body.year);
+    var query     = "1";
+    var startDate = req.body.year.substring(3, 7)+"-04-01";
+    var endDate   = req.body.year.substring(10, 15)+"-03-31";    
+
+    if(req.body.center_ID !== "all"){
+        query = {
+                    "center_ID"         : String(req.body.center_ID),
+                    "date"              : {$gte : startDate, $lte : endDate},
+                };
+    }else{
+        query = {
+                    "date"              : {$gte : startDate, $lte : endDate},
+                };
+    }
+    if(req.body.sector_ID !== "all"){
+        query.sector_ID = req.body.sector_ID;
+    }
+    if(req.body.activity_ID !== "all"){
+        query.activity_ID = req.body.activity_ID;
+    }
+    if(req.body.subactivity_ID !== "all"){
+        query.subactivity_ID = req.body.subactivity_ID;
+    }
+    if(req.body.typeofactivity !== "all"){
+        query.typeofactivity = req.body.typeofactivity;
+    }
+    /*Skip & limit*/
+    if(req.body.startRange !== "all"){
+        skip = parseInt(req.body.startRange);
+    }else{
+        skip = 0
+    }
+    if(req.body.limitRange !== "all"){
+        limit = parseInt(req.body.limitRange);
+    }else{
+        limit = 100000000
+    }
+    if(query != "1"){
+        // console.log("1=========",new Date())
+        console.log('query',query);
+        
+        ActivityReport.find(query)
+            .skip(skip)
+            .limit(limit)
+            .sort({"date":1})
+            .then(data=>{
+                // console.log('dataaaa',data);
+                if(data){
+                    var alldata = data.map((a, i)=>{
+                        // console.log("a ",a);
+                        return {
+                            // "_id"                   : a._id,
+                            // "centerName"            : a.centerName,
+                            // "date"                  : moment(a.date).format('DD-MM-YYYY'),
+                            // "district"              : a.district,
+                            // "block"                 : a.block,
+                            // "village"               : a.village,
+                            // "location"              : a.location,
+                            // "place"                 : "<div class='Width100 text-left'>"+a.district+", "+a.block+", "+a.village+ (a.location ? ", "+a.location : "")+"</div>",
+                            // "stateCode"             : a.stateCode,
+                            // "sectorName"            : a.sectorName,
+                            // "activity"              : '<p class="wrapText">Name: '+a.activityName+'</p><p> Type: '+a.typeofactivity+'</p>',
+                            // "typeofactivity"        : a.typeofactivity,
+                            // "activityName"          : a.activityName,
+                            // "subactivityName"       : '<div class="wrapText">'+a.subactivityName+'</div>',
+                            // "projectName"           : a.projectName,
+                            // "projectCategoryType"   : a.projectCategoryType,
+                            // "type"                  : a.type,
+                            // "unit"                  : a.unit,
+                            // "unitCost"              : (a.unitCost).toFixed(2),
+                            // "noOfBeneficiaries"     : a.noOfBeneficiaries,
+                            // "quantity"              : a.quantity,
+                            // "totalCost"             : a.totalCost,     
+                            // "LHWRF"                 : a.sourceofFund.LHWRF,
+                            // "NABARD"                : a.sourceofFund.NABARD,
+                            // "bankLoan"              : a.sourceofFund.bankLoan,
+                            // "govtscheme"            : a.sourceofFund.govtscheme,
+                            // "directCC"              : a.sourceofFund.directCC,
+                            // "indirectCC"            : a.sourceofFund.indirectCC,
+                            // "other"                 : a.sourceofFund.other,
+                            // "total"                 : a.sourceofFund.total,
+                            // "numofBeneficiaries"    : a.listofBeneficiaries&&a.listofBeneficiaries.length>0?a.listofBeneficiaries.length:0,    
+                            // "listofBeneficiaries"   : a.listofBeneficiaries,
+                            // "remark"                : '<div class="text-left wrapText">'+a.remark+'</div>',
+
+                            "_id"                   : a._id,
+                            "projectCategoryType"   : a.projectCategoryType,
+                            "projectName"           : a.projectName,
+                            "date"                  : moment(a.date).format('DD-MM-YYYY'),
+                            "district"              : a.district,
+                            "block"                 : a.block,
+                            "village"               : a.village,
+                            "location"              : a.location,
+                            "sectorName"            : a.sectorName,
+                            "activityName"          : a.activityName,
+                            "typeofactivity"        : a.typeofactivity,
+                            "subactivityName"       : '<div class="wrapText">'+a.subactivityName+'</div>',
+                            "unit"                  : a.unit,
+                            "unitCost"              : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].unitCost).toFixed(2)                : (a.unitCost).toFixed(2),
+                            "quantity"              : a.quantity,
+                            "totalCost"             : a.totalCost,     
+                            "noOfBeneficiaries"     : a.noOfBeneficiaries,
+                            "qtyPerBen"             : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].qtyPerBen)               : (a.quantity),
+                            "totalCostPerBen"       : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].totalCostPerBen)         : (a.totalCost),
+                            "numofBeneficiaries"    : ((a.noOfBeneficiaries)===null) || ((a.noOfBeneficiaries)=== 0) ? (a.numofBeneficiaries) : (a.noOfBeneficiaries),
+                            "LHWRF"                 : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.LHWRF)      : (a.sourceofFund.LHWRF),
+                            "NABARD"                : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.NABARD)     : (a.sourceofFund.NABARD),
+                            "bankLoan"              : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.bankLoan)   : (a.sourceofFund.bankLoan),
+                            "govtscheme"            : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.govtscheme) : (a.sourceofFund.govtscheme),
+                            "directCC"              : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.directCC)   : (a.sourceofFund.directCC),
+                            "indirectCC"            : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.indirectCC) : (a.sourceofFund.indirectCC),
+                            "other"                 : a.listofBeneficiaries.length > 0 ? (a.listofBeneficiaries[0].sourceofFund.other)      : (a.sourceofFund.other),
+                           
+                            // "numofBeneficiaries"    : a.listofBeneficiaries&&a.listofBeneficiaries.length>0?a.listofBeneficiaries.length:a.numofBeneficiaries,    
+                            "remark"                : '<div class="text-left wrapText">'+a.remark+'</div>',
+                            "total"                 : a.sourceofFund.total,
+                            "type"                  : a.type,
+                            "listofBeneficiaries"   : a.listofBeneficiaries,
+                            "place"                 : "<div class='Width100 text-left'>"+a.district+", "+a.block+", "+a.village+ (a.location ? ", "+a.location : "")+"</div>",
+                            "stateCode"             : a.stateCode,
+                            "activity"              : '<p class="wrapText">Name: '+a.activityName+'</p><p> Type: '+a.typeofactivity+'</p>',
+                            "centerName"            : a.centerName,
+                        }
+                    })
+                    res.status(200).json(alldata);
+                                        //  res.status(200).json({
+                                        //     "data":alldata,
+                                        //     "dataCount": alldata.length
+                                        // });
                     // console.log("2=========",new Date(),"alldata",alldata.length)
                 }
             })

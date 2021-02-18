@@ -13,12 +13,12 @@ router.patch('/update', ListOfbeneficiaryController.update_listOfbeneficiary);
 router.get('/list/:center_ID/:UIDStatus', ListOfbeneficiaryController.list_listOfbeneficiary); 
 /*withUID : withuid or withoutuid or all*/
 
-router.patch('/update',  checkAuth, ListOfbeneficiaryController.update_listOfbeneficiary);
+// router.patch('/update',  checkAuth, ListOfbeneficiaryController.update_listOfbeneficiary);
  
-router.get('/list/:center_ID', checkAuth, ListOfbeneficiaryController.list_listOfbeneficiary);
+// router.get('/list/:center_ID', checkAuth, ListOfbeneficiaryController.list_listOfbeneficiary);
 
-router.get('/count/:center_ID', checkAuth, ListOfbeneficiaryController.count_listOfbeneficiary);
-router.post('/list/:center_ID', checkAuth, ListOfbeneficiaryController.list_listOfbeneficiary_with_limits);
+// router.get('/count/:center_ID', checkAuth, ListOfbeneficiaryController.count_listOfbeneficiary);
+// router.post('/list/:center_ID', checkAuth, ListOfbeneficiaryController.list_listOfbeneficiary_with_limits);
 router.get('/count/:center_ID', ListOfbeneficiaryController.count_listOfbeneficiary);
 router.post('/list/:center_ID', ListOfbeneficiaryController.list_listOfbeneficiary_with_limits);
 
@@ -40,6 +40,7 @@ router.delete('/file/delete/:fileName/:uploadTime',ListOfbeneficiaryController.d
 router.delete('/:listOfbeneficiaryID',  ListOfbeneficiaryController.delete_listOfbeneficiary);
 
 router.post('/searchValue/:center_ID',  ListOfbeneficiaryController.search_beneficiary); 
-
+/*get all */
+router.post('/get/all', ListOfbeneficiaryController.getAllBeneficiaries); 
 
 module.exports = router;

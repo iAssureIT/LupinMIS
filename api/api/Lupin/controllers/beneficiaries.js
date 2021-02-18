@@ -306,6 +306,72 @@ exports.list_listOfbeneficiary_with_limits = (req,res,next)=>{
             });
     }
 };
+exports.getAllBeneficiaries = (req,res,next)=>{
+    // console.log("req.body",req.body);
+    var query = "1";
+    if(req.body.center_ID === 'all'){
+        query = {};
+    }else{
+        query = { "center_ID" : req.body.center_ID};
+    }
+    if(query != "1"){   
+        ListOfbeneficiary.aggregate([
+                        {
+                            $addFields: {
+                                "family_ID": { $toObjectId:"$family_ID" }
+                            }
+                        },   
+                        {
+                            $lookup : {
+                                    from          : "families",
+                                    localField    : "family_ID",
+                                    foreignField  : "_id",
+                                    as            : "families"
+                            }
+                        },   
+                        {
+                            $unwind : "$families" 
+                        },       
+                        {
+                            $match : query
+                        },      
+                        {
+                            $project : {
+                                "_id"                     : 1,
+                                "beneficiaryID"           : 1,
+                                "familyID"                : 1,
+                                "center_ID"               : 1,
+                                "center"                  : 1,
+                                "surnameOfBeneficiary"    : 1,
+                                "firstNameOfBeneficiary"  : 1,
+                                "middleNameOfBeneficiary" : 1,
+                                "birthYearOfbeneficiary"  : 1,
+                                "relation"                : 1,
+                                "uidNumber"               : 1,
+                                "genderOfbeneficiary"     : 1,
+                                "dist"                   : "$families.dist",
+                                "block"                  : "$families.block",
+                                "village"                : "$families.village",
+                                "nameofbeneficiaries"     : 1,
+                                "nameofbeneficiaries"    : { $concat: [ "$surnameOfBeneficiary", " ", "$firstNameOfBeneficiary", " ","$middleNameOfBeneficiary"] },
+                            }
+                        },
+                ])
+            // ListOfbeneficiary.find(query)
+            .sort({"createdAt":-1})
+            .exec()
+            .then(data=>{
+                console.log("ben",data.length);
+                res.status(200).json(data);
+            })
+            .catch(err =>{
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    }
+};
 exports.count_listOfbeneficiary = (req,res,next)=>{
     var query = "1";
     if(req.params.center_ID === 'all'){

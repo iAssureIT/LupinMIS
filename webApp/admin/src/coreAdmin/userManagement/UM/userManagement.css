@@ -1,7 +1,7 @@
-@font-face{
+/*@font-face{
   font-family:'Raleway-Regular';
   src: url("/fonts/MYRIADPROREGULAR.ttf");
-}
+}*/
 .resetForm{
   border-radius: 10px;
   height: 270px;
@@ -1957,10 +1957,10 @@ right: 15px;
 
 
 
-@font-face{
+/*@font-face{
   font-family:'MYRIADPROREGULAR';
   src: url("/fonts/MYRIADPROREGULAR.ttf");
-}
+}*/
 /*=====Anuja=====*/
 .formcntrl{
   background: #eee;

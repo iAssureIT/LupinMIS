@@ -112,6 +112,8 @@ class PlanDetails extends Component{
         downloadApply       : true,
         searchApply         : false,
         editUrl             : '/plan-details',
+        downloadUrl         : "/api/monthlyplans/list",
+        downloadMethod      : "post"
       },   
       "startRange"          : 0,
       "limitRange"          : 1000000,
@@ -845,8 +847,10 @@ class PlanDetails extends Component{
   }
   getData(inputGetData){
     this.setState({
-      propsdata : inputGetData
+      propsdata          : inputGetData,
+      downloadGetAllData : inputGetData
     });
+    
     $(".fullpageloader").show();
     if(inputGetData){
       axios.post(this.state.apiCall+'/list', inputGetData)
@@ -889,55 +893,55 @@ class PlanDetails extends Component{
       });
     }
   }  
-  getDownloadData(){
-    var inputGetAllData = {
-      center_ID  : this.state.center_ID,
-      month      : this.state.month,
-      year       : this.state.year,
-      startRange : "all",
-      limitRange : "all",
-      startDate  : this.state.startDate,
-      endDate    : this.state.endDate,
-    }
-    $(".fullpageloader").show();
-    axios.post(this.state.apiCall+'/list', inputGetAllData)
-    .then((response)=>{
-      $(".fullpageloader").hide();
-      // console.log("response plan Details===>",response);
-      var tableData = response.data.map((a, i)=>{
-        return {
-          _id                 : a._id,
-          month               : a.month,
-          year                : a.year,
-          projectCategoryType : a.projectCategoryType,
-          projectName         : a.projectName === 'all'?'-':a.projectName,
-          sectorName          : a.sectorName,
-          activityName        : a.activityName,
-          subactivityName     : a.subactivityName,
-          unit                : a.unit,
-          physicalUnit        : this.addCommas(a.physicalUnit),
-          unitCost            : this.addCommas(a.unitCost),
-          totalBudget         : this.addCommas(a.totalBudget),
-          noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
-          noOfFamilies        : this.addCommas((a.noOfFamilies)),
-          LHWRF               : this.addCommas(a.LHWRF),
-          NABARD              : this.addCommas(a.NABARD),
-          bankLoan            : this.addCommas(a.bankLoan),
-          govtscheme          : this.addCommas(a.govtscheme),
-          directCC            : this.addCommas(a.directCC),
-          indirectCC          : this.addCommas(a.indirectCC),
-          other               : this.addCommas(a.other),
-          remark              : a.remark,
-        }
-      })
-      this.setState({
-        downloadData : tableData
-      });
-    })
-    .catch(function(error){
-      console.log("error"+error);
-    });
-  }
+  // getDownloadData(){
+  //   var inputGetAllData = {
+  //     center_ID  : this.state.center_ID,
+  //     month      : this.state.month,
+  //     year       : this.state.year,
+  //     startRange : "all",
+  //     limitRange : "all",
+  //     startDate  : this.state.startDate,
+  //     endDate    : this.state.endDate,
+  //   }
+  //   $(".fullpageloader").show();
+  //   axios.post(this.state.apiCall+'/list', inputGetAllData)
+  //   .then((response)=>{
+  //     $(".fullpageloader").hide();
+  //     // console.log("response plan Details===>",response);
+  //     var tableData = response.data.map((a, i)=>{
+  //       return {
+  //         _id                 : a._id,
+  //         month               : a.month,
+  //         year                : a.year,
+  //         projectCategoryType : a.projectCategoryType,
+  //         projectName         : a.projectName === 'all'?'-':a.projectName,
+  //         sectorName          : a.sectorName,
+  //         activityName        : a.activityName,
+  //         subactivityName     : a.subactivityName,
+  //         unit                : a.unit,
+  //         physicalUnit        : this.addCommas(a.physicalUnit),
+  //         unitCost            : this.addCommas(a.unitCost),
+  //         totalBudget         : this.addCommas(a.totalBudget),
+  //         noOfBeneficiaries   : this.addCommas((a.noOfBeneficiaries)),
+  //         noOfFamilies        : this.addCommas((a.noOfFamilies)),
+  //         LHWRF               : this.addCommas(a.LHWRF),
+  //         NABARD              : this.addCommas(a.NABARD),
+  //         bankLoan            : this.addCommas(a.bankLoan),
+  //         govtscheme          : this.addCommas(a.govtscheme),
+  //         directCC            : this.addCommas(a.directCC),
+  //         indirectCC          : this.addCommas(a.indirectCC),
+  //         other               : this.addCommas(a.other),
+  //         remark              : a.remark,
+  //       }
+  //     })
+  //     this.setState({
+  //       downloadData : tableData
+  //     });
+  //   })
+  //   .catch(function(error){
+  //     console.log("error"+error);
+  //   });
+  // }
   componentWillReceiveProps(nextProps){
     this.year();
     this.monthYear();
@@ -987,7 +991,6 @@ class PlanDetails extends Component{
     this.getLength();
     this.getAvailableSectors();
     this.getAvailableProjectName();
-    this.year();
     if(this.state.editId){     
       this.edit(this.state.editId);       
     }
@@ -1000,6 +1003,7 @@ class PlanDetails extends Component{
       center_ID    : center_ID,
       centerName   : centerName,
     },()=>{
+      this.year();
       var inputGetData = {
         center_ID  : this.state.center_ID,
         month      : this.state.month,
@@ -1009,8 +1013,8 @@ class PlanDetails extends Component{
         startDate  : this.state.startDate,
         endDate    : this.state.endDate,
       }
-      // console.log("inputGetData",inputGetData)
       this.getData(inputGetData);
+      // console.log("inputGetData",inputGetData)
     });
   }
   handleChange(event){
@@ -1940,7 +1944,8 @@ class PlanDetails extends Component{
                             tableName = "Plan Details"
                             id = "PlanDetails"
                             downloadtableHeading={this.state.downloadtableHeading}
-                            downloadData={this.state.downloadData}
+                            // downloadData={this.state.downloadData}
+                            downloadGetAllData={this.state.downloadGetAllData}
                             tableHeading={this.state.tableHeading}
                             twoLevelHeader={this.state.twoLevelHeader} 
                             dataCount={this.state.dataCount}
@@ -1949,7 +1954,7 @@ class PlanDetails extends Component{
                             getData={this.getData.bind(this)}
                             tableObjects={this.state.tableObjects}
                             getSearchText={this.getSearchText.bind(this)}
-                            getDownloadData      ={this.getDownloadData.bind(this)}
+                            // getDownloadData      ={this.getDownloadData.bind(this)}
                           />
                         </div>
                       </div> 

@@ -120,7 +120,7 @@ class ActivityTypeB extends Component{
         unitCost                   : "Unit Cost",
         quantity                   : "Quantity",
         totalCost                  : "Total Cost",
-        numofBeneficiaries         : "Beneficiary",
+        noOfBeneficiaries          : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
         bankLoan                   : "Bank",
@@ -138,7 +138,9 @@ class ActivityTypeB extends Component{
         paginationApply            : false,
         downloadApply              : true,
         searchApply                : false,
-        editUrl                    : '/b-type-activity-form'
+        editUrl                    : '/b-type-activity-form',
+        downloadUrl                : "/api/activityReport/filterlist",
+        downloadMethod             : "post"
       },
       "selectedBeneficiaries"      : [],
       "startRange"                 : 0,
@@ -757,7 +759,8 @@ class ActivityTypeB extends Component{
  
   getData(inputGetData){ 
     this.setState({
-      propsdata : inputGetData
+      propsdata          : inputGetData,
+      downloadGetAllData : inputGetData,
     })
     if(inputGetData){
       // console.log("getData inputGetData = ",inputGetData);
@@ -766,13 +769,13 @@ class ActivityTypeB extends Component{
       // axios.get('/api/activityReport/filterlist/'+center_ID+'/'+startDate+'/'+endDate+'/all/all/all/'+"Type B Activity")
       .then((response)=>{
         $(".fullpageloader").hide();
-        var newTableData = response.data.data.map((a, i)=>{
+        var newTableData = response.data.map((a, i)=>{
           return {
             _id                        : a._id,
             projectCategoryType        : a.projectCategoryType,
             projectName                : a.projectName==='all'?'-':a.projectName,
-            // date                       : (a.date),
-            date                       : moment(a.date).format('DD/MM/YYYY'),
+            date                       : (a.date),
+            // date                       : moment(a.date).format('DD/MM/YYYY'),
             place                      : a.place,
             sectorName                 : a.sectorName,
             activity                   : a.activity,
@@ -825,63 +828,64 @@ class ActivityTypeB extends Component{
     }
   }
 
-  getDownloadData(year){ 
-    if(year){
-      var inputGetAllData = {
-        "sector_ID"      : "all",
-        "activity_ID"    : "all",
-        "subactivity_ID" : "all",
-        "typeofactivity" : "Type B Activity",
-        "startRange"     : "all",
-        "limitRange"     : "all",
-        "year"           : year,
-        "center_ID"      : this.state.center_ID,
-      }
-      if(inputGetAllData){
-        axios.post('/api/activityReport/filterlist',inputGetAllData)
-            .then((response)=>{
-              var newDownloadData = response.data.data.map((a, i)=>{
+  // getDownloadData(year){ 
+  //   if(year){
+  //     var inputGetAllData = {
+  //       "sector_ID"      : "all",
+  //       "activity_ID"    : "all",
+  //       "subactivity_ID" : "all",
+  //       "typeofactivity" : "Type B Activity",
+  //       "startRange"     : "all",
+  //       "limitRange"     : "all",
+  //       "year"           : year,
+  //       "center_ID"      : this.state.center_ID,
+  //     }
+  //     if(inputGetAllData){
+  //       axios.post('/api/activityReport/filterlist',inputGetAllData)
+  //           .then((response)=>{
+  //             var newDownloadData = response.data.map((a, i)=>{
 
-                return {
-                  _id                        : a._id,
-                  projectCategoryType        : a.projectCategoryType,
-                  projectName                : a.projectName==='all'?'-':a.projectName,
-                  date                       : moment(a.date).format('DD-MM-YYYY'),
-                  district                   : a.district,
-                  block                      : a.block,
-                  village                    : a.village,
-                  location                   : a.location,
-                  sectorName                 : a.sectorName,
-                  activityName               : a.activityName,
-                  typeofactivity             : a.typeofactivity,
-                  subactivityName            : a.subactivityName,
-                  unit                       : a.unit,
-                  unitCost                   : this.addCommas(a.unitCost),
-                  quantity                   : this.addCommas(a.quantity),
-                  totalCost                  : this.addCommas(a.totalCost),
-                  numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries): 0,
-                  // numofBeneficiaries         : a.noOfBeneficiaries,
-                  LHWRF                      : this.addCommas(a.LHWRF),
-                  NABARD                     : this.addCommas(a.NABARD),
-                  bankLoan                   : this.addCommas(a.bankLoan),
-                  govtscheme                 : this.addCommas(a.govtscheme),
-                  directCC                   : this.addCommas(a.directCC),
-                  indirectCC                 : this.addCommas(a.indirectCC),
-                  other                      : this.addCommas(a.other),
-                  remark                     : a.remark,
-                }
+  //               return {
+  //                 _id                        : a._id,
+  //                 projectCategoryType        : a.projectCategoryType,
+  //                 projectName                : a.projectName==='all'?'-':a.projectName,
+  //                 date                       : moment(a.date).format('DD-MM-YYYY'),
+  //                 district                   : a.district,
+  //                 block                      : a.block,
+  //                 village                    : a.village,
+  //                 location                   : a.location,
+  //                 sectorName                 : a.sectorName,
+  //                 activityName               : a.activityName,
+  //                 typeofactivity             : a.typeofactivity,
+  //                 subactivityName            : a.subactivityName,
+  //                 unit                       : a.unit,
+  //                 unitCost                   : this.addCommas(a.unitCost),
+  //                 quantity                   : this.addCommas(a.quantity),
+  //                 totalCost                  : this.addCommas(a.totalCost),
+  //                 numofBeneficiaries         : (a.noOfBeneficiaries)!==null ? this.addCommas(a.noOfBeneficiaries): 0,
+  //                 // numofBeneficiaries         : a.noOfBeneficiaries,
+  //                 LHWRF                      : this.addCommas(a.LHWRF),
+  //                 NABARD                     : this.addCommas(a.NABARD),
+  //                 bankLoan                   : this.addCommas(a.bankLoan),
+  //                 govtscheme                 : this.addCommas(a.govtscheme),
+  //                 directCC                   : this.addCommas(a.directCC),
+  //                 indirectCC                 : this.addCommas(a.indirectCC),
+  //                 other                      : this.addCommas(a.other),
+  //                 remark                     : a.remark,
+  //               }
    
-              })
-              this.setState({
-                downloadData : newDownloadData
-              })                            
-            })
-            .catch(function(error){      
-              console.log("error = ",error); 
-            });
-      }
-    }
-  }
+  //             })
+  //             this.setState({
+  //               downloadData : newDownloadData
+  //             })                            
+  //           })
+  //           .catch(function(error){      
+  //             console.log("error = ",error); 
+  //           });
+  //     }
+  //   }
+  // }
+
   componentDidMount() {
     $.validator.addMethod("regxDate", function(value, element, regexpr) { 
       return value!=='';
@@ -1460,7 +1464,6 @@ class ActivityTypeB extends Component{
           "year"           :  this.state.year,
         }
         this.getData(inputGetData);
-        this.getDownloadData(this.state.year);
         var upcomingFirstYear =parseInt(this.state.firstYear)+3
         var upcomingSecondYear=parseInt(this.state.secondYear)+3
         var years = [];
@@ -1894,7 +1897,8 @@ class ActivityTypeB extends Component{
                             tableName            = "B Type Activity Report"
                             id                   = "bTypeActivityReport"
                             downloadtableHeading ={this.state.downloadtableHeading}
-                            downloadData         ={this.state.downloadData}
+                            // downloadData         ={this.state.downloadData}
+                            downloadGetAllData   ={this.state.downloadGetAllData}
                             tableHeading         ={this.state.tableHeading}
                             twoLevelHeader       ={this.state.twoLevelHeader} 
                             dataCount            ={this.state.dataCount}
@@ -1905,7 +1909,7 @@ class ActivityTypeB extends Component{
                             isDeleted            ={this.deleted.bind(this)}
                             viewTable            = {true}
                             viewLink             = "activityReportView"
-                            getDownloadData      ={this.getDownloadData.bind(this)}
+                            // getDownloadData      ={this.getDownloadData.bind(this)}
                           /> 
                         </div>
                       </div>

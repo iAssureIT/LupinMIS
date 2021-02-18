@@ -27,6 +27,8 @@ router.delete('/:beneficiaryFamiliesID',  BeneficiaryFamiliesController.delete_b
 
 router.post('/searchValue/:center_ID',BeneficiaryFamiliesController.family_search); 
 
-router.post('/get/family/list',  BeneficiaryFamiliesController.list_beneficiary_centerwise);
+router.post('/get/family/list',  BeneficiaryFamiliesController.list_family_centerwise);
+
+router.post('/get/all', BeneficiaryFamiliesController.getAllFamilies); 
 
 module.exports = router;

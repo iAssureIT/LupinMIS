@@ -20,7 +20,8 @@ class Beneficiary extends Component{
     super(props);  
     this.state = {
       // "relation"            :"-- Select --",
-      "tableData"                      :[],
+      "downloadFlag"                    : false,
+      "tableData"                     :[],
       "selector"                      :{},
       "Check"                         :false,
       "districtFilter"                :"all",
@@ -40,20 +41,19 @@ class Beneficiary extends Component{
       "downloadData"                  : [],
       "shown"               : true,
       "tableHeading"        : {
-        beneficiaryID       : "Beneficiary ID",
-        familyID            : "Family ID",
-        // nameofbeneficiaries : "Name of Beneficiary",
+        beneficiaryID             : "Beneficiary ID",
+        familyID                  : "Family ID",
         surnameOfBeneficiary      : "Surname",
         firstNameOfBeneficiary    : "First Name",
         middleNameOfBeneficiary   : "Middle Name",
-        uidNumber           : "UID Number",
-        relation            : "Relation with Family Head",
-        genderOfbeneficiary : "Gender",
-        birthYearOfbeneficiary : "Birth Year",
-        dist                : "District",
-        block               : "Block",
-        village             : "Village",
-        actions             : 'Action',
+        uidNumber                 : "UID Number",
+        relation                  : "Relation with Family Head",
+        genderOfbeneficiary       : "Gender",
+        birthYearOfbeneficiary    : "Birth Year",
+        dist                      : "District",
+        block                     : "Block",
+        village                   : "Village",
+        actions                   : 'Action',
       },
       "downloadtableHeading"        : {
         beneficiaryID       : "Beneficiary ID",
@@ -62,10 +62,10 @@ class Beneficiary extends Component{
         firstNameOfBeneficiary    : "First Name",
         middleNameOfBeneficiary   : "Middle Name",
         // nameofbeneficiaries : "Name of Beneficiary",
-        uidNumber           : "UID Number",
-        relation            : "Relation with Family Head",
-        genderOfbeneficiary : "Gender",
         birthYearOfbeneficiary : "Birth Year",
+        relation            : "Relation with Family Head",
+        uidNumber           : "UID Number",
+        genderOfbeneficiary : "Gender",
         dist                : "District",
         block               : "Block",
         village             : "Village",
@@ -77,6 +77,8 @@ class Beneficiary extends Component{
         paginationApply     : false,
         downloadApply       : true,
         searchApply         : true,
+        downloadUrl         : "/api/beneficiaries/get/all",
+        downloadMethod      : "post"
       },
       "startRange"          : 0,
       "limitRange"          : 10,
@@ -299,7 +301,7 @@ class Beneficiary extends Component{
         "limitRange"      :  this.state.limitRange
       }
       this.getData(inputGetData);
-      this.getDownloadData(this.state.center_ID);
+      // this.getDownloadData(this.state.center_ID);
       this.getAvailableFamilyId(this.state.center_ID);
     });    
  
@@ -433,7 +435,7 @@ class Beneficiary extends Component{
       $(".fullpageloader").show();
       axios.post('/api/beneficiaries/get/beneficiary/list', inputGetData)
       .then((response)=>{
-        // console.log('response', response);
+        console.log('response', response);
         $('.fullpageloader').hide();  
         var newTableData = response.data.map((a, i)=>{
           return {
@@ -470,7 +472,7 @@ class Beneficiary extends Component{
       }); 
     }      
   } 
-  getDownloadData(center_ID){
+/*  getDownloadData(center_ID){
     var inputGetAllData = {
       "center_ID"       : center_ID,
       "district"        : "all",
@@ -510,7 +512,7 @@ class Beneficiary extends Component{
     .catch(function(error){
       console.log("error = ",error);
     }); 
-  }
+  }*/
   getAvailableFamilyId(center_ID){
     if(center_ID){
       axios({
@@ -1083,7 +1085,7 @@ class Beneficiary extends Component{
                           tableName            = "Beneficiary"
                           id                   = "Beneficiary"
                           downloadtableHeading ={this.state.downloadtableHeading}
-                          downloadData         ={this.state.downloadData}
+                          // downloadData         ={this.state.downloadData}
                           tableHeading         ={this.state.tableHeading}
                           twoLevelHeader       ={this.state.twoLevelHeader} 
                           dataCount            ={this.state.dataCount}
@@ -1092,7 +1094,7 @@ class Beneficiary extends Component{
                           tableObjects         ={this.state.tableObjects} 
                           filterData           ={this.state.propsdata}
                           getSearchText        ={this.getSearchText.bind(this)}
-                          getDownloadData      ={this.getDownloadData.bind(this)}
+                          // getDownloadData      ={this.getDownloadData.bind(this)}
                         /> 
                       </div>
                     </div>
