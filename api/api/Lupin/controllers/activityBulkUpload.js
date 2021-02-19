@@ -208,7 +208,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                     }else if(villageLocation.length == 0){
                         validationRemark += "Village is not available in this Center";
                     }
-                    // excelRows[i].date = date;
+                    excelRows[i].date = date;
                     invalidObjects = excelRows[i];
                     invalidObjects.failedRemark = validationRemark;
                     invalidData.push(invalidObjects);
@@ -242,7 +242,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                                     // console.log('date',date);
                                     // console.log("beneficiaryObject",beneficiaryObject.length,beneficiaryObject);
                                     if(beneficiaryObject.length == 0){
-                                        // excelRows[i].date = date;
+                                        excelRows[i].date = date;
                                         invalidObjects = excelRows[i];
                                         validationRemark += "Beneficiary details not found";
                                         invalidObjects.failedRemark = validationRemark;
@@ -273,7 +273,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                                             var upgradationEligibility = upgradation ? upgradation.activity.subActivity.familyUpgradation : "No"
                                             // console.log("upgradation",upgradation)
                                             if (excelRows[i].isUpgraded === "Yes" && upgradationEligibility ==="No"){
-                                                // excelRows[i].date = date;
+                                                excelRows[i].date = date;
                                                 invalidObjects = excelRows[i];
                                                 validationRemark +=  "Subactivity is not eligible for upgradation ";
                                                 invalidObjects.failedRemark = validationRemark;
@@ -363,7 +363,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                                                         if (excelRows[i]) {
                                                             DuplicateCount++;
                                                             validationRemark += "Duplicate Activity Report found";
-                                                            // excelRows[i].date = date;
+                                                            excelRows[i].date = date;
                                                             invalidObjects = excelRows[i];
                                                             invalidObjects.failedRemark = validationRemark;
                                                             invalidData.push(invalidObjects);
@@ -378,7 +378,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                                                         // console.log('updatebeneficiary',updatebeneficiary);
                                                     }
                                                 }else{
-                                                    // excelRows[i].date = date;
+                                                    excelRows[i].date = date;
                                                     invalidObjects = excelRows[i];
                                                     invalidObjects.failedRemark = validationRemark;
                                                     invalidData.push(invalidObjects);
@@ -387,7 +387,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                                     }
                                 }
                             }else{
-                                // excelRows[i].date = date;
+                                excelRows[i].date = date;
                                 invalidObjects = excelRows[i];
                                 validationRemark +=  "Family & Beneficiary details not found ";
                                 invalidObjects.failedRemark = validationRemark;
@@ -395,7 +395,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                             }
                         }                      
                     }else{
-                        // excelRows[i].date = date;
+                        excelRows[i].date = date;
                         invalidObjects = excelRows[i];
                         if(excelRows[i].programCategory=="Project Fund"){
                             validationRemark += "Project Name or Subactivity details of particular Project not found";
@@ -409,7 +409,7 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                 }
             }else if((excelRows[i].date == "-" || excelRows[i].sectorName =="-"|| excelRows[i].activityName =="-"|| excelRows[i].subactivityName =="-" ) && excelRows[i].district == "-"  && excelRows[i].familyID == "-" ){
                 
-                // excelRows[i].date = date;
+                excelRows[i].date = date;
                 // console.log("excelRows+++++++++++++++++++++",excelRows[i]);
                 invalidObjects = excelRows[i];
                 validationRemark += "Sector details or Date not found.";
@@ -417,14 +417,14 @@ exports.bulk_upload_type_A_activities = (req,res,next)=>{
                 invalidData.push(invalidObjects);
             }else if( excelRows[i].familyID == '-' || excelRows[i].beneficiaryID == '-') {
                 
-                // excelRows[i].date = date;
+                excelRows[i].date = date;
                // console.log("excelRows=====================",excelRows[i]);
                 invalidObjects = excelRows[i];
                 validationRemark += "Family or Beneficiary details not found.";
                 invalidObjects.failedRemark = validationRemark;
                 invalidData.push(invalidObjects);
             }else {
-                // excelRows[i].date = date;
+                excelRows[i].date = date;
                // console.log("excelRows=====================",excelRows[i]);
                 invalidObjects = excelRows[i];
                 validationRemark += "Sector details not found.";
@@ -737,7 +737,7 @@ exports.bulk_upload_type_B_activities = (req,res,next)=>{
                 }else if(villageLocation.length == 0){
                     validationRemark += "Village is not available in this Center";
                 }
-                // excelRows[i].date = date;
+                excelRows[i].date = date;
                 invalidObjects = excelRows[i];
                 invalidObjects.failedRemark = validationRemark;
                 invalidData.push(invalidObjects);
@@ -808,7 +808,7 @@ exports.bulk_upload_type_B_activities = (req,res,next)=>{
                             if (excelRows[i]) {
                                 DuplicateCount++;
                                 validationRemark  += "Duplicate Activity Report found";
-                                // excelRows[i].date = date;
+                                excelRows[i].date = date;
                                 invalidObjects    = excelRows[i];
                                 invalidObjects.failedRemark = validationRemark;
                                 invalidData.push(invalidObjects);
@@ -816,14 +816,14 @@ exports.bulk_upload_type_B_activities = (req,res,next)=>{
                         }
                         // console.log("validData",validData)
                     }else{
-                        // excelRows[i].date = date;
+                        excelRows[i].date = date;
                         invalidObjects = excelRows[i];
                         invalidObjects.failedRemark = validationRemark;
                         invalidData.push(invalidObjects);
                         // console.log("invalidData===",invalidData.length,invalidData.failedRemark)
                     }
                 }else{
-                    // excelRows[i].date = date;
+                    excelRows[i].date = date;
                     invalidObjects = excelRows[i];
                     if(excelRows[i].programCategory=="Project Fund"){
                         validationRemark += "Project Name or Subactivity details of particular Project not found";
