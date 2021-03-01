@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 import './Header.css';
-// import Rightsidebar from '../rightSidebar/Rightsidebar.js';
+import Rightsidebar from '../rightSidebar/Rightsidebar.js';
 
 export default class Header extends Component{
   
@@ -37,17 +37,17 @@ export default class Header extends Component{
     });   
   }
     
-// openNav() {
-//   var currentWidth =  document.getElementById("mySidenav").style.width;
-//   // console.log("currentWidth",currentWidth);
-//   document.getElementById("mySidenav").style.width = "250px";
-// }
+openNav() {
+  var currentWidth =  document.getElementById("mySidenav").style.width;
+  // console.log("currentWidth",currentWidth);
+  document.getElementById("mySidenav").style.width = "250px";
+}
 
-// closeNav() {
-//   var currentWidth =  document.getElementById("mySidenav").style.width;
-//   // console.log("currentWidth",currentWidth);
-//   document.getElementById("mySidenav").style.width = "0";
-// }
+closeNav() {
+  var currentWidth =  document.getElementById("mySidenav").style.width;
+  // console.log("currentWidth",currentWidth);
+  document.getElementById("mySidenav").style.width = "0";
+}
 
 toggleNav(){
 
@@ -102,6 +102,11 @@ logout(){
                   </div>
                 </div>
                 <div className="col-lg-6 col-md-8 col-sm-8 col-xs-8 padd0">
+                  <React.Fragment>
+                    <div onClick={this.toggleNav.bind(this)} className="col-lg-1 col-md-1 col-sm-1 col-xs-1 pull-right hover">
+                      <i className="fa fa-cogs headicon "></i>
+                    </div>
+                  </React.Fragment>
                   <div className="col-lg-5 col-md-7 col-sm-9 col-xs-12 pull-right  logoutAct">
                     <div className="row " onClick={this.LogoutSectionHover.bind(this)}>
 {/*                      <span className="col-lg-12 col-md-12 col-sm-12 col-xs-12 colorboxbefore hoverText mailtext"> {this.state.emailId ? this.state.emailId : ""}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<i className="fa fa-angle-down"></i>  </span>  */}
@@ -147,11 +152,10 @@ logout(){
                 </div>
             </div>
             </header>
-       {/*   <div id="mySidenav" className="sidenav">*/}
-         {/* <a href="javascript:void(0)" className="closebtn" onClick={this.toggleNav.bind(this)} >&times;</a>
-         */}
-       {/*  <Rightsidebar/>
-        </div>*/}
+
+            <div id="mySidenav" className="sidenav">
+              <Rightsidebar/>
+            </div>
       </div>
     );
   }

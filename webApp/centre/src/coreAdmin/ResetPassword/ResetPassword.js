@@ -95,7 +95,7 @@ oldpasswordChange = (oldpassword,emailId,newpassword,confirmPassword,user_id,val
 		}
 	})
 	.catch(error => {
-		if (error.response.status === 409) {
+		if (error.response.status === 401) {
 			console.log("ERROR in Responce");
 			this.setState({invalidpassword:true})
 		}
@@ -111,7 +111,7 @@ changepassword(event) {
 		var auth= {
 			email : this.state.emailId,
 			password : this.state.oldpassword,
-	        roles       : ['admin','viewer']
+        	roles       : ['MIS Coordinator','Center Incharge']
 	    }	
 	      axios
 	      .post('/api/users/login',auth)
@@ -169,7 +169,7 @@ changepassword(event) {
 				}
 			})
 			.catch(error => {
-				if (error.response.status === 401) {
+				if (error.response.status === 409) {
 					console.log("ERROR in Responce");
 					swal("Invalid Password","Please Enter correct password");
 					this.setState({invalidpassword:true})

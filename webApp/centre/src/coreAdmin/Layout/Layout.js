@@ -83,6 +83,7 @@ import GoalSectorReport                           from "../../centres/LupinRepor
 // import report12                                   from "../../centres/LupinReports/EMPReport.js";
 // import report21                                   from "../../centres/LupinReports/FamilyCoverageReport1/FamilyCoverageReport.js";
 
+import ResetPwd                                   from '../ResetPassword/ResetPassword.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -156,6 +157,8 @@ class Layout extends Component{
                         <Switch>
                               <Route path="/"                                                 exact component={Dashboard} />           
                               <Route path="/dashboard"                                        exact component={Dashboard} />           
+                              
+                              <Route path="/reset-password"                                   exact component={ResetPwd}  />
 
                             {/*Master Data*/}
                               <Route path="/beneficiary"                                      exact strict component={ Beneficiary } />
