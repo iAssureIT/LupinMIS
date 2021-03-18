@@ -624,6 +624,17 @@ class IAssureTable extends Component {
 		                                sheet="tablexls"
 		                                filename={this.state.tableName}
 		                                buttonText=""/>
+		                            <IAssureTableTable 
+			                          tableName = {this.state.tableName}
+			                          id = {this.state.id}
+			                          displayTable = "displayTable"
+			                          data={this.props.propsdata}
+			                          getData={this.getDwldData.bind(this)}
+			                          tableHeading={this.props.tableHeading}
+		                          	  twoLevelHeader={this.props.twoLevelHeader} 
+			                          tableData={this.state.tableData}
+			                          tableObjects={this.state.tableObjects}                          
+			                        />
 		                    </div>
 		                </React.Fragment>
 		                    : null
