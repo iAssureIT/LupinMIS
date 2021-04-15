@@ -331,9 +331,11 @@ export default class Dashboard extends Component{
   getFinancialData(startDate, endDate, center_ID){
     if(startDate && endDate && center_ID){
       $(".fullpageloader").show();
+      this.setState({"showgetFinancialData" : false})
       axios.get('/api/reports/plan_vs_Achivement_Financial/'+startDate+'/'+endDate+'/'+center_ID)
       .then((response)=>{
-        // console.log('response',response);
+        this.setState({"showgetFinancialData" : true})
+        console.log('getFinancialData',response);
         $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
@@ -372,9 +374,11 @@ export default class Dashboard extends Component{
   getPhysicalData(startDate, endDate, center_ID){
     if(startDate && endDate && center_ID){
       // $(".fullpageloader").show();
+      this.setState({"showgetPhysicalData" : false})
       axios.get('/api/reports/plan_vs_Achievement_Physical/'+startDate+'/'+endDate+'/'+center_ID)
       .then((response)=>{
-        // console.log('response',response);
+        this.setState({"showgetPhysicalData" : true})
+        console.log('getPhysicalData',response);
         // $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
@@ -402,7 +406,7 @@ export default class Dashboard extends Component{
       $(".fullpageloader").show();
       axios.get('/api/reports/cumulative_Data/'+startDate+'/'+endDate+'/all')
       .then((response)=>{
-        // console.log('cumulative_Data',response);
+        console.log('cumulative_Achievement_Data',response);
         $(".fullpageloader").hide();
         this.setState({              
           "cum_Achievement_total"                  : (response.data[0].total),
@@ -421,9 +425,11 @@ export default class Dashboard extends Component{
   getCenterwiseAchievement_Data(startDate, endDate){
     if(startDate && endDate){
       $(".fullpageloader").show();
+      this.setState({"showData" : false})
       axios.get('/api/reports/center_wise_Achievements/'+startDate+'/'+endDate)
       .then((response)=>{
-        // console.log('getCenterwiseAchievement_Data======',response);
+      this.setState({"showData" : true})
+        console.log('getCenterwiseAchievement_Data======',response);
         $(".fullpageloader").hide();
         var tableData = response.data.map((a, i)=>{
           return {
@@ -464,12 +470,11 @@ export default class Dashboard extends Component{
     startDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
        [name] : event.target.value,
-       startDate:startDate
+       startDate:startDate,
     },()=>{
-      this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
-      this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    // this.getData(this.state.startDate, this.state.endDate, this.state.center_ID, this.state.sector_ID, this.state.projectCategoryType, this.state.projectName, this.state.beneficiaryType, this.state.activity_ID, this.state.subActivity_ID);
+      // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      // this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
     });
   }
   handleToChange(event){
@@ -483,12 +488,23 @@ export default class Dashboard extends Component{
     endDate = moment(dateUpdate).format('YYYY-MM-DD');
     this.setState({
      [name] : event.target.value,
-     endDate : endDate
+     endDate : endDate,
+    },()=>{
+      // this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      // this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
+      // this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
+    });
+  }
+  getResponse(event){
+    event.preventDefault();
+    this.setState({
+      center_ID : "all",
+      center    : "all",
     },()=>{
       this.getFinancialData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getPhysicalData(this.state.startDate, this.state.endDate, this.state.center_ID);
       this.getCenterwiseAchievement_Data(this.state.startDate, this.state.endDate);
-    });
+    })
   }
   onBlurEventFrom(){
     var startDate = document.getElementById("startDate").value;
@@ -662,7 +678,7 @@ export default class Dashboard extends Component{
                           <span className="pull-right"><a href=""  className="whiteColor" data-toggle="modal" onClick={()=> this.dataShow("Centers")}>View All..</a></span>
                           : 
                           ""}
-                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt1                                                                                                                           0">
+                          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt10">
                             <span className="info-box-number">{this.state.countAllCenter}</span>
                             <div className="progress">
                               <div className="progress-bar"style={{"width": this.state.countAllCenter+"%"}}></div>
@@ -824,7 +840,7 @@ export default class Dashboard extends Component{
                 </div>
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 NOpadding">
                   <div className="row">
-                    <div className="col-lg-offset-3 col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
+                    <div className="col-lg-offset-2 col-lg-3 col-md-4 col-sm-12 col-xs-12 valid_box">
                         <label className="formLable">From</label><span className="asterix"></span>
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="startDate" >
                           <input onChange={this.handleFromChange} onBlur={this.onBlurEventFrom.bind(this)} name="startDate" ref="startDate" id="startDate" value={this.state.startDate} type="date" className="custom-select form-control inputBox" placeholder=""  />
@@ -835,10 +851,15 @@ export default class Dashboard extends Component{
                         <div className="col-lg-12 col-sm-12 col-xs-12 input-group inputBox-main" id="endDate" >
                           <input onChange={this.handleToChange} onBlur={this.onBlurEventTo.bind(this)} name="endDate" ref="endDate" id="endDate" value={this.state.endDate} type="date" className="custom-select form-control inputBox" placeholder=""   />
                         </div>
-                    </div>   
+                    </div> 
+                    <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 valid_box ">
+                       {/* <label className="formLable">Click to show</label><span className="asterix"></span>*/}
+                      <button type="button" className="btn addBtn mt col-lg-10 col-md-12 col-sm-12 col-xs-12" onClick={this.getResponse.bind(this)}>Show</button>
+                    </div> 
+
                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 border_Box_Filter  dashBoxBlueColor">
-                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements</div>
+                        <div className="col-lg-12 col-md-12 col-xs-12 col-sm-12 subdashHeader">Center wise Achievements </div>
                         <IAssureTable 
                           tableName = "Center wise Achievements"
                           id = "center_wise_Achievements" 
@@ -848,6 +869,7 @@ export default class Dashboard extends Component{
                           tableData={this.state.centerAchievementData}
                           getData={this.getCenterwiseAchievement_Data.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          showData = {this.state.showData}
                         />
                       </div>
                     </div>
@@ -890,6 +912,7 @@ export default class Dashboard extends Component{
                           tableData={this.state.tablePhysicalData}
                           getData={this.getPhysicalData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          showData = {this.state.showgetPhysicalData}
                         />
                       </div> 
                     </div> 
@@ -905,6 +928,7 @@ export default class Dashboard extends Component{
                           tableData={this.state.tableFinancialData}
                           getData={this.getFinancialData.bind(this)}
                           tableObjects={this.state.tableObjects}
+                          showData = {this.state.showgetFinancialData}
                         />
                       </div>
                       </div>
