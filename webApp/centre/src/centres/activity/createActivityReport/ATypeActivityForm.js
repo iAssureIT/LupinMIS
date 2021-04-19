@@ -1606,7 +1606,7 @@ class ActivityTypeA extends Component{
                                 <label className=" formLable">Program Type<span className="asterix">*</span></label>
                                 {this.state.type===true ?
 
-                                 <div className=" switch" onClick={this.handleToggle.bind(this)} >
+                                 <div className=" switch activitySwitch" onClick={this.handleToggle.bind(this)} >
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"  checked />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month"  />
@@ -1614,7 +1614,7 @@ class ActivityTypeA extends Component{
                                     <span className="switch-selection"></span>
                                   </div>
                                   :
-                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch" onClick={this.handleToggle.bind(this)} >
+                                   <div className="col-lg-12 col-sm-12 col-xs-12 switch activitySwitch" onClick={this.handleToggle.bind(this)} >
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="week"   />
                                     <label htmlFor="week" className="formLable switch-label switch-label-off">LHWRF Grant</label>
                                     <input type="radio" className="switch-input" name="view" value={this.state.projectCategoryType} id="month" checked  />

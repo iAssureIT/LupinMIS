@@ -4,7 +4,7 @@ import $                         from "jquery";
 import moment                    from 'moment';
 import swal                      from 'sweetalert';
 import StatusComponent           from './StatusComponent/StatusComponent.js';
-import IAssureTable              from "../IAssureTable/IAssureTable.jsx";
+import IAssureTable              from "./Table/IAssureTable.jsx";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';

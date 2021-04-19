@@ -5,13 +5,12 @@ import axios 						from 'axios';
 import $ 							from 'jquery';
 import jQuery 						from 'jquery';
 import ReactHTMLTableToExcel        from 'react-html-table-to-excel';
-import IAssureTableTable            from "../../centres/IAssureTableFilewise/IAssureTable.js";
+import IAssureTableTable            from "../../../centres/IAssureTableFilewise/IAssureTable.js";
 import { Link } from 'react-router-dom';
 
 import './IAssureTable.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/js/modal.js';
-import './print.css';
 
 var sum = 0;
 class IAssureTable extends Component { 
@@ -632,7 +631,9 @@ class IAssureTable extends Component {
 	                            </tr>
 	                        </thead>
 	                        <tbody className={this.state.tableData && this.state.tableData.length > 0 ? "scrollContent" : ""}>
+	                            {console.log("this.props.showData",this.props.showData)}
 	                            {	
+	                            	this.props.showData ? 
 		                            	this.state.tableData 
 		                            	?
 				                             
@@ -789,7 +790,13 @@ class IAssureTable extends Component {
 													<span className="sr-only">Loading...</span>									
 												</td>
 											</tr>     
-								
+									:
+										<tr className="trAdmin">
+											<td colSpan={this.state.tableHeading ? Object.keys(this.state.tableHeading).length+1 : 1} className="noTempData textAlignCenter">
+												<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+												<span className="sr-only">Loading...</span>									
+											</td>
+										</tr>        
 	                            }	
 
 	                    	</tbody>
