@@ -821,6 +821,7 @@ class PlanDetails extends Component{
   
   addCommas(x) {
     x=x.toString();
+    console.log("x",x)
     if(x.includes('%')){
         return x;
     }else{
