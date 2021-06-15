@@ -684,7 +684,7 @@ class PlanDetails extends Component{
   getLength(){
     axios.get(this.state.apiCall+'/count'+"/"+this.state.center_ID)
     .then((response)=>{
-      // console.log('response', response.data);
+      console.log('response', response,this.state.center_ID);
       if(response&&response.data){
         this.setState({
           dataCount : response.data.dataLength
@@ -856,7 +856,7 @@ class PlanDetails extends Component{
       axios.post(this.state.apiCall+'/list', inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
-        // console.log("response plan Details===>",response);
+        console.log("response plan Details===>",response);
         var tableData = response.data.map((a, i)=>{
           return {
             _id                 : a._id,
