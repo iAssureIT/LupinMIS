@@ -821,7 +821,6 @@ class PlanDetails extends Component{
   
   addCommas(x) {
     x=x.toString();
-    console.log("x",x)
     if(x.includes('%')){
         return x;
     }else{
@@ -859,6 +858,18 @@ class PlanDetails extends Component{
         $(".fullpageloader").hide();
         console.log("response plan Details===>",response);
         var tableData = response.data.map((a, i)=>{
+          console.log(i, "this.addCommas(a.physicalUnit)",this.addCommas(a.physicalUnit), "-----", a.physicalUnit)
+          console.log(i, "this.addCommas(a.unitCost)",this.addCommas(a.unitCost), "-----", a.unitCost)
+          console.log(i, "this.addCommas(a.totalBudget)",this.addCommas(a.totalBudget), "-----", a.totalBudget)
+          console.log(i, "this.addCommas((a.noOfBeneficiaries))",this.addCommas((a.noOfBeneficiaries)), "-----", a.noOfBeneficiaries)
+          console.log(i, "this.addCommas((a.noOfFamilies))",this.addCommas((a.noOfFamilies)), "-----", a.noOfFamilies)
+          console.log(i, "this.addCommas(a.LHWRF)",this.addCommas(a.LHWRF), "-----", a.LHWRF)
+          console.log(i, "this.addCommas(a.NABARD)",this.addCommas(a.NABARD), "-----", a.NABARD)
+          console.log(i, "this.addCommas(a.bankLoan)",this.addCommas(a.bankLoan), "-----", a.bankLoan)
+          console.log(i, "this.addCommas(a.govtscheme)",this.addCommas(a.govtscheme), "-----", a.govtscheme)
+          console.log(i, "this.addCommas(a.directCC)",this.addCommas(a.directCC), "-----", a.directCC)
+          console.log(i, "this.addCommas(a.indirectCC)",this.addCommas(a.indirectCC), "-----", a.indirectCC)
+          console.log(i, "this.addCommas(a.other)",this.addCommas(a.other), "-----", a.other)
           return {
             _id                 : a._id,
             month               : a.month,
