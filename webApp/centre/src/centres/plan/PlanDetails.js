@@ -684,7 +684,7 @@ class PlanDetails extends Component{
   getLength(){
     axios.get(this.state.apiCall+'/count'+"/"+this.state.center_ID)
     .then((response)=>{
-      console.log('response', response,this.state.center_ID);
+      // console.log('response', response,this.state.center_ID);
       if(response&&response.data){
         this.setState({
           dataCount : response.data.dataLength
@@ -856,20 +856,8 @@ class PlanDetails extends Component{
       axios.post(this.state.apiCall+'/list', inputGetData)
       .then((response)=>{
         $(".fullpageloader").hide();
-        console.log("response plan Details===>",response);
+        // console.log("response plan Details===>",response);
         var tableData = response.data.map((a, i)=>{
-          console.log(i, "this.addCommas(a.physicalUnit)",this.addCommas(a.physicalUnit), "-----", a.physicalUnit)
-          console.log(i, "this.addCommas(a.unitCost)",this.addCommas(a.unitCost), "-----", a.unitCost)
-          console.log(i, "this.addCommas(a.totalBudget)",this.addCommas(a.totalBudget), "-----", a.totalBudget)
-          console.log(i, "this.addCommas((a.noOfBeneficiaries))",this.addCommas((a.noOfBeneficiaries)), "-----", a.noOfBeneficiaries)
-          console.log(i, "this.addCommas((a.noOfFamilies))",this.addCommas((a.noOfFamilies)), "-----", a.noOfFamilies)
-          console.log(i, "this.addCommas(a.LHWRF)",this.addCommas(a.LHWRF), "-----", a.LHWRF)
-          console.log(i, "this.addCommas(a.NABARD)",this.addCommas(a.NABARD), "-----", a.NABARD)
-          console.log(i, "this.addCommas(a.bankLoan)",this.addCommas(a.bankLoan), "-----", a.bankLoan)
-          console.log(i, "this.addCommas(a.govtscheme)",this.addCommas(a.govtscheme), "-----", a.govtscheme)
-          console.log(i, "this.addCommas(a.directCC)",this.addCommas(a.directCC), "-----", a.directCC)
-          console.log(i, "this.addCommas(a.indirectCC)",this.addCommas(a.indirectCC), "-----", a.indirectCC)
-          console.log(i, "this.addCommas(a.other)",this.addCommas(a.other), "-----", a.other)
           return {
             _id                 : a._id,
             month               : a.month,
