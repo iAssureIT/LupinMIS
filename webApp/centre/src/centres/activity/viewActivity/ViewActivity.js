@@ -99,7 +99,7 @@ class ViewActivity extends Component{
         unitCost                   : "Unit Cost",
         qtyPerBen                  : "Quantity",
         totalCostPerBen            : "Total Cost",
-        noOfBeneficiaries          : "Beneficiary",
+        numofBeneficiaries          : "Beneficiary",
         LHWRF                      : "LHWRF",
         NABARD                     : "NABARD",
         bankLoan                   : "Bank",
